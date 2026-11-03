@@ -1,16 +1,19 @@
 /**
  * Home page copy.
  *
- * Unlike the other content files this is not lifted from a PDF: the checklist
- * asks for a "Home: Headline, benefits, services overview, clear consultation
- * call-to-action" but no home page copy was drafted. Everything below is
- * assembled from claims the client has already made elsewhere in his own
- * materials, so nothing new is asserted about the business.
+ * Not lifted from a PDF: the checklist asks for a home page but none was
+ * drafted. Everything is assembled from claims the client has already made in
+ * his own materials, so nothing new is asserted about the business.
+ *
+ * Rebuilt in November 2026 to Antonio's note: "more interactive and less
+ * cluttered". The generic three-benefit block became the path chooser, the
+ * stat strip and the standalone philosophy and service-area bands came out,
+ * and the vacancy calculator gives people something to do rather than read.
  */
 
 export const HERO = {
   eyebrow: 'Northern Virginia Property Management',
-  headline: 'Your property deserves an owner\u2019s attention.',
+  headline: 'Your property deserves an owner’s attention.',
   subhead:
     'M&A Management Solutions is run by a licensed broker who manages ' +
     'rental property of his own. Reliable, transparent management for ' +
@@ -20,33 +23,71 @@ export const HERO = {
   secondaryCta: { label: 'See what we handle', href: '/services' },
 } as const;
 
-/** The three benefits that lead the page, per the checklist. */
-export const BENEFITS: readonly {
-  title: string;
+/**
+ * The three situations owners arrive in. Each one answers the question that
+ * situation actually raises, then points at the single most useful next step
+ * rather than at everything.
+ */
+export const PATHS: readonly {
+  id: string;
+  tab: string;
+  heading: string;
   body: string;
+  cta: string;
+  href: string;
 }[] = [
   {
-    title: 'Protect your investment',
+    id: 'first-rental',
+    tab: 'I’m renting it out for the first time',
+    heading: 'Start with what it should rent for',
     body:
-      'Every decision is measured against your property\u2019s long-term ' +
-      'value, from maintenance authorizations to renewal pricing.',
+      'Before anything else you need a realistic rent and a realistic time ' +
+      'to lease. We look at what comparable homes nearby are actually ' +
+      'renting for, what the property needs first, and what the whole thing ' +
+      'will cost you to get occupied.',
+    cta: 'Request a rental evaluation',
+    href: '/contact',
   },
   {
-    title: 'Know where you stand',
+    id: 'already-rented',
+    tab: 'It’s rented and I want better management',
+    heading: 'Switching is less disruptive than owners expect',
     body:
-      'Monthly owner statements, year-end tax documentation, and honest ' +
-      'answers whether the news is good or bad.',
+      'Your tenant stays, the lease stays, and we take over the day-to-day ' +
+      'from wherever it currently sits. There are no termination fees on ' +
+      'our side if it later turns out not to be a fit, which is the same ' +
+      'standard we would want as owners ourselves.',
+    cta: 'See how management works',
+    href: '/management-plans',
   },
   {
-    title: 'Get your time back',
+    id: 'investor',
+    tab: 'I’m buying an investment property',
+    heading: 'Run the numbers before you own it',
     body:
-      'Be as involved as you want to be. Hand over the day-to-day entirely, ' +
-      'or stay close to every decision. Your call.',
+      'The costs that catch investors out are the ones between tenants. ' +
+      'Work out what a vacancy actually costs on the property you are ' +
+      'looking at, then talk to a broker who owns rentals himself about ' +
+      'whether the deal stands up.',
+    cta: 'Open the vacancy calculator',
+    href: '/tools',
   },
 ];
 
 export const HOME_FOUNDER_TEASER =
-  'Antonio Melendez has participated in more than 215 real estate ' +
-  'transactions, personally managed a portfolio of around 60 homes, and led ' +
-  'an operation responsible for over 200. He is also a rental property owner ' +
-  'himself, which is the part most owners care about.';
+  'Antonio Melendez is a Northern Virginia real estate broker who has ' +
+  'personally managed a portfolio of rental homes and led an operation ' +
+  'responsible for over 200. He is also a rental property owner himself, ' +
+  'which is the part most owners care about.';
+
+export const TOOLS_TEASER = {
+  eyebrow: 'Owner tools',
+  heading: 'What is a vacancy actually costing you?',
+  body:
+    'An empty property costs rent and carrying costs every single day. Our ' +
+    'calculator works out the real figure, and tells you how long you can ' +
+    'afford to hold out for a higher rent before the wait cancels out the ' +
+    'gain.',
+  cta: 'Open the vacancy calculator',
+  href: '/tools',
+};

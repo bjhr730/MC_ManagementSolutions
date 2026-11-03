@@ -59,7 +59,8 @@ login — change the file, commit, and the site rebuilds.
 | `src/content/services.ts` | The seven services |
 | `src/content/why-us.ts` | Why Choose Us reasons |
 | `src/content/management-plans.ts` | Plans page, fee categories, what's included |
-| `src/content/faq.ts` | The 13 FAQ entries, in the approved order |
+| `src/content/faq.ts` | The owner FAQ entries, in the approved order |
+| `src/content/home.ts` | Hero, the three owner paths, founder teaser, tools teaser |
 
 Two config files hold everything else:
 
@@ -68,6 +69,31 @@ Two config files hold everything else:
   here and marked `REPLACE`.
 - **`src/config/compliance.ts`** — fair housing statement, brokerage
   disclosure, pricing disclosure, licence numbers.
+
+### The vacancy calculator
+
+`/tools` holds a vacancy cost calculator. The arithmetic lives in
+`src/lib/vacancy.ts` and is imported twice: once in the component frontmatter,
+so the page ships a worked example that is correct before any JavaScript runs,
+and once in the browser script that recomputes it as you type. One
+implementation, so the server-rendered figures and the live ones cannot
+disagree. The home page teaser reads its headline number from the same module
+for the same reason.
+
+The break-even figure is the part worth understanding: a rent increase earns
+the difference every month of a 12-month lease, so dividing twelve times the
+increase by the daily cost of an empty property gives the extra vacant days
+that increase can absorb before the owner is behind.
+
+It is deliberately simple, and `/tools` says so: no taxes, no depreciation, no
+rent growth.
+
+### The home page path chooser
+
+The "Where should we start?" selector is radio inputs plus the `:checked`
+sibling combinator — no JavaScript. The radios, their labels and the panels
+must stay siblings in one flex container for the selector to reach across
+them; the panels are moved onto their own row with `order`, not by nesting.
 
 ### Turning the portals on
 

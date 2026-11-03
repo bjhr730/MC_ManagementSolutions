@@ -171,6 +171,7 @@ export const NAV = [
   { href: '/management-plans', label: 'Management Plans' },
   { href: '/why-us', label: 'Why Choose Us' },
   { href: '/about', label: 'About' },
+  { href: '/tools', label: 'Tools' },
   { href: '/faq', label: 'FAQ' },
   { href: '/contact', label: 'Contact Us' },
 ] as const;
@@ -185,6 +186,7 @@ export const FOOTER_NAV = {
   services: [
     { href: '/services', label: 'Our Services' },
     { href: '/management-plans', label: 'Management Plans' },
+    { href: '/tools', label: 'Vacancy Calculator' },
     { href: '/faq', label: 'Frequently Asked Questions' },
     { href: '/portals', label: 'Owner & Resident Portals' },
   ],

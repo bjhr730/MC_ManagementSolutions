@@ -1,0 +1,259 @@
+---
+import { computeVacancy, days, EXAMPLE, money } from '~/lib/vacancy';
+
+/**
+ * The example result is computed here, at build time, so the tool shows a
+ * worked answer before any JavaScript runs. The browser script recomputes the
+ * same numbers from the same module as the inputs change.
+ */
+const initial = computeVacancy(EXAMPLE);
+
+const fields = [
+  {
+    id: 'rent',
+    label: 'Monthly rent',
+    prefix: '$',
+    value: EXAMPLE.rent,
+    step: 25,
+    hint: 'What you are asking per month.',
+  },
+  {
+    id: 'days',
+    label: 'Days vacant',
+    prefix: null,
+    value: EXAMPLE.days,
+    step: 1,
+    hint: 'How long you expect it to sit empty between tenants.',
+  },
+  {
+    id: 'carrying',
+    label: 'Monthly carrying costs',
+    prefix: '$',
+    value: EXAMPLE.carrying,
+    step: 25,
+    hint: 'Loan, HOA, insurance and utilities that keep running while it is empty.',
+  },
+  {
+    id: 'turnover',
+    label: 'One-time turnover costs',
+    prefix: '$',
+    value: EXAMPLE.turnover,
+    step: 25,
+    hint: 'Make-ready, cleaning, and any leasing charge.',
+  },
+] as const;
+---
+
+<div class="rounded-xl border border-line bg-surface p-6 md:p-8" id="vacancy-calculator">
+  <form
+    id="vacancy-form"
+    novalidate
+    onsubmit="return false"
+    class="grid gap-10 lg:grid-cols-[1fr_1fr] lg:gap-12"
+  >
+    <div>
+      <fieldset>
+        <legend class="font-serif text-h3 font-semibold text-ink">
+          Your property
+        </legend>
+        <p class="mt-2 text-sm text-ink-muted">
+          These are example figures. Change them to yours.
+        </p>
+
+        <div class="mt-6 space-y-5">
+          {
+            fields.map((field) => (
+              <div>
+                <label for={`v-${field.id}`} class="field-label">
+                  {field.label}
+                </label>
+                <div class="relative">
+                  {field.prefix && (
+                    <span
+                      aria-hidden="true"
+                      class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-ink-muted"
+                    >
+                      {field.prefix}
+                    </span>
+                  )}
+                  <input
+                    id={`v-${field.id}`}
+                    name={field.id}
+                    type="number"
+                    inputmode="numeric"
+                    min="0"
+                    step={field.step}
+                    value={field.value}
+                    aria-describedby={`v-${field.id}-hint`}
+                    class={`field-input tabular-nums ${field.prefix ? 'pl-7' : ''}`}
+                  />
+                </div>
+                <span id={`v-${field.id}-hint`} class="mt-1.5 block text-sm text-ink-muted">
+                  {field.hint}
+                </span>
+              </div>
+            ))
+          }
+        </div>
+      </fieldset>
+
+      <fieldset class="mt-9 border-t border-line pt-7">
+        <legend class="font-serif text-h3 font-semibold text-ink">
+          Holding out for more?
+        </legend>
+        <p class="mt-2 text-sm text-ink-muted">
+          The question is not whether a higher rent is better. It is whether
+          it is worth the extra time empty.
+        </p>
+
+        <div class="mt-6">
+          <label for="v-increase" class="field-label">
+            Rent increase you are considering
+          </label>
+          <div class="relative">
+            <span
+              aria-hidden="true"
+              class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-ink-muted"
+            >
+              $
+            </span>
+            <input
+              id="v-increase"
+              name="increase"
+              type="number"
+              inputmode="numeric"
+              min="0"
+              step="25"
+              value={EXAMPLE.increase}
+              aria-describedby="v-increase-hint"
+              class="field-input tabular-nums pl-7"
+            />
+          </div>
+          <span id="v-increase-hint" class="mt-1.5 block text-sm text-ink-muted">
+            Per month, on a 12-month lease.
+          </span>
+        </div>
+      </fieldset>
+    </div>
+
+    {/*
+      aria-live="polite" so the figures are announced as they change, but
+      only once the person stops typing — the script debounces the update.
+    */}
+    <output
+      for="vacancy-form"
+      aria-live="polite"
+      class="block rounded-lg bg-surface-2 p-6 md:p-7"
+    >
+      <h2 class="font-serif text-h3 font-semibold text-ink">
+        What the vacancy costs
+      </h2>
+
+      <dl class="mt-6 space-y-3">
+        <div class="flex items-baseline justify-between gap-4">
+          <dt class="text-ink-muted">Lost rent</dt>
+          <dd class="font-medium tabular-nums text-ink" data-out="lostRent">
+            {money(initial.lostRent)}
+          </dd>
+        </div>
+        <div class="flex items-baseline justify-between gap-4">
+          <dt class="text-ink-muted">Carrying costs</dt>
+          <dd class="font-medium tabular-nums text-ink" data-out="carryingCost">
+            {money(initial.carryingCost)}
+          </dd>
+        </div>
+        <div class="flex items-baseline justify-between gap-4">
+          <dt class="text-ink-muted">Turnover costs</dt>
+          <dd class="font-medium tabular-nums text-ink" data-out="turnoverCost">
+            {money(initial.turnoverCost)}
+          </dd>
+        </div>
+      </dl>
+
+      <div class="mt-6 border-t-2 border-accent pt-5">
+        <p class="text-sm font-semibold uppercase tracking-[0.08em] text-ink-muted">
+          Total cost of this vacancy
+        </p>
+        <p
+          class="mt-1 font-serif text-display font-semibold tabular-nums text-ink"
+          data-out="total"
+        >
+          {money(initial.total)}
+        </p>
+        <p class="mt-2 text-sm text-ink-muted">
+          Every further day empty costs
+          <strong class="font-semibold text-ink" data-out="perDay">
+            {money(initial.perDay)}
+          </strong>.
+        </p>
+      </div>
+
+      <div class="mt-7 rounded-md border-l-4 border-accent bg-surface-3 px-4 py-4">
+        <p class="text-sm leading-relaxed text-ink">
+          Asking <strong data-out="increaseLabel">{money(EXAMPLE.increase)}</strong>
+          more per month pays for about
+          <strong class="whitespace-nowrap" data-out="breakEvenDays">
+            {days(initial.breakEvenDays)}
+          </strong>
+          of extra vacancy over a 12-month lease. Longer than that and the
+          higher rent leaves you behind.
+        </p>
+      </div>
+    </output>
+  </form>
+
+  <noscript>
+    <p class="mt-6 rounded-md bg-surface-3 px-4 py-3 text-sm text-ink">
+      The figures above are a worked example. The calculator updates as you
+      type, which needs JavaScript — or
+      <a href="/contact" class="underline underline-offset-2">send us the property details</a>
+      and we will run the numbers with you.
+    </p>
+  </noscript>
+</div>
+
+<script>
+  import { computeVacancy, days, money } from '~/lib/vacancy';
+
+  const form = document.getElementById('vacancy-form') as HTMLFormElement | null;
+
+  if (form) {
+    const out = (key: string) =>
+      form.parentElement?.querySelector<HTMLElement>(`[data-out="${key}"]`);
+
+    const read = (name: string) =>
+      Number((form.elements.namedItem(name) as HTMLInputElement | null)?.value);
+
+    const render = () => {
+      const increase = read('increase');
+      const result = computeVacancy({
+        rent: read('rent'),
+        days: read('days'),
+        carrying: read('carrying'),
+        turnover: read('turnover'),
+        increase,
+      });
+
+      const set = (key: string, value: string) => {
+        const el = out(key);
+        if (el) el.textContent = value;
+      };
+
+      set('lostRent', money(result.lostRent));
+      set('carryingCost', money(result.carryingCost));
+      set('turnoverCost', money(result.turnoverCost));
+      set('total', money(result.total));
+      set('perDay', money(result.perDay));
+      set('increaseLabel', money(Number.isFinite(increase) ? increase : 0));
+      set('breakEvenDays', days(result.breakEvenDays));
+    };
+
+    // Debounced so a screen reader announces the settled figure rather than
+    // every keystroke along the way.
+    let pending: number | undefined;
+    form.addEventListener('input', () => {
+      window.clearTimeout(pending);
+      pending = window.setTimeout(render, 350);
+    });
+  }
+</script>

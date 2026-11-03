@@ -1,0 +1,122 @@
+---
+/**
+ * "Where should we start?" — three owner situations, each revealing a short
+ * answer and the right next step.
+ *
+ * Built from radio inputs and the :checked sibling selector, so it works with
+ * zero JavaScript: arrow keys move between options and the panel follows.
+ * The radios, their labels and the panels all have to be siblings for the
+ * sibling combinator to reach across, so they share one flex container and
+ * the panels are pushed onto their own row with `order`.
+ */
+import { PATHS } from '~/content/home';
+---
+
+<div class="path-chooser">
+  <h2 class="eyebrow" id="path-legend">Where should we start?</h2>
+
+  <div class="path-group" aria-labelledby="path-legend">
+    {
+      PATHS.map((path, index) => (
+        <>
+          <input
+            type="radio"
+            name="owner-path"
+            id={`path-${path.id}`}
+            class="path-radio"
+            checked={index === 0}
+          />
+          <label for={`path-${path.id}`} class="path-tab">
+            {path.tab}
+          </label>
+        </>
+      ))
+    }
+
+    {
+      PATHS.map((path) => (
+        <div class="path-panel">
+          <h3 class="text-h3">{path.heading}</h3>
+          <p class="mt-3 max-w-2xl text-lead text-ink-muted">{path.body}</p>
+          <a href={path.href} class="btn btn-primary mt-6">
+            {path.cta}
+          </a>
+        </div>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .path-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-block-start: 1.25rem;
+  }
+
+  /* Visually hidden, but still focusable and still in the tab order. */
+  .path-radio {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .path-tab {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0.5rem 1.125rem;
+    border: 1px solid var(--color-line-strong);
+    border-radius: 999px;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--color-ink-muted);
+    cursor: pointer;
+    transition:
+      background-color 160ms ease,
+      color 160ms ease,
+      border-color 160ms ease;
+  }
+
+  .path-tab:hover {
+    background-color: var(--color-surface-3);
+    color: var(--color-ink);
+  }
+
+  /* Focus lands on the hidden radio, so the ring is drawn on its label. */
+  .path-radio:focus-visible + .path-tab {
+    outline: 3px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  .path-radio:checked + .path-tab {
+    background-color: var(--color-cta);
+    border-color: var(--color-cta);
+    color: var(--color-cta-ink);
+  }
+
+  /* Panels sit on their own full-width row below the tabs. */
+  .path-panel {
+    order: 1;
+    flex-basis: 100%;
+    display: none;
+    margin-block-start: 1.5rem;
+  }
+
+  /* nth radio checked shows the nth panel. */
+  .path-radio:nth-of-type(1):checked ~ .path-panel:nth-of-type(1),
+  .path-radio:nth-of-type(2):checked ~ .path-panel:nth-of-type(2),
+  .path-radio:nth-of-type(3):checked ~ .path-panel:nth-of-type(3) {
+    display: block;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .path-tab {
+      transition: none;
+    }
+  }
+</style>

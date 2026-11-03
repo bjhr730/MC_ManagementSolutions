@@ -4,15 +4,22 @@ import Cta from '~/components/Cta.astro';
 import FaqList from '~/components/FaqList.astro';
 import Icon from '~/components/Icon.astro';
 import JsonLd from '~/components/JsonLd.astro';
+import PathChooser from '~/components/PathChooser.astro';
 import Section from '~/components/Section.astro';
 
-import { BENEFITS, HERO, HOME_FOUNDER_TEASER } from '~/content/home';
+import { HERO, HOME_FOUNDER_TEASER, TOOLS_TEASER } from '~/content/home';
 import { FEATURED_FAQ } from '~/content/faq';
-import { FOUNDER_STATS } from '~/content/founder';
-import { PRINCIPLES } from '~/content/philosophy';
 import { SERVICES } from '~/content/services';
-import { SERVICE_COUNTIES } from '~/config/site';
 import { founderPerson, localBusiness } from '~/lib/schema';
+import { computeVacancy, EXAMPLE, money } from '~/lib/vacancy';
+
+// Three questions is enough on the home page; the rest are one click away.
+const featured = FEATURED_FAQ.slice(0, 3);
+
+// The teaser figure comes from the calculator so the two can never disagree.
+// Rent plus carrying costs only; turnover is excluded and the caption says so.
+const example = computeVacancy(EXAMPLE);
+const exampleCost = money(example.lostRent + example.carryingCost);
 ---
 
 <BaseLayout
@@ -39,50 +46,20 @@ import { founderPerson, localBusiness } from '~/lib/schema';
           </a>
         </div>
       </div>
-
-      <dl class="mt-14 grid max-w-3xl grid-cols-2 gap-x-6 gap-y-8 border-t border-line pt-8 sm:grid-cols-3">
-        {
-          FOUNDER_STATS.map((stat) => (
-            <div class="flex flex-col-reverse">
-              <dt class="mt-1 text-sm leading-snug text-ink-muted">
-                {stat.label}
-              </dt>
-              <dd class="font-serif text-2xl font-semibold text-ink md:text-3xl">
-                {stat.value}
-              </dd>
-            </div>
-          ))
-        }
-      </dl>
     </div>
   </div>
 
-  {/* ------------------------------------------------------------ Benefits */}
-  <Section labelledby="benefits-heading">
-    <h2 id="benefits-heading" class="text-h2 max-w-2xl">
-      What owners actually get
-    </h2>
-    <ul class="mt-12 grid gap-10 md:grid-cols-3 md:gap-8">
-      {
-        BENEFITS.map((benefit) => (
-          <li class="border-t-2 border-accent pt-5">
-            <h3 class="text-h3">{benefit.title}</h3>
-            <p class="mt-3 text-ink-muted">{benefit.body}</p>
-          </li>
-        ))
-      }
-    </ul>
+  {/* -------------------------------------------------- Pick your situation */}
+  <Section labelledby="path-legend">
+    <PathChooser />
   </Section>
 
   {/* ------------------------------------------------------------ Services */}
   <Section tone="muted" labelledby="services-heading">
     <div class="flex flex-wrap items-end justify-between gap-6">
-      <div class="max-w-2xl">
-        <p class="eyebrow">Our services</p>
-        <h2 id="services-heading" class="mt-3 text-h2">
-          Everything the property needs, in one place
-        </h2>
-      </div>
+      <h2 id="services-heading" class="max-w-2xl text-h2">
+        Everything the property needs, in one place
+      </h2>
       <a
         href="/services"
         class="text-sm font-semibold text-ink underline decoration-accent decoration-2 underline-offset-4"
@@ -91,34 +68,59 @@ import { founderPerson, localBusiness } from '~/lib/schema';
       </a>
     </div>
 
-    <ul class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <ul class="mt-10 grid gap-x-10 gap-y-5 sm:grid-cols-2 lg:grid-cols-3">
       {
         SERVICES.map((service) => (
-          <li class="flex gap-4 rounded-lg border border-line bg-surface p-5">
-            <span class="mt-0.5 text-accent">
-              <Icon name={service.icon} />
+          <li class="flex items-center gap-3">
+            <span class="text-accent">
+              <Icon name={service.icon} class="size-5" />
             </span>
-            <div>
-              <h3 class="font-serif text-base font-semibold text-ink">
-                {service.title}
-              </h3>
-              <p class="mt-1.5 text-sm leading-relaxed text-ink-muted">
-                {service.summary}
-              </p>
-            </div>
+            <span class="font-medium text-ink">{service.title}</span>
           </li>
         ))
       }
     </ul>
   </Section>
 
+  {/* --------------------------------------------------------------- Tools */}
+  <Section labelledby="tools-heading">
+    <div class="rounded-xl border border-line bg-surface-2 p-8 md:p-12">
+      <div class="grid gap-8 lg:grid-cols-[1.3fr_1fr] lg:items-center lg:gap-14">
+        <div>
+          <p class="eyebrow">{TOOLS_TEASER.eyebrow}</p>
+          <h2 id="tools-heading" class="mt-3 text-h2">
+            {TOOLS_TEASER.heading}
+          </h2>
+          <p class="mt-5 max-w-2xl text-lead text-ink-muted">
+            {TOOLS_TEASER.body}
+          </p>
+          <a href={TOOLS_TEASER.href} class="btn btn-primary mt-8">
+            {TOOLS_TEASER.cta}
+          </a>
+        </div>
+
+        {/* A still of what the tool produces, so the link is not a leap. */}
+        <div class="rounded-lg border border-line bg-surface p-6">
+          <p class="text-sm font-semibold uppercase tracking-[0.08em] text-ink-muted">
+            A {EXAMPLE.days}-day vacancy on a {money(EXAMPLE.rent)} rental
+          </p>
+          <p class="mt-2 font-serif text-display font-semibold tabular-nums text-ink">
+            {exampleCost}
+          </p>
+          <p class="mt-2 text-sm text-ink-muted">
+            Lost rent plus carrying costs, before turnover.
+          </p>
+        </div>
+      </div>
+    </div>
+  </Section>
+
   {/* ------------------------------------------------------------- Founder */}
-  <Section labelledby="founder-heading">
+  <Section tone="muted" labelledby="founder-heading">
     <div class="grid gap-12 lg:grid-cols-[1fr_1.3fr] lg:items-center lg:gap-16">
       {/*
-        Headshot slot. The checklist calls for a professional portrait, which
-        does not exist yet; this placeholder holds the exact 4:5 box so the
-        real photo drops in without any layout change.
+        Headshot slot. The real portrait drops into this exact 4:5 box with
+        no layout change.
       */}
       <div
         class="flex aspect-4/5 w-full max-w-sm items-center justify-center rounded-lg border border-dashed border-line-strong bg-surface-3"
@@ -157,61 +159,20 @@ import { founderPerson, localBusiness } from '~/lib/schema';
     </div>
   </Section>
 
-  {/* ---------------------------------------------------------- Philosophy */}
-  <Section tone="inverse" labelledby="philosophy-heading">
-    <p class="font-sans text-xs font-semibold uppercase tracking-[0.1em] text-bronze-300">
-      Our philosophy
-    </p>
-    <h2 id="philosophy-heading" class="mt-3 max-w-2xl text-h2 text-white">
-      Three principles, applied to every decision
-    </h2>
-
-    <ol class="mt-12 grid gap-10 md:grid-cols-3 md:gap-8">
-      {
-        PRINCIPLES.map((principle) => (
-          <li>
-            <h3 class="font-serif text-lg font-semibold text-white">
-              {principle.title}
-            </h3>
-            <p class="mt-3 text-silver-200 italic">{principle.statement}</p>
-          </li>
-        ))
-      }
-    </ol>
-
-    <a
-      href="/philosophy"
-      class="mt-12 inline-flex min-h-11 items-center text-sm font-semibold text-white underline decoration-bronze-300 decoration-2 underline-offset-4"
-    >
-      Read our philosophy in full
-    </a>
-  </Section>
-
   {/* ----------------------------------------------------------------- FAQ */}
   <Section labelledby="faq-heading">
     <div class="max-w-3xl">
-      <p class="eyebrow">Owner questions</p>
-      <h2 id="faq-heading" class="mt-3 text-h2">The ones owners ask first</h2>
-      <div class="mt-10">
-        <FaqList entries={FEATURED_FAQ} />
+      <h2 id="faq-heading" class="text-h2">The ones owners ask first</h2>
+      <div class="mt-8">
+        <FaqList entries={featured} />
       </div>
       <a
         href="/faq"
         class="mt-8 inline-flex min-h-11 items-center text-sm font-semibold text-ink underline decoration-accent decoration-2 underline-offset-4"
       >
-        All 13 questions
+        All owner questions
       </a>
     </div>
-  </Section>
-
-  {/* --------------------------------------------------------- Service area */}
-  <Section tone="muted" compact labelledby="area-heading">
-    <h2 id="area-heading" class="text-h3">Where we work</h2>
-    <p class="mt-4 max-w-3xl text-ink-muted">
-      We manage residential property across Northern Virginia, including {
-        SERVICE_COUNTIES.slice(0, -1).join(', ')
-      } and {SERVICE_COUNTIES.at(-1)}.
-    </p>
   </Section>
 
   <Cta />
