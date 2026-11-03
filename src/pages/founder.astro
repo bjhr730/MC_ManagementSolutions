@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import Cta from '~/components/Cta.astro';
+import Disclosure from '~/components/Disclosure.astro';
 import JsonLd from '~/components/JsonLd.astro';
 import Section from '~/components/Section.astro';
 
@@ -8,15 +9,23 @@ import {
   FOUNDER_NAME,
   FOUNDER_ROLE,
   FOUNDER_SECTIONS,
-  FOUNDER_STATS,
 } from '~/content/founder';
-import { LEGAL_ENTITY } from '~/config/site';
+import { BROKERAGE_SITE, LEGAL_ENTITY } from '~/config/site';
+import { REVIEW_MODE } from '~/config/compliance';
 import { breadcrumbs, founderPerson } from '~/lib/schema';
+
+// The sales cross-link only goes public once the brokerage URL and firm name
+// are filled in. While the site is still in review the block is shown anyway,
+// clearly marked, so the wording can be approved before it is live. Virginia
+// advertising rules require the firm to be identified, and both principal
+// brokers should sign off on this before REVIEW_MODE is turned off.
+const brokerageReady = Boolean(BROKERAGE_SITE.href);
+const showBrokerage = brokerageReady || REVIEW_MODE;
 ---
 
 <BaseLayout
   title="Meet the Founder"
-  description="Antonio Melendez is a Northern Virginia real estate broker, property manager and investor, a multi-year NVAR Top Producer with more than 215 transactions and experience leading a 200-property portfolio."
+  description="Antonio Melendez is a Northern Virginia real estate broker, property manager and investor with experience leading a portfolio of over 200 residential properties."
 >
   <JsonLd slot="head" schema={founderPerson()} />
   <JsonLd
@@ -46,21 +55,6 @@ import { breadcrumbs, founderPerson } from '~/lib/schema';
           <p class="eyebrow">Meet the founder</p>
           <h1 class="mt-3 text-display">{FOUNDER_NAME}</h1>
           <p class="mt-3 text-lead text-ink-muted">{FOUNDER_ROLE}</p>
-
-          <dl class="mt-10 grid grid-cols-2 gap-x-6 gap-y-6 border-t border-line pt-7 sm:grid-cols-3">
-            {
-              FOUNDER_STATS.map((stat) => (
-                <div class="flex flex-col-reverse">
-                  <dt class="mt-1 text-sm leading-snug text-ink-muted">
-                    {stat.label}
-                  </dt>
-                  <dd class="font-serif text-2xl font-semibold text-ink">
-                    {stat.value}
-                  </dd>
-                </div>
-              ))
-            }
-          </dl>
         </div>
       </div>
     </div>
@@ -95,8 +89,49 @@ import { breadcrumbs, founderPerson } from '~/lib/schema';
     </p>
   </Section>
 
+  {
+    showBrokerage && (
+      <Section tone="muted" labelledby="brokerage-heading">
+        <div class="max-w-2xl">
+          <h2 id="brokerage-heading" class="text-h2">
+            Looking to Buy or Sell a Home?
+          </h2>
+          <p class="mt-5 text-lead text-ink-muted">
+            In addition to property management, Antonio Melendez assists
+            buyers, sellers, and investors throughout Northern Virginia
+            through his affiliated real estate brokerage,{' '}
+            {BROKERAGE_SITE.brokerage}.
+          </p>
+
+          {brokerageReady ? (
+            <a
+              href={BROKERAGE_SITE.href!}
+              rel="noopener"
+              class="btn btn-secondary mt-8"
+            >
+              Explore Antonio&rsquo;s Real Estate Services
+            </a>
+          ) : (
+            <div class="mt-8">
+              <Disclosure label="Not live yet" pending>
+                <p>
+                  This cross-link is hidden from the public site until
+                  <code>BROKERAGE_SITE</code> in <code>src/config/site.ts</code>{' '}
+                  has the brokerage&rsquo;s real name and website. Virginia
+                  advertising rules require the licensed firm to be identified,
+                  and both principal brokers should approve this wording and
+                  the cross-linking before it goes live.
+                </p>
+              </Disclosure>
+            </div>
+          )}
+        </div>
+      </Section>
+    )
+  }
+
   <Cta
-    heading="Talk to Antonio directly"
-    body="A consultation is a conversation about your property with the person who will be responsible for it."
+    heading="Request an owner consultation"
+    body="Your consultation is an opportunity to discuss your property, your goals, and your expectations directly with the person who will be managing it."
   />
 </BaseLayout>

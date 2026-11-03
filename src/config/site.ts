@@ -6,10 +6,6 @@
  * or statistic is guessed at. Search the repo for "REPLACE" to find them all.
  */
 
-export const SITE_URL: string = (
-  import.meta.env.SITE_URL ?? 'https://replace-me.example.com'
-).replace(/\/$/, '');
-
 /**
  * Search engines are kept out until this is explicitly turned on.
  *
@@ -21,6 +17,10 @@ export const SITE_URL: string = (
  * Set SITE_INDEXABLE="true" in the production environment at launch.
  */
 export const INDEXABLE: boolean = import.meta.env.SITE_INDEXABLE === 'true';
+
+export const SITE_URL: string = (
+  import.meta.env.SITE_URL ?? 'https://replace-me.example.com'
+).replace(/\/$/, '');
 
 /** Public-facing brand name, used in headings and nav. */
 export const BRAND = 'M&A Management Solutions';
@@ -45,33 +45,85 @@ export const CONTACT = {
     postalCode: 'REPLACE',
     country: 'US',
   },
-  /** REPLACE with real staffed hours. */
-  hours: 'Monday – Friday, 9:00 am – 5:00 pm ET',
-  /** Out-of-state and international owners, per the FAQ. */
-  whatsapp: true,
 } as const;
 
+/** Hours of operation, as Antonio worded them. */
+export const HOURS = {
+  heading: 'Business Hours',
+  lines: [
+    'Monday – Friday: 9:00 AM – 5:00 PM',
+    'Saturday – Sunday: By Appointment',
+  ],
+  flexibility: 'Flexible appointments available outside regular business hours.',
+  appointments:
+    'For your convenience, meetings are scheduled by appointment. Existing ' +
+    'residents may submit maintenance requests through our online resident ' +
+    'portal, with emergency maintenance assistance available 24/7.',
+} as const;
+
+export const SERVICE_AREA_HEADING =
+  'Locally Experienced. Proudly Serving Northern Virginia.';
+
 /**
- * Counties and cities served. Used in body copy and in the `areaServed`
- * structured data. Confirm against where the business is actually licensed
- * and willing to operate before launch.
+ * Counties and the communities served within them. Confirm against where the
+ * business is actually licensed and willing to operate before launch.
  */
-export const SERVICE_AREAS = [
-  'Fairfax County',
-  'Arlington County',
-  'City of Alexandria',
-  'Loudoun County',
-  'Prince William County',
-  'Falls Church',
-  'Vienna',
-  'Reston',
-] as const;
+export interface ServiceArea {
+  readonly county: string;
+  readonly places: readonly string[];
+  /** Appended after the place list, e.g. "and surrounding communities". */
+  readonly suffix?: string;
+}
+
+export const SERVICE_AREAS: readonly ServiceArea[] = [
+  {
+    county: 'Arlington County',
+    places: ['Arlington', 'Rosslyn', 'Clarendon', 'Ballston', 'Crystal City'],
+  },
+  {
+    county: 'City of Alexandria',
+    places: [],
+    suffix: 'and surrounding communities',
+  },
+  {
+    county: 'Fairfax County',
+    places: [
+      'Fairfax',
+      'McLean',
+      'Tysons',
+      'Vienna',
+      'Falls Church',
+      'Reston',
+      'Herndon',
+      'Springfield',
+      'Burke',
+      'Centreville',
+      'Chantilly',
+    ],
+  },
+  {
+    county: 'Loudoun County',
+    places: ['Ashburn', 'Sterling', 'Leesburg'],
+    suffix: 'and surrounding communities',
+  },
+  {
+    county: 'Prince William County',
+    places: ['Manassas', 'Gainesville', 'Haymarket', 'Woodbridge'],
+    suffix: 'and surrounding communities',
+  },
+];
+
+/** Flat county list, for structured data and short prose mentions. */
+export const SERVICE_COUNTIES: readonly string[] = SERVICE_AREAS.map(
+  (area) => area.county
+);
 
 /**
  * Buildium owner and tenant portals are not live yet. The master checklist is
- * explicit: "Add portal links and Buildium mention only when live." Flip this
- * to true and fill in the URLs below, and every portal link and mention
- * appears across the site. Leave it false and they all stay hidden.
+ * explicit: "Add portal links and Buildium mention only when live." While this
+ * is false the portal links in the utility bar point at /portals, which
+ * explains that they are coming and how to reach us meanwhile. Flip it to true
+ * and fill in the URLs below and the links go straight to the real portals.
  */
 export const PORTALS_LIVE = false;
 
@@ -80,8 +132,39 @@ export const PORTALS = {
   tenant: 'REPLACE — resident portal URL',
 } as const;
 
+/** Resolved portal destinations: the real thing, or the holding page. */
+export const PORTAL_LINKS = [
+  {
+    label: 'Owner Portal',
+    href: PORTALS_LIVE ? PORTALS.owner : '/portals',
+  },
+  {
+    label: 'Tenant Portal',
+    href: PORTALS_LIVE ? PORTALS.tenant : '/portals',
+  },
+] as const;
+
+/**
+ * Antonio's separate real estate brokerage site, cross-linked from Meet the
+ * Founder and the footer.
+ *
+ * `href` must point at the brokerage's own site and `brokerage` must name the
+ * licensed firm. Virginia advertising rules require the firm to be identified,
+ * and both principal brokers should approve this wording before it is public.
+ * While `href` is null nothing renders.
+ */
+export const BROKERAGE_SITE: {
+  href: string | null;
+  brokerage: string;
+} = {
+  href: null, // REPLACE with the real estate website URL
+  brokerage: 'REPLACE — licensed brokerage firm name',
+};
+
 /** Set to a real profile URL to show the link; leave null to hide it. */
-export const SOCIAL: { label: string; href: string }[] = [];
+export const SOCIAL: { label: string; href: string | null }[] = [
+  { label: 'Instagram', href: null }, // REPLACE when the account is ready
+];
 
 export const NAV = [
   { href: '/services', label: 'Services' },
@@ -89,7 +172,7 @@ export const NAV = [
   { href: '/why-us', label: 'Why Choose Us' },
   { href: '/about', label: 'About' },
   { href: '/faq', label: 'FAQ' },
-  { href: '/contact', label: 'Contact' },
+  { href: '/contact', label: 'Contact Us' },
 ] as const;
 
 export const FOOTER_NAV = {

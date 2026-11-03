@@ -11,7 +11,7 @@ import { FEATURED_FAQ } from '~/content/faq';
 import { FOUNDER_STATS } from '~/content/founder';
 import { PRINCIPLES } from '~/content/philosophy';
 import { SERVICES } from '~/content/services';
-import { SERVICE_AREAS } from '~/config/site';
+import { SERVICE_COUNTIES } from '~/config/site';
 import { founderPerson, localBusiness } from '~/lib/schema';
 ---
 
@@ -170,10 +170,7 @@ import { founderPerson, localBusiness } from '~/lib/schema';
       {
         PRINCIPLES.map((principle) => (
           <li>
-            <p class="font-serif text-sm font-semibold text-bronze-300">
-              {principle.number}
-            </p>
-            <h3 class="mt-3 font-serif text-lg font-semibold text-white">
+            <h3 class="font-serif text-lg font-semibold text-white">
               {principle.title}
             </h3>
             <p class="mt-3 text-silver-200 italic">{principle.statement}</p>
@@ -212,9 +209,8 @@ import { founderPerson, localBusiness } from '~/lib/schema';
     <h2 id="area-heading" class="text-h3">Where we work</h2>
     <p class="mt-4 max-w-3xl text-ink-muted">
       We manage residential property across Northern Virginia, including {
-        SERVICE_AREAS.slice(0, -1).join(', ')
-      } and {SERVICE_AREAS.at(-1)}. Out-of-state and international owners are
-      welcome; we work by email, phone and WhatsApp.
+        SERVICE_COUNTIES.slice(0, -1).join(', ')
+      } and {SERVICE_COUNTIES.at(-1)}.
     </p>
   </Section>
 

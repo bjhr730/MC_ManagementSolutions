@@ -39,7 +39,7 @@ export const SERVICES: readonly Service[] = [
     points: [
       'A single point of accountability for the property',
       'Proactive planning rather than reactive repairs',
-      'Owner communication on anything significant',
+      'Owner communication',
       'Coordination with condominium associations, HOAs and building managers',
     ],
     icon: 'building',
@@ -104,7 +104,6 @@ export const SERVICES: readonly Service[] = [
       'Renewal recommendations grounded in current market data',
       'Rental income weighed against the cost of a vacancy',
       'Your individual investment goals factored into the decision',
-      'Renewal documentation coordinated with the licensed brokerage where required',
     ],
     icon: 'refresh',
     brokerage: true,

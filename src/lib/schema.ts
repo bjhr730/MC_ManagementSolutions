@@ -4,7 +4,7 @@ import {
   BRAND,
   CONTACT,
   LEGAL_ENTITY,
-  SERVICE_AREAS,
+  SERVICE_COUNTIES,
   SITE_URL,
 } from '~/config/site';
 
@@ -52,7 +52,7 @@ export function localBusiness() {
           },
         }
       : {}),
-    areaServed: SERVICE_AREAS.map((area) => ({
+    areaServed: SERVICE_COUNTIES.map((area) => ({
       '@type': 'AdministrativeArea',
       name: `${area}, Virginia`,
     })),

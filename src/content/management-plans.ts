@@ -1,16 +1,18 @@
 /**
- * Management plans page.
+ * Management plans page, rewritten to Antonio's November 2026 notes.
  *
- * Both checklists are explicit on this point:
+ * He removed the three-way "How involved do you want to be?" breakdown and
+ * replaced it with a single statement that the plan is tailored, then gave
+ * exact wording for the services list and the fees section. The copy below is
+ * his.
+ *
+ * The no-public-rate-card rule still holds and is not his to waive casually —
+ * both checklists say so:
  *   "Customized Management Plans section (no public rate chart)"
- *   "Pricing decision: Do not publish a fixed fee chart. Explain that
- *    management services and pricing are customized, disclose all applicable
- *    fees in each proposal, and invite owners to request a personalized
- *    management proposal."
- *
- * So this page describes the approach and the fee categories that exist, and
- * names no numbers. If anyone later asks for a price table here, that request
- * contradicts the signed-off plan.
+ *   "Do not publish a fixed fee chart. Explain that management services and
+ *    pricing are customized, disclose all applicable fees in each proposal,
+ *    and invite owners to request a personalized management proposal."
+ * Fee categories are named here; no numbers appear.
  */
 
 export const PLANS_INTRO =
@@ -20,61 +22,53 @@ export const PLANS_INTRO =
   'three different jobs. We look at your property and your goals, then put ' +
   'a written proposal in front of you with every applicable fee disclosed.';
 
-/** How involved the owner wants to be. Straight from FAQ question 1. */
-export const INVOLVEMENT: readonly {
-  title: string;
-  body: string;
-}[] = [
-  {
-    title: 'Hands-off',
-    body:
-      'You want the property handled. We take the day-to-day decisions ' +
-      'within the authorization limits you set, keep you informed of ' +
-      'anything significant, and send your statements and disbursements on ' +
-      'schedule.',
-  },
-  {
-    title: 'Hands-on',
-    body:
-      'You want to stay close to your investment. You keep approval over ' +
-      'repairs, pricing and renewals, and we do the coordinating, ' +
-      'documenting and chasing.',
-  },
-  {
-    title: 'Somewhere in between',
-    body:
-      'Most owners land here, and the line moves over time. The management ' +
-      'agreement records where it sits today and can be revisited.',
-  },
-];
+export const COVERAGE = {
+  heading: 'What Our Management Services Cover',
+  intro:
+    'Our services are tailored to your property and your preferences. ' +
+    'Whether you prefer to stay closely involved or take a more hands-off ' +
+    'approach, we work with you to establish a management plan that fits ' +
+    'your needs.',
+  items: [
+    'Rent collection and owner payments by ACH or check',
+    'Monthly financial statements and annual tax reporting',
+    'Maintenance requests and coordination with trusted vendors',
+    'Coordination of urgent maintenance and property emergencies',
+    'Tenant communication and lease compliance',
+    'Move-in, move-out, and property condition documentation',
+    'Condominium association and HOA coordination',
+    'Rental pricing guidance and lease renewal recommendations',
+  ],
+} as const;
 
-/**
- * Fee categories that may appear in a proposal. Named, not priced, and
- * deliberately matching the FAQ wording: "management fees, leasing-related
- * charges, renewal fees, and any other agreed services".
- */
-export const FEE_CATEGORIES: readonly string[] = [
-  'Monthly management fee',
-  'Leasing and tenant placement charges, through the affiliated brokerage',
-  'Lease renewal fees',
-  'Any other services you and we agree to in writing',
-];
-
-export const WHATS_INCLUDED: readonly string[] = [
-  'Rent collection and owner disbursement by ACH or check',
-  'Monthly owner statements and year-end tax documentation',
-  'Maintenance triage and vendor coordination',
-  'Emergency response for risks to occupants or the property',
-  'Tenant relations and lease compliance',
-  'Move-in, move-out and turnover documentation',
-  'Condominium association and HOA coordination',
-  'Strategic rental pricing and renewal recommendations',
-];
+export const FEES = {
+  heading: 'Straightforward Fees. No Surprises.',
+  intro:
+    'We believe property management fees should be clear and easy to ' +
+    'understand. Our pricing is tailored to your property and the services ' +
+    'you need, with all applicable fees discussed upfront and clearly ' +
+    'outlined in writing before you commit.',
+  lead: 'Depending on your needs, services may include:',
+  items: [
+    { label: 'Monthly Property Management' },
+    {
+      label: 'Leasing & Tenant Placement',
+      note: 'through our affiliated brokerage',
+    },
+    { label: 'Lease Renewals' },
+    {
+      label: 'Additional Services',
+      note: 'only when mutually agreed upon in writing',
+    },
+  ],
+  closing:
+    'No termination fees. No surprises. Just Straightforward Management.',
+} as const;
 
 export const NO_TERMINATION_FEE = {
   headline: '$0 management termination fees',
   body:
-    'We don\u2019t believe in holding clients hostage. If you decide it\u2019s ' +
-    'time to move on, no hard feelings \u2014 just a handshake and a ' +
-    'thank-you for the opportunity.',
+    'We don’t believe in holding clients hostage. If you decide it’s time ' +
+    'to move on, no hard feelings — just a handshake and a thank-you for ' +
+    'the opportunity.',
 };

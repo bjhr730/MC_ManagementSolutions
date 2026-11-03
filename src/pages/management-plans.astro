@@ -5,13 +5,13 @@ import Disclosure from '~/components/Disclosure.astro';
 import JsonLd from '~/components/JsonLd.astro';
 import PageHeader from '~/components/PageHeader.astro';
 import Section from '~/components/Section.astro';
+import Tick from '~/components/Tick.astro';
 
 import {
-  FEE_CATEGORIES,
-  INVOLVEMENT,
+  COVERAGE,
+  FEES,
   NO_TERMINATION_FEE,
   PLANS_INTRO,
-  WHATS_INCLUDED,
 } from '~/content/management-plans';
 import {
   PRICING_DISCLOSURE,
@@ -42,72 +42,55 @@ import { breadcrumbs } from '~/lib/schema';
     </div>
   </Section>
 
-  <Section tone="muted" labelledby="involvement-heading">
-    <p class="eyebrow">Your call</p>
-    <h2 id="involvement-heading" class="mt-3 max-w-2xl text-h2">
-      How involved do you want to be?
-    </h2>
+  <Section tone="muted" labelledby="coverage-heading">
+    <div class="max-w-3xl">
+      <h2 id="coverage-heading" class="text-h2">{COVERAGE.heading}</h2>
+      <p class="mt-5 text-lead text-ink-muted">{COVERAGE.intro}</p>
+    </div>
 
-    <ul class="mt-12 grid gap-6 md:grid-cols-3">
+    <ul class="mt-10 grid gap-x-10 gap-y-4 md:grid-cols-2">
       {
-        INVOLVEMENT.map((option) => (
-          <li class="rounded-lg border border-line bg-surface p-6">
-            <h3 class="text-h3">{option.title}</h3>
-            <p class="mt-3 text-ink-muted">{option.body}</p>
+        COVERAGE.items.map((item) => (
+          <li class="flex gap-3">
+            <Tick />
+            <span>{item}</span>
           </li>
         ))
       }
     </ul>
   </Section>
 
-  <Section labelledby="included-heading">
+  <Section labelledby="fees-heading">
     <div class="grid gap-12 lg:grid-cols-2 lg:gap-16">
       <div>
-        <h2 id="included-heading" class="text-h2">
-          What management typically covers
-        </h2>
-        <ul class="mt-8 space-y-3">
-          {
-            WHATS_INCLUDED.map((item) => (
-              <li class="flex gap-3">
-                <svg
-                  aria-hidden="true"
-                  viewBox="0 0 20 20"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="mt-1 size-4 shrink-0 text-accent"
-                >
-                  <path d="m4 10.5 4 4 8-9" />
-                </svg>
-                <span>{item}</span>
-              </li>
-            ))
-          }
-        </ul>
-      </div>
-
-      <div>
-        <h2 class="text-h2">Fees you may see in a proposal</h2>
-        <p class="mt-4 text-ink-muted">
-          Which of these apply depends on the engagement. All of them are named
-          and explained in writing before you sign anything.
-        </p>
-        <ul class="mt-8 divide-y divide-line border-y border-line">
-          {
-            FEE_CATEGORIES.map((fee) => (
-              <li class="py-4 font-medium text-ink">{fee}</li>
-            ))
-          }
-        </ul>
+        <h2 id="fees-heading" class="text-h2">{FEES.heading}</h2>
+        <p class="mt-5 text-ink-muted">{FEES.intro}</p>
 
         <div class="mt-8">
           <Disclosure label="Pricing">
             <p>{PRICING_DISCLOSURE}</p>
           </Disclosure>
         </div>
+      </div>
+
+      <div>
+        <h3 class="text-h3">{FEES.lead}</h3>
+        <ul class="mt-6 divide-y divide-line border-y border-line">
+          {
+            FEES.items.map((item) => (
+              <li class="py-4">
+                <span class="font-medium text-ink">{item.label}</span>
+                {'note' in item && item.note && (
+                  <span class="mt-0.5 block text-sm text-ink-muted">
+                    {item.note}
+                  </span>
+                )}
+              </li>
+            ))
+          }
+        </ul>
+
+        <p class="mt-8 font-serif text-h3 text-ink">{FEES.closing}</p>
       </div>
     </div>
   </Section>

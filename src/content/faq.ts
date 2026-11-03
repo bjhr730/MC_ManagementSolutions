@@ -1,13 +1,18 @@
 /**
- * The 13 FAQ entries from MA_Management_Solutions_FAQ_Reordered.pdf, in the
- * order the client approved ("13-question FAQ in agreed order").
+ * The owner FAQ, from MA_Management_Solutions_FAQ_Reordered.pdf and then
+ * revised by Antonio in review (Nov 2026).
  *
- * The answers are transcribed verbatim, including the hedging clauses —
- * "subject to the management agreement", "subject to confirmation of our
- * banking and software arrangements", and the "not to suggest that property
- * ownership never involves unexpected expenses" qualifier. Those hedges are
- * deliberate: the master checklist requires every advertised commitment to be
- * checked against the signed contract. Do not tidy them away.
+ * His edits: the rental-rates question was dropped, several answers no longer
+ * open with "Yes."/"No hidden fees.", the leasing answer no longer itemises
+ * the brokerage services, the disbursement answer drops the banking caveat,
+ * and mortgage payments are gone from the bill-payment question. That takes
+ * the list from thirteen questions to twelve — the "13-question FAQ" line in
+ * the master checklist is now out of date by his own decision.
+ *
+ * Remaining hedges ("subject to the management agreement", "not to suggest
+ * that property ownership never involves unexpected expenses") are deliberate
+ * and stay: the master checklist requires every advertised commitment to be
+ * checked against the signed contract.
  *
  * `featured: true` marks the answers pulled onto the home page.
  */
@@ -16,6 +21,8 @@ export interface FaqEntry {
   readonly q: string;
   readonly a: readonly string[];
   readonly featured?: boolean;
+  /** Rendered under the answer in smaller type. */
+  readonly note?: string;
 }
 
 export const FAQ_INTRO =
@@ -27,22 +34,22 @@ export const FAQ: readonly FaqEntry[] = [
   {
     q: 'How involved do I need to be in managing my property?',
     a: [
-      'As involved as you\u2019d like! Every property owner has different preferences. Some enjoy being closely involved, while others prefer a more hands-off experience. We tailor our management approach to your needs, keeping you informed while handling the day-to-day responsibilities of your investment.',
+      'As involved as you’d like! Every property owner has different preferences. Some enjoy being closely involved, while others prefer a more hands-off experience. We tailor our management approach to your needs, keeping you informed while handling the day-to-day responsibilities of your investment.',
     ],
     featured: true,
   },
   {
     q: 'Are there any hidden fees or additional charges?',
     a: [
-      'No hidden fees. We believe in transparent pricing and clearly explaining management fees, leasing-related charges, renewal fees, and any other agreed services before you sign. Any additional costs or services are handled according to the management agreement, with communication and approval where required. Our commitment is to avoid surprises\u2014not to suggest that property ownership never involves unexpected expenses.',
+      'We believe in transparent pricing and clearly explaining management fees, leasing-related charges, renewal fees, and any other agreed services before you sign. Any additional costs or services are handled according to the management agreement, with communication and approval where required. Our commitment is to avoid surprises—not to suggest that property ownership never involves unexpected expenses.',
     ],
     featured: true,
   },
   {
     q: 'Do you charge termination fees?',
     a: [
-      'No. We don\u2019t believe in holding clients hostage. We believe in earning your business, not locking you into a relationship you\u2019re unhappy with. That\u2019s why we charge $0 in property management termination fees.',
-      'If you\u2019re happy, we\u2019d love to continue working together. If you decide it\u2019s time to move on, no hard feelings. Just a handshake and a thank-you for the opportunity. Your property. Your choice. No unnecessary commitments. Reasonable notice and any outstanding obligations remain subject to the management agreement.',
+      'No. We don’t believe in holding clients hostage. We believe in earning your business, not locking you into a relationship you’re unhappy with. That’s why we charge $0 in property management termination fees.',
+      'If you’re happy, we’d love to continue working together. If you decide it’s time to move on, no hard feelings. Just a handshake and a thank-you for the opportunity. Your property. Your choice. No unnecessary commitments. Reasonable notice and any outstanding obligations remain subject to the management agreement.',
     ],
     featured: true,
   },
@@ -50,12 +57,6 @@ export const FAQ: readonly FaqEntry[] = [
     q: 'How do you handle maintenance requests and emergencies?',
     a: [
       'We evaluate maintenance requests based on urgency and coordinate appropriate service providers. Emergencies involving immediate risks to occupants or the property receive priority attention. We keep owners informed of significant repairs and expenses and follow the authorization limits established in the management agreement.',
-    ],
-  },
-  {
-    q: 'How do you determine rental rates and handle lease renewals?',
-    a: [
-      'We take a strategic, market-driven approach to rental pricing and lease renewals. Our goal is to maximize your property\u2019s long-term performance while balancing rental income, occupancy, and your individual investment goals. Leasing and renewal documentation are coordinated with the appropriately licensed brokerage where required.',
     ],
   },
   {
@@ -67,7 +68,7 @@ export const FAQ: readonly FaqEntry[] = [
   {
     q: 'Do you provide leasing and tenant placement services?',
     a: [
-      'Yes. Leasing and tenant placement services are available through our affiliated licensed real estate brokerage. Depending on the engagement, services may include rental pricing recommendations, marketing, showings, applicant screening, lease preparation, and move-in coordination. Brokerage services are provided separately from M&A Management Solutions\u2019 property management operations.',
+      'Yes. Leasing and tenant placement services are available through our affiliated licensed real estate brokerage. Brokerage services are provided separately from M&A Management Solutions’ property management operations.',
     ],
   },
   {
@@ -75,23 +76,24 @@ export const FAQ: readonly FaqEntry[] = [
     a: [
       'Tenant screening is coordinated through our affiliated brokerage and applicable screening providers using consistent, legally compliant criteria. Depending on the application and applicable law, screening may include income and employment verification, credit history, rental history, and landlord references. All decisions are made in accordance with fair housing and other applicable requirements.',
     ],
+    // Antonio wants a note added here and is still deciding on the wording.
   },
   {
     q: 'Will I receive monthly financial statements and year-end reports?',
     a: [
-      'Yes. We provide monthly owner statements detailing rental income, expenses, and relevant account activity, along with year-end accounting summaries and applicable tax documentation to make reporting to your CPA or tax professional easier.',
+      'We provide monthly owner statements detailing rental income, expenses, and relevant account activity, along with year-end accounting summaries and applicable tax documentation to make reporting to your CPA or tax professional easier.',
     ],
   },
   {
     q: 'How will I receive my rental income?',
     a: [
-      'Owner disbursements are available by ACH direct deposit or paper check, according to your preference. We intend to offer both methods without an additional disbursement fee, subject to confirmation of our banking and software arrangements.',
+      'Owner disbursements are available by ACH direct deposit or paper check, according to your preference. We intend to offer both methods without an additional disbursement fee.',
     ],
   },
   {
-    q: 'Can you pay my condominium fees, mortgage, insurance, and other property-related bills?',
+    q: 'Can you pay my condominium fees, insurance, and other property-related bills?',
     a: [
-      'Yes. We can tailor the management agreement to your needs, including coordination of condominium or HOA fees, insurance premiums, mortgage payments, utilities, and other recurring property expenses. Payments are subject to available funds, the agreed authorization, and sufficient lead time for processing.',
+      'We can tailor the management agreement to your needs, including coordination of condominium or HOA fees, insurance premiums, utilities, and other recurring property expenses. Payments are subject to available funds, the agreed authorization, and sufficient lead time for processing.',
     ],
   },
   {

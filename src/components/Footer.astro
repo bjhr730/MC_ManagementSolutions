@@ -8,10 +8,15 @@ import {
 import {
   CONTACT,
   FOOTER_NAV,
+  HOURS,
   LEGAL_ENTITY,
   PORTALS_LIVE,
-  SERVICE_AREAS,
+  SERVICE_COUNTIES,
+  SOCIAL,
 } from '~/config/site';
+
+// Only render social links that actually have a URL yet.
+const social = SOCIAL.filter((item) => item.href);
 
 const year = new Date().getFullYear();
 
@@ -52,9 +57,27 @@ const serviceLinks = FOOTER_NAV.services.filter(
           </div>
           <div class="pt-1 text-silver-300">
             <dt class="sr-only">Hours</dt>
-            <dd>{CONTACT.hours}</dd>
+            <dd>{HOURS.lines[0]}</dd>
           </div>
         </dl>
+
+        {
+          social.length > 0 && (
+            <ul class="mt-5 flex gap-4">
+              {social.map((item) => (
+                <li>
+                  <a
+                    href={item.href!}
+                    rel="noopener"
+                    class="text-sm text-silver-200 underline decoration-white/30 underline-offset-4 hover:text-white"
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )
+        }
       </div>
 
       <nav aria-labelledby="footer-company">
@@ -123,7 +146,7 @@ const serviceLinks = FOOTER_NAV.services.filter(
         Service area
       </h2>
       <p class="mt-3 max-w-3xl text-sm leading-relaxed text-silver-300">
-        {SERVICE_AREAS.join(' \u00b7 ')}
+        {SERVICE_COUNTIES.join(' \u00b7 ')}
       </p>
     </div>
 
@@ -144,11 +167,6 @@ const serviceLinks = FOOTER_NAV.services.filter(
         <p class="text-sm font-semibold text-white">Equal Housing Opportunity</p>
         <p class="mt-1.5 max-w-3xl text-xs leading-relaxed text-silver-300">
           {EQUAL_HOUSING}
-        </p>
-        <p class="mt-2 text-xs text-silver-300">
-          <a href="/fair-housing" class="underline underline-offset-4 hover:text-white"
-            >Read our full fair housing statement</a
-          >
         </p>
       </div>
     </div>

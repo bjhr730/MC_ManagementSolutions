@@ -15,8 +15,22 @@
  */
 export const REVIEW_MODE = true;
 
-/** Standard HUD equal housing opportunity statement. */
+/**
+ * Equal housing statement, in Antonio's wording. This appears in the footer,
+ * which renders on every page of the site, because he asked for it on every
+ * landing page rather than behind a link.
+ */
 export const EQUAL_HOUSING =
+  'M&A Management Solutions of Virginia, LLC is committed to providing ' +
+  'equal housing opportunities and conducting business in accordance with ' +
+  'all applicable federal, state, and local fair housing laws. We do not ' +
+  'discriminate on the basis of any legally protected characteristic.';
+
+/**
+ * The full HUD statement, kept for the dedicated /fair-housing page where
+ * the longer form and the protected-class list still belong.
+ */
+export const EQUAL_HOUSING_FULL =
   'We are committed to the letter and spirit of U.S. policy for the ' +
   'achievement of equal housing opportunity throughout the Nation. We ' +
   'encourage and support an affirmative advertising and marketing program ' +
@@ -60,9 +74,9 @@ export const BROKERAGE = {
 
 /** Shown wherever the site mentions leasing or tenant placement. */
 export const BROKERAGE_DISCLOSURE =
-  'Leasing, tenant placement and brokerage services are provided through an ' +
-  'affiliated licensed Virginia real estate brokerage, separately from the ' +
-  'property management services of ' +
+  'Leasing, tenant placement and brokerage services are provided through ' +
+  'our affiliated licensed Virginia real estate brokerage, separately from ' +
+  'the property management services of ' +
   'M&A Management Solutions of Virginia, LLC.';
 
 /** Shown wherever the site discusses fees or management plans. */

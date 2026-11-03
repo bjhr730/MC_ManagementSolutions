@@ -29,13 +29,7 @@ import { breadcrumbs } from '~/lib/schema';
     <ol class="space-y-16 md:space-y-20">
       {
         PRINCIPLES.map((principle) => (
-          <li class="grid gap-6 md:grid-cols-[6rem_1fr] md:gap-10">
-            <p
-              aria-hidden="true"
-              class="font-serif text-4xl font-semibold text-ornament md:text-5xl"
-            >
-              {principle.number}
-            </p>
+          <li class="border-t border-line pt-8">
             <div class="max-w-2xl">
               <h2 class="text-h2">{principle.title}</h2>
               <p class="mt-5 font-serif text-lead text-accent italic">
@@ -50,7 +44,9 @@ import { breadcrumbs } from '~/lib/schema';
   </Section>
 
   <Cta
-    heading="Hold us to it"
-    body="If transparency and accountability are what you want from a manager, start with a consultation and judge for yourself."
+    heading="Hold Us to It."
+    body="We believe trust is earned, not promised. Let's have a conversation about your property, your expectations, and what matters most to you. No pressure, no obligations. Just an honest conversation to see if we're the right fit."
+    ctaLabel="Let's Talk About Your Property"
+    showDisclosure={false}
   />
 </BaseLayout>

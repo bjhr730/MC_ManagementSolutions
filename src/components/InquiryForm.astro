@@ -1,6 +1,5 @@
 ---
 import {
-  INVOLVEMENT_CHOICES,
   OCCUPANCY,
   PROPERTY_TYPES,
   TIMELINES,
@@ -28,11 +27,6 @@ const errorList = (
 const selects = [
   { name: 'propertyType', label: 'Property type', options: PROPERTY_TYPES },
   { name: 'occupancy', label: 'Current status', options: OCCUPANCY },
-  {
-    name: 'involvement',
-    label: 'How involved do you want to be?',
-    options: INVOLVEMENT_CHOICES,
-  },
   { name: 'timeline', label: 'When would you like to start?', options: TIMELINES },
 ] as const;
 ---
@@ -113,28 +107,83 @@ const selects = [
       </div>
     </div>
 
-    <div>
-      <label for="phone" class="field-label">Phone</label>
-      <input
-        id="phone"
-        name="phone"
-        type="tel"
-        autocomplete="tel"
-        inputmode="tel"
-        value={v('phone')}
-        aria-invalid={errors.phone ? 'true' : undefined}
-        aria-describedby={errors.phone ? 'phone-error' : 'phone-hint'}
-        class="field-input"
-      />
-      {
-        errors.phone ? (
-          <span id="phone-error" class="field-error">{errors.phone}</span>
-        ) : (
-          <span id="phone-hint" class="mt-1.5 block text-sm text-ink-muted">
-            Optional. Include a country code if you are outside the United States.
-          </span>
-        )
-      }
+    <div class="grid gap-6 sm:grid-cols-2">
+      <div>
+        <label for="phone" class="field-label">
+          Phone <span aria-hidden="true" class="text-accent">*</span>
+        </label>
+        <input
+          id="phone"
+          name="phone"
+          type="tel"
+          required
+          autocomplete="tel"
+          inputmode="tel"
+          value={v('phone')}
+          aria-invalid={errors.phone ? 'true' : undefined}
+          aria-describedby={errors.phone ? 'phone-error' : 'phone-hint'}
+          class="field-input"
+        />
+        {
+          errors.phone ? (
+            <span id="phone-error" class="field-error">{errors.phone}</span>
+          ) : (
+            <span id="phone-hint" class="mt-1.5 block text-sm text-ink-muted">
+              Include a country code if you are outside the United States.
+            </span>
+          )
+        }
+      </div>
+
+      <div>
+        <label for="altPhone" class="field-label">
+          Additional phone <span class="font-normal text-ink-muted">(optional)</span>
+        </label>
+        <input
+          id="altPhone"
+          name="altPhone"
+          type="tel"
+          autocomplete="tel"
+          inputmode="tel"
+          value={v('altPhone')}
+          class="field-input"
+        />
+      </div>
+    </div>
+
+    <div class="grid gap-6 sm:grid-cols-2">
+      <div>
+        <label for="altEmail" class="field-label">
+          Additional email <span class="font-normal text-ink-muted">(optional)</span>
+        </label>
+        <input
+          id="altEmail"
+          name="altEmail"
+          type="email"
+          inputmode="email"
+          value={v('altEmail')}
+          aria-invalid={errors.altEmail ? 'true' : undefined}
+          aria-describedby={errors.altEmail ? 'altEmail-error' : undefined}
+          class="field-input"
+        />
+        {errors.altEmail && (
+          <span id="altEmail-error" class="field-error">{errors.altEmail}</span>
+        )}
+      </div>
+
+      <div>
+        <label for="heardAbout" class="field-label">
+          How did you hear about us?
+          <span class="font-normal text-ink-muted">(optional)</span>
+        </label>
+        <input
+          id="heardAbout"
+          name="heardAbout"
+          type="text"
+          value={v('heardAbout')}
+          class="field-input"
+        />
+      </div>
     </div>
 
     <div>
@@ -198,10 +247,12 @@ const selects = [
         class="field-input"
         aria-describedby="message-hint">{v('message')}</textarea
       >
-      <span id="message-hint" class="mt-1.5 block text-sm text-ink-muted">
-        Current rent, HOA details, upcoming lease dates, anything that helps us
-        prepare a useful proposal.
-      </span>
+      <p id="message-hint" class="mt-2 text-sm leading-relaxed text-ink-muted">
+        The information you share helps us better understand your property,
+        your needs, and how we may be able to assist. We look forward to
+        connecting, answering your questions, and exploring whether we&rsquo;re
+        the right fit for you.
+      </p>
     </div>
 
     <div class="rounded-md bg-surface-2 p-4">
@@ -223,7 +274,10 @@ const selects = [
         </label>
       </div>
       {errors.consent && <span id="consent-error" class="field-error">{errors.consent}</span>}
-      <p class="mt-3 text-xs leading-relaxed text-ink-muted">
+      <p class="mt-3 text-sm font-medium text-ink">
+        Submitting this form does not create any obligation or commitment.
+      </p>
+      <p class="mt-2 text-xs leading-relaxed text-ink-muted">
         We use what you send here to respond to your inquiry and prepare a
         proposal. We do not sell it. See our <a
           href="/privacy"

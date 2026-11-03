@@ -19,8 +19,8 @@ export const PRINCIPLES: readonly Principle[] = [
     title: 'Integrity Over Profit',
     statement: 'Money without integrity is meaningless.',
     body:
-      'We believe in earning your trust, not just your business. No hidden ' +
-      'fees, no surprises, and no compromising our principles for profit.',
+      'We believe in earning your trust, not just your business. ' +
+      'Zero surprises.',
   },
   {
     number: '02',

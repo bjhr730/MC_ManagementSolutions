@@ -5,6 +5,8 @@ import { CONTACT } from '~/config/site';
 interface Props {
   heading?: string;
   body?: string;
+  /** Label for the primary button. */
+  ctaLabel?: string;
   /** Hide the pricing disclosure where the page already carries it. */
   showDisclosure?: boolean;
 }
@@ -12,6 +14,7 @@ interface Props {
 const {
   heading = 'Request an owner consultation',
   body = 'Tell us about your property and what you want from management. We will come back to you with a written proposal, every applicable fee disclosed.',
+  ctaLabel = 'Start with a consultation',
   showDisclosure = true,
 } = Astro.props;
 ---
@@ -24,7 +27,7 @@ const {
 
       <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
         <a href="/contact" class="btn btn-on-dark w-full sm:w-auto">
-          Start with a consultation
+          {ctaLabel}
         </a>
         <a
           href={CONTACT.phoneHref}

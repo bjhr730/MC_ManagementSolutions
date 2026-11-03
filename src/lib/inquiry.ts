@@ -19,17 +19,12 @@ export const PROPERTY_TYPES = [
 ] as const;
 
 export const OCCUPANCY = [
-  'Occupied by a tenant',
+  'Tenant Occupied',
   'Vacant',
-  'I self-manage it',
-  'With another management company',
-  'Not yet purchased',
-] as const;
-
-export const INVOLVEMENT_CHOICES = [
-  'Hands-off — you handle it',
-  'Hands-on — I want to stay closely involved',
-  'Not sure yet',
+  'Self Managed',
+  'With Another Company',
+  'Not yet Purchased',
+  'Other',
 ] as const;
 
 export const TIMELINES = [
@@ -65,11 +60,21 @@ export const inquirySchema = z.object({
   phone: z
     .string()
     .trim()
+    .min(1, 'Please enter a phone number we can reach you on.')
     .max(40)
-    .refine((v) => v === '' || v.replace(/\D/g, '').length >= 7, {
-      message:
-        'Please enter a phone number we can reach you on, or leave it blank.',
+    .refine((v) => v.replace(/\D/g, '').length >= 7, {
+      message: 'Please enter a valid phone number.',
     }),
+  altEmail: z
+    .string()
+    .trim()
+    .max(200)
+    .optional()
+    .refine((v) => !v || z.string().email().safeParse(v).success, {
+      message: 'That does not look like a valid email address.',
+    }),
+  altPhone: z.string().trim().max(40).optional(),
+  heardAbout: z.string().trim().max(200).optional(),
   propertyAddress: z
     .string()
     .trim()
@@ -77,7 +82,6 @@ export const inquirySchema = z.object({
     .max(300),
   propertyType: optionalChoice(PROPERTY_TYPES),
   occupancy: optionalChoice(OCCUPANCY),
-  involvement: optionalChoice(INVOLVEMENT_CHOICES),
   timeline: optionalChoice(TIMELINES),
   message: z.string().trim().max(4000).optional(),
   consent: z.literal('yes', {
@@ -104,10 +108,12 @@ const FIELD_NAMES = [
   'name',
   'email',
   'phone',
+  'altEmail',
+  'altPhone',
+  'heardAbout',
   'propertyAddress',
   'propertyType',
   'occupancy',
-  'involvement',
   'timeline',
   'message',
   'consent',
@@ -172,13 +178,16 @@ async function store(data: InquiryInput, meta: { ip: string | null }) {
 
   await sql`
     INSERT INTO inquiries (
-      name, email, phone, property_address, property_type,
-      occupancy, involvement, timeline, message, source_ip
+      name, email, phone, alt_email, alt_phone, heard_about,
+      property_address, property_type, occupancy, timeline,
+      message, source_ip
     ) VALUES (
-      ${data.name}, ${data.email}, ${data.phone || null},
+      ${data.name}, ${data.email}, ${data.phone},
+      ${data.altEmail || null}, ${data.altPhone || null},
+      ${data.heardAbout || null},
       ${data.propertyAddress}, ${data.propertyType ?? null},
-      ${data.occupancy ?? null}, ${data.involvement ?? null},
-      ${data.timeline ?? null}, ${data.message || null}, ${meta.ip}
+      ${data.occupancy ?? null}, ${data.timeline ?? null},
+      ${data.message || null}, ${meta.ip}
     )
   `;
 }
@@ -187,12 +196,14 @@ function plainText(data: InquiryInput): string {
   return [
     `Name: ${data.name}`,
     `Email: ${data.email}`,
-    `Phone: ${data.phone || '(not provided)'}`,
+    `Phone: ${data.phone}`,
+    `Alt email: ${data.altEmail || '(none)'}`,
+    `Alt phone: ${data.altPhone || '(none)'}`,
+    `Heard about us: ${data.heardAbout || '(not specified)'}`,
     '',
     `Property: ${data.propertyAddress}`,
     `Type: ${data.propertyType ?? '(not specified)'}`,
     `Status: ${data.occupancy ?? '(not specified)'}`,
-    `Involvement: ${data.involvement ?? '(not specified)'}`,
     `Timeline: ${data.timeline ?? '(not specified)'}`,
     '',
     'Message:',

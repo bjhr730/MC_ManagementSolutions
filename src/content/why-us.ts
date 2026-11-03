@@ -24,10 +24,10 @@ export const REASONS: readonly Reason[] = [
   {
     title: 'Experience at both ends of the scale',
     body:
-      'He began by personally overseeing a portfolio of approximately 60 ' +
-      'residential properties, then led an entire management operation ' +
-      'responsible for over 200. Neither a single rental home nor a growing ' +
-      'portfolio is unfamiliar territory.',
+      'He began by personally overseeing day to day operations in a ' +
+      'portfolio of approximately 60 residential properties, then led an ' +
+      'entire management operation responsible for over 200. Neither a ' +
+      'single rental home nor a growing portfolio is unfamiliar territory.',
   },
   {
     title: 'Transparency as a default, not a request',

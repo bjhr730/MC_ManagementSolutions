@@ -1,12 +1,37 @@
 ---
 import Logo from './Logo.astro';
-import { CONTACT, NAV } from '~/config/site';
+import { CONTACT, NAV, PORTAL_LINKS, PORTALS_LIVE } from '~/config/site';
 
 const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
 const isCurrent = (href: string) => path === href;
 ---
 
 <header class="sticky top-0 z-40 border-b border-line bg-surface/95 backdrop-blur-sm">
+  {/*
+    Portal utility bar. Until Buildium is live these point at /portals, which
+    says so and gives people the direct route instead; the master checklist
+    forbids advertising a portal that does not exist yet.
+  */}
+  <div class="border-b border-line bg-navy-800 text-silver-200">
+    <nav aria-label="Portals" class="container-page flex h-9 items-center justify-end gap-5">
+      {
+        PORTAL_LINKS.map((portal) => (
+          <a
+            href={portal.href}
+            class="inline-flex items-center text-xs font-medium tracking-wide text-silver-200 underline decoration-white/30 underline-offset-4 hover:text-white hover:decoration-white"
+          >
+            {portal.label}
+            {!PORTALS_LIVE && (
+              <span class="ml-1.5 text-[0.625rem] uppercase tracking-wider text-silver-400">
+                soon
+              </span>
+            )}
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+
   <div class="container-page flex h-16 items-center justify-between gap-4 md:h-20">
     <a href="/" class="flex items-center" aria-label="M&A Management Solutions, home">
       <Logo />
