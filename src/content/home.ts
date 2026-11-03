@@ -76,9 +76,9 @@ export const PATHS: readonly {
 
 export const HOME_FOUNDER_TEASER =
   'Antonio Melendez is a Northern Virginia real estate broker who has ' +
-  'personally managed a portfolio of rental homes and led an operation ' +
-  'responsible for over 200. He is also a rental property owner himself, ' +
-  'which is the part most owners care about.';
+  'personally managed rental homes and led an entire property management ' +
+  'operation. He is also a rental property owner himself, which is the ' +
+  'part most owners care about.';
 
 export const TOOLS_TEASER = {
   eyebrow: 'Owner tools',

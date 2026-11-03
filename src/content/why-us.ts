@@ -26,8 +26,8 @@ export const REASONS: readonly Reason[] = [
     body:
       'He began by personally overseeing day to day operations in a ' +
       'portfolio of approximately 60 residential properties, then led an ' +
-      'entire management operation responsible for over 200. Neither a ' +
-      'single rental home nor a growing portfolio is unfamiliar territory.',
+      'entire management operation with a much larger portfolio. Neither ' +
+      'a single rental home nor a growing portfolio is unfamiliar territory.',
   },
   {
     title: 'Transparency as a default, not a request',
@@ -46,10 +46,9 @@ export const REASONS: readonly Reason[] = [
   {
     title: 'A licensed broker on your property',
     body:
-      'Antonio is a Northern Virginia real estate broker and a multi-year ' +
-      'NVAR Top Producer who has participated in more than 215 real estate ' +
-      'transactions. Pricing and renewal decisions are made with that ' +
-      'market knowledge behind them.',
+      'Antonio is a Northern Virginia real estate broker with years of ' +
+      'transaction experience across the local market. Pricing and renewal ' +
+      'decisions are made with that market knowledge behind them.',
   },
   {
     title: 'No lock-in',

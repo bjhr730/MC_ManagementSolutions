@@ -72,8 +72,7 @@ export function founderPerson() {
     url: `${SITE_URL}/founder`,
     description:
       'Northern Virginia real estate broker, property manager and real ' +
-      'estate investor; multi-year NVAR Top Producer with more than 215 ' +
-      'real estate transactions.',
+      'estate investor.',
     ...(isPlaceholder(BROKERAGE.brokerLicenseNumber)
       ? {}
       : {
