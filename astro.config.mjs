@@ -24,6 +24,33 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
+  experimental: {
+    // Astro hashes every script and style it inlines and writes them into the
+    // policy itself. Doing this by hand was already wrong once: a hand-written
+    // script-src blocked the mobile menu on /contact, because Astro inlines
+    // that script on on-demand rendered pages but bundles it on static ones.
+    // A hash list maintained here would silently rot the next time the script
+    // changes; a generated one cannot.
+    csp: {
+      directives: [
+        "default-src 'self'",
+        "base-uri 'self'",
+        "object-src 'none'",
+        "form-action 'self'",
+        "img-src 'self' data:",
+        "font-src 'self'",
+        // Turnstile renders in an iframe and calls home from the client.
+        'frame-src https://challenges.cloudflare.com',
+        "connect-src 'self' https://challenges.cloudflare.com",
+      ],
+      scriptDirective: {
+        resources: ["'self'", 'https://challenges.cloudflare.com'],
+      },
+      styleDirective: {
+        resources: ["'self'"],
+      },
+    },
+  },
   security: {
     // Astro's built-in cross-origin POST check compares the Origin header
     // against the host it sees, which behind Vercel's proxy is not the host
