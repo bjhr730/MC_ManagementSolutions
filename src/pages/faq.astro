@@ -7,10 +7,17 @@ import JsonLd from '~/components/JsonLd.astro';
 import PageHeader from '~/components/PageHeader.astro';
 import Section from '~/components/Section.astro';
 
-import { FAQ, FAQ_INTRO } from '~/content/faq';
+import { FAQ_INTRO, FAQ_SECTIONS } from '~/content/faq';
 import { TAGLINE } from '~/config/site';
 import { PRICING_DISCLOSURE } from '~/config/compliance';
 import { breadcrumbs, faqPage } from '~/lib/schema';
+
+const slug = (title: string) =>
+  title
+    .toLowerCase()
+    .replace(/&/g, 'and')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
 ---
 
 <BaseLayout
@@ -31,10 +38,38 @@ import { breadcrumbs, faqPage } from '~/lib/schema';
     lead={FAQ_INTRO}
   />
 
-  <Section labelledby="faq-heading">
+  <Section>
     <div class="max-w-3xl">
-      <h2 id="faq-heading" class="sr-only">All questions</h2>
-      <FaqList entries={FAQ} />
+      {/* Jump list: five sections is enough to be worth skipping between. */}
+      <nav aria-label="FAQ sections" class="mb-14">
+        <ul class="flex flex-wrap gap-2">
+          {
+            FAQ_SECTIONS.map((section) => (
+              <li>
+                <a
+                  href={`#${slug(section.title)}`}
+                  class="inline-flex min-h-11 items-center rounded-full border border-control-border px-4 text-sm font-medium text-ink hover:bg-surface-3"
+                >
+                  {section.title}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <div class="space-y-14">
+        {
+          FAQ_SECTIONS.map((section) => (
+            <section id={slug(section.title)} class="scroll-mt-28">
+              <h2 class="text-h2">{section.title}</h2>
+              <div class="mt-6">
+                <FaqList entries={section.entries} level="h3" />
+              </div>
+            </section>
+          ))
+        }
+      </div>
 
       <div class="mt-12">
         <Disclosure label="Pricing">

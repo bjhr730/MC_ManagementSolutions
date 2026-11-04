@@ -1,28 +1,35 @@
 /**
- * The owner FAQ, from MA_Management_Solutions_FAQ_Reordered.pdf and then
- * revised by Antonio in review (Nov 2026).
+ * The owner FAQ, grouped into the five sections Antonio set out in November
+ * 2026, with his revised wording and his ordering within each section.
  *
- * His edits: the rental-rates question was dropped, several answers no longer
- * open with "Yes."/"No hidden fees.", the leasing answer no longer itemises
- * the brokerage services, the disbursement answer drops the banking caveat,
- * and mortgage payments are gone from the bill-payment question. That takes
- * the list from thirteen questions to twelve — the "13-question FAQ" line in
- * the master checklist is now out of date by his own decision.
+ * Two deliberate departures from the text he sent, both flagged to him:
  *
- * Remaining hedges ("subject to the management agreement", "not to suggest
- * that property ownership never involves unexpected expenses") are deliberate
- * and stay: the master checklist requires every advertised commitment to be
- * checked against the signed contract.
+ * 1. His draft of the leasing answer reads "MC Management Solutions of
+ *    Virginia, LLC". The company is M&A. Publishing the wrong legal entity
+ *    name in a brokerage disclosure is exactly the kind of error the DPOR
+ *    advertising rules exist to catch, so it is spelled correctly here.
  *
- * `featured: true` marks the answers pulled onto the home page.
+ * 2. His screening answer ends with "Internal note: Review and finalize this
+ *    answer before publishing." That is a note to himself, not copy, so it
+ *    lives as a comment on that entry rather than on the website.
+ *
+ * Also worth knowing: his rewrite of the fees answer drops the old hedge
+ * ("not to suggest that property ownership never involves unexpected
+ * expenses"). The master checklist asks for every advertised commitment to be
+ * checked against the signed contract, and the replacement wording leans on
+ * the management agreement instead, which covers the same ground.
  */
 
 export interface FaqEntry {
   readonly q: string;
   readonly a: readonly string[];
+  /** Pulled onto the home page. */
   readonly featured?: boolean;
-  /** Rendered under the answer in smaller type. */
-  readonly note?: string;
+}
+
+export interface FaqSection {
+  readonly title: string;
+  readonly entries: readonly FaqEntry[];
 }
 
 export const FAQ_INTRO =
@@ -30,85 +37,128 @@ export const FAQ_INTRO =
   'straightforward answers, clear communication, and transparency. Below are ' +
   'answers to common questions about our services.';
 
-export const FAQ: readonly FaqEntry[] = [
+export const FAQ_SECTIONS: readonly FaqSection[] = [
   {
-    q: 'How involved do I need to be in managing my property?',
-    a: [
-      'As involved as you’d like! Every property owner has different preferences. Some enjoy being closely involved, while others prefer a more hands-off experience. We tailor our management approach to your needs, keeping you informed while handling the day-to-day responsibilities of your investment.',
-    ],
-    featured: true,
-  },
-  {
-    q: 'Are there any additional fees or charges?',
-    a: [
-      'We believe in transparent pricing and clearly explaining management fees, leasing-related charges, renewal fees, and any other agreed services before you sign. Any additional costs or services are handled according to the management agreement, with communication and approval where required. Our commitment is to avoid surprises—not to suggest that property ownership never involves unexpected expenses.',
-    ],
-    featured: true,
-  },
-  {
-    q: 'Do you charge termination fees?',
-    a: [
-      'No. We don’t believe in holding clients hostage. We believe in earning your business, not locking you into a relationship you’re unhappy with. That’s why we charge $0 in property management termination fees.',
-      'If you’re happy, we’d love to continue working together. If you decide it’s time to move on, no hard feelings. Just a handshake and a thank-you for the opportunity. Your property. Your choice. No unnecessary commitments. Reasonable notice and any outstanding obligations remain subject to the management agreement.',
-    ],
-    featured: true,
-  },
-  {
-    q: 'How do you handle maintenance requests and emergencies?',
-    a: [
-      'We evaluate maintenance requests based on urgency and coordinate appropriate service providers. Emergencies involving immediate risks to occupants or the property receive priority attention. We keep owners informed of significant repairs and expenses and follow the authorization limits established in the management agreement.',
-    ],
-  },
-  {
-    q: 'Do you work with preferred vendors, or can I use my own contractors?',
-    a: [
-      'Yes. We maintain an established network of service providers for maintenance, repairs, and property improvements. We are also happy to coordinate with your preferred contractors whenever practical. Our priority is quality work, responsible costs, and the best interests of your property.',
+    title: 'Getting Started',
+    entries: [
+      {
+        q: 'How involved do I need to be in managing my property?',
+        a: [
+          'As involved as you’d like! Every property owner has different preferences. Some enjoy being closely involved, while others prefer a more hands-off experience. We tailor our management approach to your needs, keeping you informed while handling the day-to-day responsibilities of your investment.',
+        ],
+        featured: true,
+      },
+      {
+        q: 'How are your property management fees structured?',
+        a: [
+          'We believe in transparent, straightforward pricing. Management fees, leasing-related charges, renewal fees, and any additional agreed-upon services are clearly explained before you sign.',
+          'Our goal is simple: to ensure you understand what you’re paying for and what to expect. Any additional costs are handled in accordance with your management agreement, with communication and approval when required.',
+        ],
+        featured: true,
+      },
+      {
+        q: 'Do you charge termination fees?',
+        a: [
+          'No. We believe in earning your business, not locking you into a relationship you’re unhappy with. That’s why we charge $0 in property management termination fees.',
+          'If you’re happy, we’d love to continue working together. If you decide it’s time to move on, no hard feelings. Just a handshake and a thank-you for the opportunity.',
+          'Your property. Your choice.',
+          'Reasonable notice and any outstanding obligations remain subject to the management agreement.',
+        ],
+        featured: true,
+      },
     ],
   },
   {
-    q: 'Do you provide leasing and tenant placement services?',
-    a: [
-      'Yes. Leasing and tenant placement services are available through our affiliated licensed real estate brokerage. Brokerage services are provided separately from M&A Management Solutions’ property management operations.',
+    title: 'Property Management & Maintenance',
+    entries: [
+      {
+        q: 'How do you handle maintenance requests and emergencies?',
+        a: [
+          'We evaluate maintenance requests based on urgency and coordinate appropriate service providers. Emergencies involving immediate risks to occupants or the property receive priority attention.',
+          'We keep owners informed of repairs and expenses while following the authorization limits established in the management agreement.',
+        ],
+      },
+      {
+        q: 'Do you work with preferred vendors, or can I use my own contractors?',
+        a: [
+          'We maintain an established network of service providers for maintenance, repairs, and property improvements.',
+          'We’re also happy to coordinate with your preferred contractors whenever practical. Our priority is quality workmanship, responsible costs, and protecting the best interests of your property.',
+        ],
+      },
+      {
+        q: 'Do you coordinate with condominium associations and homeowners associations?',
+        a: [
+          'Yes. We coordinate with condominium associations, HOAs, building managers, and their representatives on matters such as move-in and move-out requirements, building access, maintenance, association notices, and required documentation.',
+        ],
+      },
+      {
+        q: 'Can you pay my condominium fees, insurance, and other property-related bills?',
+        a: [
+          'We can tailor the management agreement to your needs, including coordination of condominium or HOA fees, insurance premiums, utilities, and other recurring property expenses.',
+          'Payments are subject to available funds, agreed authorization, and sufficient lead time for processing.',
+        ],
+      },
     ],
   },
   {
-    q: 'How do you screen prospective tenants?',
-    a: [
-      'Tenant screening is coordinated through our affiliated brokerage and applicable screening providers using consistent, legally compliant criteria. Depending on the application and applicable law, screening may include income and employment verification, credit history, rental history, and landlord references. All decisions are made in accordance with fair housing and other applicable requirements.',
-    ],
-    // Antonio wants a note added here and is still deciding on the wording.
-  },
-  {
-    q: 'Will I receive monthly financial statements and year-end reports?',
-    a: [
-      'We provide monthly owner statements detailing rental income, expenses, and relevant account activity, along with year-end accounting summaries and applicable tax documentation to make reporting to your CPA or tax professional easier.',
-    ],
-  },
-  {
-    q: 'How will I receive my rental income?',
-    a: [
-      'Owner disbursements are available by ACH direct deposit or paper check, according to your preference. We intend to offer both methods without an additional disbursement fee.',
-    ],
-  },
-  {
-    q: 'Can you pay my condominium fees, insurance, and other property-related bills?',
-    a: [
-      'We can tailor the management agreement to your needs, including coordination of condominium or HOA fees, insurance premiums, utilities, and other recurring property expenses. Payments are subject to available funds, the agreed authorization, and sufficient lead time for processing.',
+    title: 'Leasing & Tenant Screening',
+    entries: [
+      {
+        q: 'Do you provide leasing and tenant placement services?',
+        a: [
+          'Yes. Leasing and tenant placement services are available through our affiliated licensed Virginia real estate brokerage.',
+          'Brokerage services are provided separately from the property management operations of M&A Management Solutions of Virginia, LLC.',
+        ],
+      },
+      {
+        // Antonio's note on this one: "Review and finalize this answer before
+        // publishing." Still outstanding — the wording below is the original.
+        q: 'How do you screen prospective tenants?',
+        a: [
+          'Tenant screening is coordinated through our affiliated brokerage and applicable screening providers using consistent, legally compliant criteria.',
+          'Depending on the application and applicable law, screening may include income and employment verification, credit history, rental history, and landlord references.',
+          'All decisions are made in accordance with fair housing and other applicable requirements.',
+        ],
+      },
     ],
   },
   {
-    q: 'Do you coordinate with condominium associations and homeowners associations?',
-    a: [
-      'Yes. We coordinate with condominium associations, HOAs, building managers, and their representatives on matters such as move-in and move-out requirements, building access, maintenance, association notices, and required documentation.',
+    title: 'Financial Reporting & Owner Payments',
+    entries: [
+      {
+        q: 'Will I receive monthly financial statements and year-end reports?',
+        a: [
+          'We provide monthly owner statements detailing rental income, expenses, and relevant account activity, along with year-end accounting summaries and applicable tax documentation to make reporting to your CPA or tax professional easier.',
+        ],
+      },
+      {
+        q: 'How will I receive my rental income?',
+        a: [
+          'Owner disbursements are available by ACH direct deposit or paper check, according to your preference.',
+          'We intend to offer both methods without an additional disbursement fee.',
+        ],
+      },
     ],
   },
   {
-    q: 'Do you work with out-of-state and international property owners?',
-    a: [
-      'Absolutely. We welcome owners who live locally, elsewhere in the United States, or abroad. We can communicate through email, phone, or WhatsApp, helping you stay informed and involved wherever you are located.',
+    title: 'Working With Remote Owners',
+    entries: [
+      {
+        q: 'Do you work with out-of-state and international property owners?',
+        a: [
+          'Absolutely! Whether you live locally, elsewhere in the United States, or overseas, we’re here to help you manage your Northern Virginia investment property with confidence.',
+          'We understand the importance of having someone you can trust when you’re not physically nearby. Through regular communication, detailed financial reporting, and day-to-day property oversight, we help you stay informed and connected to your investment.',
+          'We’re available to communicate by email, phone, or WhatsApp, making it easy to stay in touch wherever you call home.',
+        ],
+        featured: true,
+      },
     ],
-    featured: true,
   },
 ];
+
+/** Flat list, for the FAQPage structured data and the home page selection. */
+export const FAQ: readonly FaqEntry[] = FAQ_SECTIONS.flatMap(
+  (section) => section.entries
+);
 
 export const FEATURED_FAQ = FAQ.filter((entry) => entry.featured);

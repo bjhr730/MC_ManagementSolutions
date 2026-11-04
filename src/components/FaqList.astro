@@ -4,7 +4,7 @@ import type { FaqEntry } from '~/content/faq';
 interface Props {
   entries: readonly FaqEntry[];
   /** Heading level for each question, so the page keeps a sane outline. */
-  level?: 'h2' | 'h3';
+  level?: 'h2' | 'h3' | 'h4';
 }
 
 const { entries, level = 'h3' } = Astro.props;
