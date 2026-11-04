@@ -176,11 +176,11 @@ const formError = result?.status === 'error' ? result.message : undefined;
 </BaseLayout>
 <script>
   /*
-   * The vacancy calculator can hand its figures over when someone asks for a
+   * Either owner tool can hand its figures over when someone asks for a
    * rental evaluation. They land in the message box, visible and editable, so
    * nothing is sent that the person has not seen. Read once, then cleared.
    */
-  const KEY = 'ma:vacancy-summary';
+  const KEY = 'ma:tool-summary';
 
   try {
     const summary = sessionStorage.getItem(KEY);

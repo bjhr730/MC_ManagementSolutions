@@ -3,88 +3,186 @@ import BaseLayout from '~/layouts/BaseLayout.astro';
 import Disclosure from '~/components/Disclosure.astro';
 import JsonLd from '~/components/JsonLd.astro';
 import PageHeader from '~/components/PageHeader.astro';
+import RentalComparison from '~/components/RentalComparison.astro';
 import Section from '~/components/Section.astro';
+import ToolCta from '~/components/ToolCta.astro';
 import VacancyCalculator from '~/components/VacancyCalculator.astro';
 
 import { breadcrumbs } from '~/lib/schema';
+
+const tools = [
+  {
+    id: 'vacancy-cost',
+    name: 'Vacancy Cost Calculator',
+    blurb:
+      'What an empty property costs in lost rent, carrying costs and turnover expenses.',
+  },
+  {
+    id: 'pricing-comparison',
+    name: 'Rental Pricing Comparison',
+    blurb:
+      'Renting sooner at a lower price, against waiting longer for a higher one.',
+  },
+];
 ---
 
 <BaseLayout
   title="Owner Tools"
-  description="A vacancy cost calculator for Northern Virginia rental owners: what an empty property costs, and how many extra vacant days a higher rent can justify. Free to use, no sign-up."
+  description="Two free tools for Northern Virginia rental owners: what a vacancy costs, and whether waiting for a higher rent is worth it. No sign-up, no email required."
 >
   <JsonLd slot="head" schema={breadcrumbs([{ name: 'Owner Tools', path: '/tools' }])} />
 
   <PageHeader
     eyebrow="Owner tools"
-    title="Vacancy Cost Calculator"
-    lead="An empty property costs money every day it sits. This works out how much, and whether holding out for a higher rent is worth the wait. Free to use, and nothing is sent anywhere."
+    title="Run the numbers on your rental"
+    lead="Two tools for the decisions that cost owners the most money. Free to use, nothing is sent anywhere, and no email is required to see your results."
   />
 
-  <Section tone="sage">
-    <VacancyCalculator />
+  <Section tone="sage" compact>
+    <nav aria-label="Tools on this page">
+      <ul class="grid gap-4 sm:grid-cols-2">
+        {
+          tools.map((tool, index) => (
+            <li>
+              <a
+                href={`#${tool.id}`}
+                class="rule-hover block h-full rounded-lg border border-line bg-surface p-5 hover:border-line-strong"
+              >
+                <p class="font-sans text-xs font-semibold uppercase tracking-[0.1em] text-accent">
+                  Tool {index + 1}
+                </p>
+                <p class="mt-2 font-serif text-h3 font-semibold text-ink">
+                  {tool.name}
+                </p>
+                <p class="mt-2 text-sm leading-relaxed text-ink-muted">
+                  {tool.blurb}
+                </p>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </Section>
 
-    <div class="mt-12 grid gap-10 lg:grid-cols-2 lg:gap-16">
+  {/* --------------------------------------------- Tool 1: vacancy cost */}
+  <Section labelledby="vacancy-cost-heading">
+    <div id="vacancy-cost" class="scroll-mt-28">
+      <p class="eyebrow">Tool 1</p>
+      <h2 id="vacancy-cost-heading" class="mt-3 text-h2">
+        Vacancy Cost Calculator
+      </h2>
+      <p class="mt-4 max-w-2xl text-lead text-ink-muted">
+        An empty property costs money every day it sits. This works out how
+        much, and separates what the vacancy actually causes from the costs
+        that run regardless.
+      </p>
+
+      <div class="mt-10">
+        <VacancyCalculator />
+      </div>
+
+      <ToolCta
+        handoffId="send-vacancy-figures"
+        primary="conversation"
+        heading="What Could These Numbers Mean for Your Property?"
+        body={[
+          'Every rental property is different. Your ideal rental price depends on market conditions, property features, location, and tenant demand.',
+          'At M&A Management Solutions, we believe informed decisions begin with understanding the numbers. Let’s discuss your property, your rental goals, and how we may be able to help you minimize vacancy and maximize your investment’s potential.',
+        ]}
+      />
+    </div>
+  </Section>
+
+  {/* ---------------------------------------- Tool 2: pricing comparison */}
+  <Section tone="sage" labelledby="pricing-comparison-heading">
+    <div id="pricing-comparison" class="scroll-mt-28">
+      <p class="eyebrow">Tool 2</p>
+      <h2 id="pricing-comparison-heading" class="mt-3 text-h2">
+        Is Waiting for Higher Rent Worth It?
+      </h2>
+      <p class="mt-4 max-w-2xl text-lead text-ink-muted">
+        Sometimes accepting a slightly lower rent today can generate more
+        income than waiting weeks for a higher offer. Compare two scenarios to
+        see how vacancy impacts your bottom line.
+      </p>
+
+      <div class="mt-10">
+        <RentalComparison />
+      </div>
+
+      <ToolCta
+        handoffId="send-comparison-figures"
+        primary="evaluation"
+        heading="The Right Rental Price Is About More Than the Asking Price"
+        body={[
+          'Setting the right rental price involves balancing market demand, property condition, competition, timing, and vacancy exposure.',
+          'At M&A Management Solutions, we help property owners evaluate their rental strategy with their long-term investment goals in mind.',
+        ]}
+      />
+    </div>
+  </Section>
+
+  {/* ------------------------------------------------ assumptions, plainly */}
+  <Section labelledby="assumptions-heading">
+    <div class="grid gap-10 lg:grid-cols-2 lg:gap-16">
       <div class="prose-site">
-        <h2 class="text-h2">How the numbers work</h2>
+        <h2 id="assumptions-heading" class="text-h2">What these tools assume</h2>
 
-        <h3>Vacancy cost</h3>
+        <h3>Both tools</h3>
         <p>
-          Rent and carrying costs are converted to a daily figure using an
-          average month of 30.4 days, then multiplied by the days vacant.
-          Turnover expenses are added once, not per day.
-        </p>
-        <p>
-          The carrying costs are shown separately on purpose. A mortgage
-          payment, HOA fee and insurance premium are owed whether or not
-          anyone is living there, so they are not caused by the vacancy. What
-          the vacancy does is remove the rent that would otherwise meet them,
-          which is why the total is described as cash-flow exposure rather
-          than a loss.
+          Monthly figures are converted to daily ones using an average month
+          of about 30.4 days. Every result is an estimate built on the numbers
+          you enter.
         </p>
 
-        <h3>Break-even on a higher rent</h3>
+        <h3>Vacancy Cost Calculator</h3>
         <p>
-          This compares two outcomes over the same lease term, so the
-          comparison is like for like: letting now at your asking rent, or
-          letting later at the higher rent after some additional empty days.
-          The break-even is the point where both leave you with the same
-          rental income over that period.
+          Carrying costs are shown separately because a mortgage payment, HOA
+          fee and insurance premium are owed whether or not anyone is living
+          there. They are not caused by the vacancy; what the vacancy does is
+          remove the rent that would have met them. That is why the total is
+          described as cash-flow exposure rather than a loss.
+        </p>
+
+        <h3>Rental Pricing Comparison</h3>
+        <p>
+          Both scenarios are measured over the same twelve months starting
+          today. That matters: comparing twelve months of rent under each
+          scenario would ignore the waiting entirely, and on that basis a
+          higher rent always wins, which makes the comparison useless.
         </p>
         <p>
-          Carrying costs are deliberately left out of this second calculation.
-          They are identical in both scenarios, so including them would
-          understate how long you can afford to wait. The figure does account
-          for something owners often miss: days spent waiting are days that no
-          longer earn rent inside the same fixed term.
-        </p>
-        <p>
-          The assumption is that the only cost of waiting is the rent you do
-          not collect. If a longer marketing period means real extra spend,
-          that is not modelled here.
+          The property is assumed to earn nothing while empty and the rent to
+          stay constant. Income is counted only while that lease runs inside
+          the twelve-month window; a renewal or a second letting is not
+          modelled. Mortgage, HOA and insurance costs are excluded because
+          they are identical under both scenarios, so including them would be
+          double counting and would understate how long you can afford to
+          wait.
         </p>
       </div>
 
       <div>
         <Disclosure label="Please read">
           <p>
-            This calculator provides general estimates for educational
+            These calculators provide general estimates for educational
             purposes only. Results are based on user-provided assumptions and
             do not constitute financial, tax, legal, or investment advice.
             Actual rental performance and vacancy periods may vary.
           </p>
         </Disclosure>
 
-        <div class="mt-8 rounded-lg border border-line bg-surface p-6">
+        <div class="mt-8 rounded-lg border border-line bg-surface-2 p-6">
           <h2 class="font-serif text-base font-semibold text-ink">
             Your figures stay with you
           </h2>
           <p class="mt-2 text-sm leading-relaxed text-ink-muted">
-            Everything you type here is worked out in your own browser.
-            Nothing is sent to us, stored, or required before you see your
-            results. If you choose to request a rental evaluation, the figures
-            are copied into the message box on our contact form so you can
-            check them before anything is sent.
+            Everything you type is worked out in your own browser. Nothing is
+            sent to us, stored, or required before you see your results. If you
+            choose to request a rental evaluation, the figures are copied into
+            the message box on our contact form so you can check them before
+            anything is sent.
           </p>
         </div>
       </div>

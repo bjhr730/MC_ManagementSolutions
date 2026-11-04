@@ -1,0 +1,387 @@
+---
+import {
+  barShare,
+  compare,
+  days,
+  EXAMPLE_A,
+  EXAMPLE_B,
+  HORIZON_MONTHS,
+  LEASE_TERMS,
+  money,
+  SLIDER,
+} from '~/lib/pricing';
+
+/**
+ * Tool 2: rent sooner at a lower price, or wait for a higher one.
+ *
+ * Computed at build time so the comparison shows a real answer before any
+ * JavaScript runs; the browser script recomputes from the same module.
+ */
+const c = compare(EXAMPLE_A, EXAMPLE_B, HORIZON_MONTHS);
+const maxIncome = Math.max(c.a.income, c.b.income);
+
+const panels = [
+  {
+    key: 'a',
+    name: 'Scenario A',
+    tagline: 'Rent sooner',
+    scenario: EXAMPLE_A,
+    result: c.a,
+    accent: 'border-evergreen-500',
+  },
+  {
+    key: 'b',
+    name: 'Scenario B',
+    tagline: 'Wait for higher rent',
+    scenario: EXAMPLE_B,
+    result: c.b,
+    accent: 'border-accent',
+  },
+] as const;
+---
+
+<div class="rounded-xl border border-line bg-surface p-6 md:p-8" id="rental-comparison">
+  <form id="comparison-form" novalidate onsubmit="return false">
+    {/* ------------------------------------------------ the two scenarios */}
+    <div class="grid gap-6 md:grid-cols-2">
+      {
+        panels.map((panel) => (
+          <fieldset
+            class={`rounded-lg border-t-4 bg-surface-2 p-5 md:p-6 ${panel.accent}`}
+            data-panel={panel.key}
+          >
+            <legend class="sr-only">
+              {panel.name}: {panel.tagline}
+            </legend>
+
+            <div class="flex items-baseline justify-between gap-3">
+              <p class="font-serif text-h3 font-semibold text-ink">{panel.name}</p>
+              <p class="text-sm font-medium text-ink-muted">{panel.tagline}</p>
+            </div>
+
+            <div class="mt-5 space-y-4">
+              <div>
+                <label for={`c-${panel.key}-rent`} class="field-label">
+                  Monthly rent
+                </label>
+                <div class="relative">
+                  <span
+                    aria-hidden="true"
+                    class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-ink-muted"
+                  >
+                    $
+                  </span>
+                  <input
+                    id={`c-${panel.key}-rent`}
+                    name={`${panel.key}Rent`}
+                    type="number"
+                    inputmode="numeric"
+                    min="0"
+                    step="25"
+                    value={panel.scenario.rent}
+                    class="field-input tabular-nums pl-7"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <div class="flex items-baseline justify-between gap-3">
+                  <label for={`c-${panel.key}-vacancy`} class="field-label mb-0">
+                    Days until leased
+                  </label>
+                  <output
+                    for={`c-${panel.key}-vacancy`}
+                    data-out={`${panel.key}VacancyLabel`}
+                    class="font-serif text-base font-semibold tabular-nums text-ink"
+                  >
+                    {days(panel.scenario.vacancyDays)}
+                  </output>
+                </div>
+                <input
+                  id={`c-${panel.key}-vacancy`}
+                  name={`${panel.key}Vacancy`}
+                  type="range"
+                  min={SLIDER.vacancyDays.min}
+                  max={SLIDER.vacancyDays.max}
+                  step={SLIDER.vacancyDays.step}
+                  value={panel.scenario.vacancyDays}
+                  class="range-input mt-3"
+                />
+              </div>
+
+              <div>
+                <label for={`c-${panel.key}-lease`} class="field-label">
+                  Lease duration
+                </label>
+                <select
+                  id={`c-${panel.key}-lease`}
+                  name={`${panel.key}Lease`}
+                  class="field-input"
+                >
+                  {LEASE_TERMS.map((term) => (
+                    <option value={term} selected={term === panel.scenario.leaseMonths}>
+                      {term} months
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <dl class="mt-6 space-y-2 border-t border-line pt-4 text-sm">
+              <div class="flex items-baseline justify-between gap-3">
+                <dt class="text-ink-muted">Rent lost while empty</dt>
+                <dd class="font-medium tabular-nums text-cost" data-out={`${panel.key}Lost`}>
+                  {money(panel.result.lostToVacancy)}
+                </dd>
+              </div>
+              <div class="flex items-baseline justify-between gap-3">
+                <dt class="text-ink-muted">Earning days in the window</dt>
+                <dd class="font-medium tabular-nums text-ink" data-out={`${panel.key}EarningDays`}>
+                  {Math.round(panel.result.earningDays)}
+                </dd>
+              </div>
+              <div class="flex items-baseline justify-between gap-3 border-t border-line pt-2">
+                <dt class="font-medium text-ink">Income over 12 months</dt>
+                <dd
+                  class="font-serif text-lg font-semibold tabular-nums text-ink"
+                  data-out={`${panel.key}Income`}
+                >
+                  {money(panel.result.income)}
+                </dd>
+              </div>
+            </dl>
+          </fieldset>
+        ))
+      }
+    </div>
+
+    <button type="reset" class="btn btn-secondary mt-6">Reset comparison</button>
+
+    {/* ------------------------------------------------------- the answer */}
+    <output for="comparison-form" aria-live="polite" class="mt-10 block space-y-8">
+      <section aria-labelledby="cmp-verdict" class="rounded-lg bg-surface-2 p-6 md:p-7">
+        <h3 id="cmp-verdict" class="font-serif text-h3 font-semibold text-ink" data-out="verdictHeading">
+          Based on Your Estimates, Scenario B Generates More Rental Income
+        </h3>
+        <p class="mt-3 text-lead text-ink-muted" data-out="verdictBody">
+          Waiting for the higher rental rate could generate approximately
+          {money(Math.abs(c.difference))} more rental income over the next 12 months.
+        </p>
+
+        {/*
+          Income comparison. SVG with presentation attributes, so it is both
+          CSP-safe and scales cleanly on a phone. The figures themselves are
+          in the panels above, so the chart is decorative.
+        */}
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 100 46"
+          preserveAspectRatio="none"
+          class="mt-7 block h-36 w-full"
+        >
+          <rect x="6" y="0" width="34" height="46" rx="1" class="fill-surface-3"></rect>
+          <rect x="60" y="0" width="34" height="46" rx="1" class="fill-surface-3"></rect>
+          <rect
+            data-chart="a"
+            x="6"
+            y={46 - (barShare(c.a.income, maxIncome) * 46) / 100}
+            width="34"
+            height={(barShare(c.a.income, maxIncome) * 46) / 100}
+            rx="1"
+            class="fill-evergreen-500"></rect>
+          <rect
+            data-chart="b"
+            x="60"
+            y={46 - (barShare(c.b.income, maxIncome) * 46) / 100}
+            width="34"
+            height={(barShare(c.b.income, maxIncome) * 46) / 100}
+            rx="1"
+            class="fill-bronze-600"></rect>
+        </svg>
+
+        <div class="mt-3 grid grid-cols-2 gap-4 text-center text-sm">
+          <div>
+            <p class="font-medium text-ink">Scenario A</p>
+            <p class="tabular-nums text-ink-muted" data-out="chartALabel">
+              {money(c.a.income)}
+            </p>
+          </div>
+          <div>
+            <p class="font-medium text-ink">Scenario B</p>
+            <p class="tabular-nums text-ink-muted" data-out="chartBLabel">
+              {money(c.b.income)}
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="cmp-breakeven" class="rounded-lg border border-line p-6 md:p-7">
+        <h3 id="cmp-breakeven" class="font-serif text-h3 font-semibold text-ink">
+          How Long Can You Afford to Wait?
+        </h3>
+
+        <p class="mt-4 text-sm font-semibold uppercase tracking-[0.08em] text-ink-muted">
+          Break-even additional vacancy
+        </p>
+        <p
+          class="mt-1 font-serif text-h2 font-semibold tabular-nums text-evergreen-text"
+          data-out="breakEven"
+        >
+          {days(c.breakEvenExtraDays)}
+        </p>
+        <p class="mt-3 text-sm leading-relaxed text-ink" data-out="breakEvenNote">
+          This is approximately how many additional days you could wait for the
+          higher rent before the expected rental income advantage disappears.
+        </p>
+
+        <p class="mt-5 text-xs leading-relaxed text-ink-muted">
+          Both scenarios are measured over the same 12 months starting today,
+          using an average month of 30.4 days. Rent is assumed constant and
+          the property earns nothing while empty. Income is counted only while
+          that lease runs inside the window; a renewal or a second letting is
+          not modelled. Mortgage, HOA and insurance costs are excluded because
+          they are identical under both scenarios, so including them would be
+          double counting.
+        </p>
+      </section>
+    </output>
+  </form>
+
+  <noscript>
+    <p class="mt-6 rounded-md bg-surface-3 px-4 py-3 text-sm text-ink">
+      The comparison above is a worked example. Adjusting the scenarios needs
+      JavaScript &mdash; or
+      <a href="/contact" class="underline underline-offset-2">tell us about your property</a>
+      and we will work it through with you.
+    </p>
+  </noscript>
+</div>
+
+<script>
+  import {
+    barShare,
+    compare,
+    days,
+    HORIZON_MONTHS,
+    money,
+    type Scenario,
+  } from '~/lib/pricing';
+
+  const form = document.getElementById('comparison-form') as HTMLFormElement | null;
+
+  if (form) {
+    const root = document.getElementById('rental-comparison');
+    const out = (key: string) => root?.querySelector<HTMLElement>(`[data-out="${key}"]`);
+    const chart = (key: string) => root?.querySelector<SVGRectElement>(`[data-chart="${key}"]`);
+
+    const num = (name: string) =>
+      Number((form.elements.namedItem(name) as HTMLInputElement | null)?.value);
+
+    const readScenario = (prefix: 'a' | 'b'): Scenario => ({
+      rent: num(`${prefix}Rent`),
+      vacancyDays: num(`${prefix}Vacancy`),
+      leaseMonths: num(`${prefix}Lease`),
+    });
+
+    const set = (key: string, value: string) => {
+      const el = out(key);
+      if (el) el.textContent = value;
+    };
+
+    const CHART_HEIGHT = 46;
+    let latest = { a: readScenario('a'), b: readScenario('b') };
+
+    const render = () => {
+      const a = readScenario('a');
+      const b = readScenario('b');
+      latest = { a, b };
+      const result = compare(a, b, HORIZON_MONTHS);
+
+      for (const [key, scenario, side] of [
+        ['a', a, result.a],
+        ['b', b, result.b],
+      ] as const) {
+        set(`${key}VacancyLabel`, days(scenario.vacancyDays));
+        set(`${key}Lost`, money(side.lostToVacancy));
+        set(`${key}EarningDays`, String(Math.round(side.earningDays)));
+        set(`${key}Income`, money(side.income));
+      }
+
+      // Chart. Presentation attributes only, so the CSP never blocks it.
+      const max = Math.max(result.a.income, result.b.income);
+      for (const [key, side] of [
+        ['a', result.a],
+        ['b', result.b],
+      ] as const) {
+        const height = (barShare(side.income, max) * CHART_HEIGHT) / 100;
+        const rect = chart(key);
+        if (rect) {
+          rect.setAttribute('height', String(height));
+          rect.setAttribute('y', String(CHART_HEIGHT - height));
+        }
+      }
+      set('chartALabel', money(result.a.income));
+      set('chartBLabel', money(result.b.income));
+
+      // Verdict. Never claims either option is guaranteed or always better.
+      const gap = money(Math.abs(result.difference));
+      if (result.winner === 'tie') {
+        set('verdictHeading', 'Based on Your Estimates, the Two Scenarios Are Close to Even');
+        set(
+          'verdictBody',
+          'Neither option is clearly ahead over the next 12 months, so the decision likely rests on factors beyond the numbers.'
+        );
+      } else if (result.winner === 'a') {
+        set('verdictHeading', 'Based on Your Estimates, Scenario A Generates More Rental Income');
+        set(
+          'verdictBody',
+          `Renting sooner at a slightly lower price could produce approximately ${gap} more rental income over the next 12 months.`
+        );
+      } else {
+        set('verdictHeading', 'Based on Your Estimates, Scenario B Generates More Rental Income');
+        set(
+          'verdictBody',
+          `Waiting for the higher rental rate could generate approximately ${gap} more rental income over the next 12 months.`
+        );
+      }
+
+      set('breakEven', days(result.breakEvenExtraDays));
+      set(
+        'breakEvenNote',
+        result.bAlreadyBehind
+          ? 'At these figures Scenario B is already behind, so there is no additional waiting it can absorb.'
+          : 'This is approximately how many additional days you could wait for the higher rent before the expected rental income advantage disappears.'
+      );
+    };
+
+    form.addEventListener('input', render);
+    form.addEventListener('reset', () => window.setTimeout(render, 0));
+
+    document
+      .getElementById('send-comparison-figures')
+      ?.addEventListener('click', () => {
+        const result = compare(latest.a, latest.b, HORIZON_MONTHS);
+        const summary = [
+          'My figures from the rental pricing comparison:',
+          '',
+          `Scenario A: ${money(latest.a.rent)} per month, leased in ${days(latest.a.vacancyDays)}, ${latest.a.leaseMonths}-month lease`,
+          `Scenario B: ${money(latest.b.rent)} per month, leased in ${days(latest.b.vacancyDays)}, ${latest.b.leaseMonths}-month lease`,
+          '',
+          `Scenario A income over 12 months: ${money(result.a.income)}`,
+          `Scenario B income over 12 months: ${money(result.b.income)}`,
+          `Difference: ${money(Math.abs(result.difference))} in favour of Scenario ${result.winner === 'a' ? 'A' : 'B'}`,
+          `Break-even additional vacancy: ${days(result.breakEvenExtraDays)}`,
+          '',
+          'I would like a personalized rental evaluation.',
+        ].join('\n');
+
+        try {
+          sessionStorage.setItem('ma:tool-summary', summary);
+        } catch {
+          // Storage blocked; the link still works without the figures.
+        }
+      });
+
+    render();
+  }
+</script>

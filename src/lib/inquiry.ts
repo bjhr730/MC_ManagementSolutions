@@ -255,6 +255,8 @@ async function notify(data: InquiryInput): Promise<boolean> {
       '— M&A Management Solutions of Virginia, LLC',
     ].join('\n'),
   });
+
+  return true;
 }
 
 /**

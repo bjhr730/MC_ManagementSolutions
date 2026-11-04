@@ -1,0 +1,69 @@
+---
+/**
+ * The invitation that follows each tool.
+ *
+ * Both routes lead to the same contact form. The difference is that the
+ * "rental evaluation" button carries the visitor's figures with it, which is
+ * why it takes an id: the tool above wires its own summary to that button.
+ * Nothing is collected unless that button is the one they choose, and what
+ * travels lands in the message box where they can read and edit it.
+ */
+interface Props {
+  heading: string;
+  /** Rendered as separate paragraphs. */
+  body: string[];
+  /** Which action gets the filled button. */
+  primary: 'evaluation' | 'conversation';
+  /** id for the evaluation link, so the tool can attach its figures. */
+  handoffId: string;
+}
+
+const { heading, body, primary, handoffId } = Astro.props;
+
+const evaluation = {
+  id: handoffId,
+  href: '/contact#inquiry',
+  label: 'Request a Personalized Rental Evaluation',
+};
+const conversation = {
+  id: undefined,
+  href: '/contact',
+  label: "Let's Talk About Your Property",
+};
+
+const first = primary === 'evaluation' ? evaluation : conversation;
+const second = primary === 'evaluation' ? conversation : evaluation;
+---
+
+<section class="mt-10 rounded-xl bg-evergreen p-8 text-evergreen-soft md:p-12" aria-labelledby={`${handoffId}-heading`}>
+  <div class="max-w-2xl">
+    <h3 id={`${handoffId}-heading`} class="text-h2 text-on-evergreen">
+      {heading}
+    </h3>
+
+    {body.map((paragraph) => <p class="mt-5 text-lead">{paragraph}</p>)}
+
+    <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+      <a href={first.href} id={first.id} class="btn btn-on-dark w-full sm:w-auto">
+        {first.label}
+      </a>
+      <a
+        href={second.href}
+        id={second.id}
+        class="btn w-full border border-white/40 text-on-evergreen hover:bg-white/10 sm:w-auto"
+      >
+        {second.label}
+      </a>
+    </div>
+
+    <p class="mt-4 text-sm">
+      No pressure. No obligation. Just a conversation about your investment.
+    </p>
+
+    <p class="mt-5 text-xs leading-relaxed text-evergreen-soft">
+      Choosing a rental evaluation copies the figures above into the message
+      box on our contact form, so you can check them before you send anything.
+      Nothing is collected if you do not.
+    </p>
+  </div>
+</section>
