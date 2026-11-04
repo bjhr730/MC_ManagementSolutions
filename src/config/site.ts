@@ -51,6 +51,15 @@ export const ADDRESS_LINES: readonly string[] = [
   `${CONTACT.address.city}, ${CONTACT.address.region} ${CONTACT.address.postalCode}`,
 ];
 
+/**
+ * Google's documented Maps URL format: no API key, no script, and on a phone
+ * it opens the Maps app rather than the browser. Built from the address above
+ * so the pin cannot drift from the text.
+ */
+export const MAP_URL = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+  ADDRESS_LINES.join(', ')
+)}`;
+
 /** Hours of operation, as Antonio worded them. */
 export const HOURS = {
   heading: 'Business Hours',

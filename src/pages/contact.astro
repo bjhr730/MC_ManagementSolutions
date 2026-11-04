@@ -13,6 +13,7 @@ import { handleInquiry, type InquiryResult } from '~/lib/inquiry';
 import {
   ADDRESS_LINES,
   CONTACT,
+  MAP_URL,
   HOURS,
   SERVICE_AREAS,
   SERVICE_AREA_HEADING,
@@ -97,8 +98,18 @@ const formError = result?.status === 'error' ? result.message : undefined;
           <div>
             <dt class="text-sm font-semibold text-ink-muted">Office</dt>
             <dd class="mt-1">
-              <address class="font-medium text-ink not-italic">
-                {ADDRESS_LINES.map((line) => <span class="block">{line}</span>)}
+              <address class="not-italic">
+                <a
+                  href={MAP_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-block font-medium text-ink underline decoration-accent decoration-2 underline-offset-4"
+                >
+                  {ADDRESS_LINES.map((line) => (
+                    <span class="block">{line} </span>
+                  ))}
+                  <span class="sr-only">(opens Google Maps in a new tab)</span>
+                </a>
               </address>
             </dd>
           </div>
@@ -152,5 +163,14 @@ const formError = result?.status === 'error' ? result.message : undefined;
         ))
       }
     </dl>
+
+    <p class="mt-10 max-w-2xl text-lead text-ink-muted">
+      Don&rsquo;t see your area listed?{' '}
+      <a
+        href="#inquiry"
+        class="font-semibold text-ink underline decoration-accent decoration-2 underline-offset-4"
+        >Contact us</a
+      > to discuss your property and how we may be able to assist.
+    </p>
   </Section>
 </BaseLayout>

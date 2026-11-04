@@ -8,6 +8,7 @@ import {
 import {
   ADDRESS_LINES,
   CONTACT,
+  MAP_URL,
   FOOTER_NAV,
   HOURS,
   LEGAL_ENTITY,
@@ -59,8 +60,18 @@ const serviceLinks = FOOTER_NAV.services.filter(
           <div class="pt-1">
             <dt class="sr-only">Office address</dt>
             <dd>
-              <address class="text-silver-200 not-italic">
-                {ADDRESS_LINES.map((line) => <span class="block">{line}</span>)}
+              <address class="not-italic">
+                <a
+                  href={MAP_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-block text-silver-200 underline decoration-white/30 underline-offset-4 hover:text-white hover:decoration-white"
+                >
+                  {ADDRESS_LINES.map((line) => (
+                    <span class="block">{line} </span>
+                  ))}
+                  <span class="sr-only">(opens Google Maps in a new tab)</span>
+                </a>
               </address>
             </dd>
           </div>
