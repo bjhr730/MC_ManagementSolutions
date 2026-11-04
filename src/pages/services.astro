@@ -21,7 +21,11 @@ import { breadcrumbs } from '~/lib/schema';
     schema={breadcrumbs([{ name: 'Our Services', path: '/services' }])}
   />
 
-  <PageHeader eyebrow="Our services" title="Our Services" />
+  <PageHeader
+    eyebrow="Our services"
+    title="Our Services"
+    lead="Every property is unique, and so are the needs of its owner. At M&A Management Solutions, we believe property management should be tailored to your goals, expectations, and investment needs."
+  />
 
   <Section>
     <div class="space-y-14">
@@ -96,5 +100,9 @@ import { breadcrumbs } from '~/lib/schema';
     </div>
   </Section>
 
-  <Cta />
+  <Cta
+    heading="Let's get to know your property"
+    body="We'd welcome the opportunity to learn more about your investment, understand what matters most to you, and explore how we may be able to assist."
+    note="No pressure. Just an honest conversation about your property and how we can help."
+  />
 </BaseLayout>

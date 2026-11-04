@@ -4,9 +4,12 @@ import { CONTACT } from '~/config/site';
 
 interface Props {
   heading?: string;
-  body?: string;
+  /** One paragraph, or several. */
+  body?: string | string[];
   /** Label for the primary button. */
   ctaLabel?: string;
+  /** A reassuring line under the buttons, where a page wants one. */
+  note?: string;
   /** Hide the pricing disclosure where the page already carries it. */
   showDisclosure?: boolean;
 }
@@ -15,15 +18,18 @@ const {
   heading = 'Request a consultation',
   body = 'Tell us about your property and what you want from management. We will come back to you with a written proposal, every applicable fee disclosed.',
   ctaLabel = 'Start with a consultation',
+  note,
   showDisclosure = true,
 } = Astro.props;
+
+const paragraphs = Array.isArray(body) ? body : [body];
 ---
 
 <section class="bg-navy-800 py-16 md:py-20" aria-labelledby="cta-heading">
   <div class="container-page">
     <div class="max-w-2xl">
       <h2 id="cta-heading" class="text-h2 text-white">{heading}</h2>
-      <p class="mt-4 text-lead text-silver-200">{body}</p>
+      {paragraphs.map((paragraph) => <p class="mt-4 text-lead text-silver-200">{paragraph}</p>)}
 
       <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
         <a href="/contact" class="btn btn-on-dark w-full sm:w-auto">
@@ -36,6 +42,8 @@ const {
           Call {CONTACT.phone}
         </a>
       </div>
+
+      {note && <p class="mt-5 text-sm text-silver-200">{note}</p>}
 
       {
         showDisclosure && (
