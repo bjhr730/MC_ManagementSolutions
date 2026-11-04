@@ -87,7 +87,7 @@ export const SERVICE_AREAS: readonly ServiceArea[] = [
   {
     county: 'City of Alexandria',
     places: [],
-    suffix: 'and surrounding communities',
+    suffix: 'Alexandria and surrounding communities',
   },
   {
     county: 'Fairfax County',
