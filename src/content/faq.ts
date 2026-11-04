@@ -39,7 +39,7 @@ export const FAQ: readonly FaqEntry[] = [
     featured: true,
   },
   {
-    q: 'Are there any hidden fees or additional charges?',
+    q: 'Are there any additional fees or charges?',
     a: [
       'We believe in transparent pricing and clearly explaining management fees, leasing-related charges, renewal fees, and any other agreed services before you sign. Any additional costs or services are handled according to the management agreement, with communication and approval where required. Our commitment is to avoid surprises—not to suggest that property ownership never involves unexpected expenses.',
     ],
