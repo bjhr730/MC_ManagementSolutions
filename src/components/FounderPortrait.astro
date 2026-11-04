@@ -1,0 +1,39 @@
+---
+import { Image } from 'astro:assets';
+import portrait from '~/assets/antonio-melendez.webp';
+import { FOUNDER_NAME } from '~/content/founder';
+import { LEGAL_ENTITY } from '~/config/site';
+
+/**
+ * Antonio's portrait, in one place so the home page and the founder page
+ * cannot drift apart on alt text, sizing or art direction.
+ *
+ * The source is 1086x1448 — exactly 3:4 — so the frame uses that ratio
+ * rather than the 4:5 the placeholder had. Cropping to 4:5 would have taken
+ * 91px off a portrait that is already framed tightly.
+ *
+ * astro:assets emits AVIF and WebP at the widths below and sets intrinsic
+ * width/height, so the space is reserved before the image arrives and the
+ * layout does not shift.
+ */
+interface Props {
+  /** Eager above the fold (the founder page), lazy below it (the home page). */
+  priority?: boolean;
+  class?: string;
+}
+
+const { priority = false, class: className = '' } = Astro.props;
+---
+
+<figure class={`m-0 ${className}`}>
+  <Image
+    src={portrait}
+    alt={`${FOUNDER_NAME}, founder of ${LEGAL_ENTITY}`}
+    widths={[352, 448, 704, 896]}
+    sizes="(min-width: 1024px) 22rem, (min-width: 640px) 24rem, calc(100vw - 2rem)"
+    loading={priority ? 'eager' : 'lazy'}
+    fetchpriority={priority ? 'high' : 'auto'}
+    decoding={priority ? 'sync' : 'async'}
+    class="aspect-3/4 w-full rounded-lg border border-line object-cover"
+  />
+</figure>

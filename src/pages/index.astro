@@ -2,6 +2,7 @@
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import Cta from '~/components/Cta.astro';
 import FaqList from '~/components/FaqList.astro';
+import FounderPortrait from '~/components/FounderPortrait.astro';
 import Icon from '~/components/Icon.astro';
 import JsonLd from '~/components/JsonLd.astro';
 import PathChooser from '~/components/PathChooser.astro';
@@ -123,20 +124,7 @@ const exampleCost = money(example.lostRent + example.carryingCost);
   {/* ------------------------------------------------------------- Founder */}
   <Section labelledby="founder-heading">
     <div class="grid gap-12 lg:grid-cols-[1fr_1.3fr] lg:items-center lg:gap-16">
-      {/*
-        Headshot slot. The real portrait drops into this exact 4:5 box with
-        no layout change.
-      */}
-      <div
-        class="flex aspect-4/5 w-full max-w-sm items-center justify-center rounded-lg border border-dashed border-line-strong bg-surface-3"
-      >
-        <p class="px-6 text-center text-sm text-ink-muted">
-          Professional headshot
-          <span class="mt-1 block text-xs">
-            Replace with a 4:5 portrait at 1000&times;1250 or larger
-          </span>
-        </p>
-      </div>
+      <FounderPortrait class="w-full max-w-sm" />
 
       <div>
         <p class="eyebrow">Meet the founder</p>

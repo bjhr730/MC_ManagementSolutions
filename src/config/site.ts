@@ -32,9 +32,8 @@ export const TAGLINE = 'Your Property. Our Responsibility.';
 
 /** Name, address, phone — also feeds the LocalBusiness structured data. */
 export const CONTACT = {
-  /** REPLACE with the real business line. */
-  phone: '(703) 000-0000',
-  phoneHref: 'tel:+17030000000',
+  phone: '(703) 869-5034',
+  phoneHref: 'tel:+17038695034',
   /** REPLACE with the real business inbox. */
   email: 'info@replace-me.example.com',
   /** REPLACE. Omit entirely if the business has no public office address. */

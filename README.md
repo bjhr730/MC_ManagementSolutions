@@ -251,7 +251,7 @@ first.
 
 Owned by the business, not the code:
 
-- [ ] Fill in every `REPLACE` in `src/config/site.ts` (phone, email, address, hours)
+- [ ] Fill in the remaining `REPLACE` values in `src/config/site.ts` (business email, mailing address). Phone and hours are set.
 - [ ] Fill in `src/config/compliance.ts` (brokerage name, DPOR licence numbers)
 - [ ] Have a qualified Virginia professional review `/privacy`, `/terms` and
       `/fair-housing`, then set `LEGAL_REVIEW_DATE` and `REVIEW_MODE = false`
@@ -259,8 +259,6 @@ Owned by the business, not the code:
 - [ ] Confirm the founder bio's property count (the two source drafts disagree:
       "approximately 60" vs "60–85")
 - [ ] Add the real logo (replace `src/components/Logo.astro` and `public/favicon.svg`)
-- [ ] Add Antonio's headshot — a 4:5 portrait, 1000×1250 or larger. Slots are
-      already sized on `/` and `/founder`, so it drops in with no layout change.
 - [ ] Re-run `node scripts/generate-images.mjs` after the logo lands
 - [ ] Register the domain, set `SITE_URL`, verify the sending domain in Resend
 - [ ] Set `SITE_INDEXABLE="true"` in production (and only production) so the
