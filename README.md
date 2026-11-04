@@ -98,23 +98,37 @@ is opaque well before it finishes entering.
 
 Everything is inside `prefers-reduced-motion: no-preference`.
 
-### The vacancy calculator
+### The owner tools
 
-`/tools` holds a vacancy cost calculator. The arithmetic lives in
-`src/lib/vacancy.ts` and is imported twice: once in the component frontmatter,
-so the page ships a worked example that is correct before any JavaScript runs,
-and once in the browser script that recomputes it as you type. One
-implementation, so the server-rendered figures and the live ones cannot
-disagree. The home page teaser reads its headline number from the same module
-for the same reason.
+`/tools` holds two calculators. Each has its own model module, imported twice
+— once in the component frontmatter so the page ships a worked example that is
+correct before any JavaScript runs, and once in the browser script that
+recomputes as the inputs move. One implementation each, so server-rendered and
+live figures cannot drift.
 
-The break-even figure is the part worth understanding: a rent increase earns
-the difference every month of a 12-month lease, so dividing twelve times the
-increase by the daily cost of an empty property gives the extra vacant days
-that increase can absorb before the owner is behind.
+**Tool 1, `src/lib/vacancy.ts`** — what a vacancy exposes an owner to. Carrying
+costs are reported separately and labelled ongoing, because a mortgage is owed
+whether or not anyone lives there; the vacancy removes the rent that would have
+met it. Hence "exposure", not "loss".
 
-It is deliberately simple, and `/tools` says so: no taxes, no depreciation, no
-rent growth.
+**Tool 2, `src/lib/pricing.ts`** — rent sooner at a lower price, or wait for a
+higher one. Both scenarios are measured over **one window starting today**, and
+that is the entire point: comparing twelve months of rent under each scenario
+ignores the waiting, so the higher rent always wins and the tool tells you
+nothing. Break-even solves `income_B(x) = income_A` over that window. Carrying
+costs appear nowhere, because they are identical under both scenarios.
+
+Tool 1 deliberately does **not** answer the waiting question. It used to, and
+two different break-even figures on one page is worse than none.
+
+Both charts are SVG with `width`/`x` presentation attributes rather than styled
+divs: the CSP has no `'unsafe-inline'` for styles, so an inline style attribute
+is reported on every change. Presentation attributes are not styles.
+
+Neither tool gates results behind contact details. Figures travel to the
+contact form only when someone chooses the rental-evaluation button, through
+`sessionStorage` rather than the URL, and land in the message box where they
+can be read and edited before sending.
 
 ### The home page path chooser
 
