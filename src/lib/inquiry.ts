@@ -164,11 +164,14 @@ async function verifyTurnstile(
   }
 }
 
-async function store(data: InquiryInput, meta: { ip: string | null }) {
+async function store(
+  data: InquiryInput,
+  meta: { ip: string | null }
+): Promise<boolean> {
   const url = import.meta.env.DATABASE_URL;
   if (!url) {
     console.warn('[inquiry] DATABASE_URL not set; inquiry was not stored.');
-    return;
+    return false;
   }
 
   const { neon } = await import('@neondatabase/serverless');
@@ -188,6 +191,8 @@ async function store(data: InquiryInput, meta: { ip: string | null }) {
       ${data.message || null}, ${meta.ip}
     )
   `;
+
+  return true;
 }
 
 function plainText(data: InquiryInput): string {
@@ -209,14 +214,14 @@ function plainText(data: InquiryInput): string {
   ].join('\n');
 }
 
-async function notify(data: InquiryInput) {
+async function notify(data: InquiryInput): Promise<boolean> {
   const apiKey = import.meta.env.RESEND_API_KEY;
   const from = import.meta.env.INQUIRY_FROM_EMAIL;
   const to = import.meta.env.INQUIRY_TO_EMAIL;
 
   if (!apiKey || !from || !to) {
     console.warn('[inquiry] Resend is not configured; no email sent.');
-    return;
+    return false;
   }
 
   const { Resend } = await import('resend');
@@ -325,17 +330,34 @@ export async function handleInquiry(request: Request): Promise<InquiryResult> {
     };
   }
 
-  // Storing first means a Resend outage cannot lose the lead.
+  // Storing first means a Resend outage cannot lose the lead, and emailing
+  // after means a database outage cannot either. What must not happen is
+  // both failing while the visitor is shown a thank-you page: that is a lead
+  // lost in silence. A blank property address once did exactly that, by
+  // violating a NOT NULL column that no longer matched the form.
+  let stored = false;
+  let notified = false;
+
   try {
-    await store(parsed.data, { ip });
+    stored = await store(parsed.data, { ip });
   } catch (cause) {
     console.error('[inquiry] Failed to store inquiry', cause);
   }
 
   try {
-    await notify(parsed.data);
+    notified = await notify(parsed.data);
   } catch (cause) {
     console.error('[inquiry] Failed to send notification email', cause);
+  }
+
+  if (!stored && !notified) {
+    console.error('[inquiry] Inquiry was neither stored nor emailed.');
+    return {
+      status: 'error',
+      message:
+        'Something went wrong on our side and your message was not saved. Please call us so we do not miss you.',
+      values,
+    };
   }
 
   return { status: 'ok' };
