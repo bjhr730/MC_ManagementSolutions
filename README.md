@@ -251,7 +251,7 @@ first.
 
 Owned by the business, not the code:
 
-- [ ] Fill in the remaining `REPLACE` values in `src/config/site.ts` (business email, mailing address). Phone and hours are set.
+- [ ] Fill in the remaining `REPLACE` value in `src/config/site.ts` (business email). Phone, address and hours are set.
 - [ ] Fill in `src/config/compliance.ts` (brokerage name, DPOR licence numbers)
 - [ ] Have a qualified Virginia professional review `/privacy`, `/terms` and
       `/fair-housing`, then set `LEGAL_REVIEW_DATE` and `REVIEW_MODE = false`

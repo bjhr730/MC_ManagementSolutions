@@ -6,6 +6,7 @@ import {
   REVIEW_MODE,
 } from '~/config/compliance';
 import {
+  ADDRESS_LINES,
   CONTACT,
   FOOTER_NAV,
   HOURS,
@@ -53,6 +54,14 @@ const serviceLinks = FOOTER_NAV.services.filter(
                 class="text-silver-200 underline decoration-white/30 underline-offset-4 hover:text-white"
                 >{CONTACT.email}</a
               >
+            </dd>
+          </div>
+          <div class="pt-1">
+            <dt class="sr-only">Office address</dt>
+            <dd>
+              <address class="text-silver-200 not-italic">
+                {ADDRESS_LINES.map((line) => <span class="block">{line}</span>)}
+              </address>
             </dd>
           </div>
           <div class="pt-1 text-silver-300">

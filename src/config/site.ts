@@ -36,15 +36,20 @@ export const CONTACT = {
   phoneHref: 'tel:+17038695034',
   /** REPLACE with the real business inbox. */
   email: 'info@replace-me.example.com',
-  /** REPLACE. Omit entirely if the business has no public office address. */
   address: {
-    street: 'REPLACE — street address',
-    city: 'REPLACE — city',
+    street: '801 N. Pitt St. 120',
+    city: 'Alexandria',
     region: 'VA',
-    postalCode: 'REPLACE',
+    postalCode: '22314',
     country: 'US',
   },
 } as const;
+
+/** The address as it is written out, one line per line. */
+export const ADDRESS_LINES: readonly string[] = [
+  CONTACT.address.street,
+  `${CONTACT.address.city}, ${CONTACT.address.region} ${CONTACT.address.postalCode}`,
+];
 
 /** Hours of operation, as Antonio worded them. */
 export const HOURS = {

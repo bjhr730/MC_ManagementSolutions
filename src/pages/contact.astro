@@ -11,6 +11,7 @@ import Section from '~/components/Section.astro';
 
 import { handleInquiry, type InquiryResult } from '~/lib/inquiry';
 import {
+  ADDRESS_LINES,
   CONTACT,
   HOURS,
   SERVICE_AREAS,
@@ -91,6 +92,14 @@ const formError = result?.status === 'error' ? result.message : undefined;
                 class="break-words font-medium text-ink underline decoration-accent decoration-2 underline-offset-4"
                 >{CONTACT.email}</a
               >
+            </dd>
+          </div>
+          <div>
+            <dt class="text-sm font-semibold text-ink-muted">Office</dt>
+            <dd class="mt-1">
+              <address class="font-medium text-ink not-italic">
+                {ADDRESS_LINES.map((line) => <span class="block">{line}</span>)}
+              </address>
             </dd>
           </div>
         </dl>
