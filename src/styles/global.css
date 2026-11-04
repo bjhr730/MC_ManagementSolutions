@@ -431,21 +431,6 @@
     transition: transform var(--duration-fast) var(--ease-out-quiet);
   }
 
-  /* A figure that just changed. Brief, so it reads as "this recalculated"
-     rather than as an effect. */
-  .figure-tick {
-    animation: figure-tick var(--duration-slow) var(--ease-out-quiet);
-  }
-
-  @keyframes figure-tick {
-    from {
-      color: var(--color-accent);
-    }
-    to {
-      color: var(--color-cost);
-    }
-  }
-
   /* Progress line under the sticky header, driven by document scroll. */
   @supports (animation-timeline: scroll()) {
     .scroll-progress {
@@ -462,6 +447,12 @@
     to {
       transform: scaleX(1);
     }
+  }
+
+  .range-input {
+    width: 100%;
+    accent-color: var(--color-evergreen-text);
+    cursor: pointer;
   }
 
   .skip-link {

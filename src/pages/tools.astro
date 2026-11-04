@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '~/layouts/BaseLayout.astro';
-import Cta from '~/components/Cta.astro';
 import Disclosure from '~/components/Disclosure.astro';
 import JsonLd from '~/components/JsonLd.astro';
 import PageHeader from '~/components/PageHeader.astro';
@@ -12,14 +11,14 @@ import { breadcrumbs } from '~/lib/schema';
 
 <BaseLayout
   title="Owner Tools"
-  description="A vacancy cost calculator for Northern Virginia rental owners: what an empty property actually costs per day, and how long you can afford to hold out for a higher rent."
+  description="A vacancy cost calculator for Northern Virginia rental owners: what an empty property costs, and how many extra vacant days a higher rent can justify. Free to use, no sign-up."
 >
   <JsonLd slot="head" schema={breadcrumbs([{ name: 'Owner Tools', path: '/tools' }])} />
 
   <PageHeader
     eyebrow="Owner tools"
     title="Vacancy Cost Calculator"
-    lead="An empty property costs money every day it sits. This works out how much, and whether holding out for a higher rent is worth the wait."
+    lead="An empty property costs money every day it sits. This works out how much, and whether holding out for a higher rent is worth the wait. Free to use, and nothing is sent anywhere."
   />
 
   <Section tone="sage">
@@ -28,52 +27,67 @@ import { breadcrumbs } from '~/lib/schema';
     <div class="mt-12 grid gap-10 lg:grid-cols-2 lg:gap-16">
       <div class="prose-site">
         <h2 class="text-h2">How the numbers work</h2>
+
+        <h3>Vacancy cost</h3>
         <p>
-          Lost rent and carrying costs are both converted to a daily figure
-          using an average month of 30.4 days, then multiplied by the days
-          vacant. Turnover costs are added once, not per day.
+          Rent and carrying costs are converted to a daily figure using an
+          average month of 30.4 days, then multiplied by the days vacant.
+          Turnover expenses are added once, not per day.
         </p>
         <p>
-          The break-even figure is the part owners most often get wrong. A
-          higher rent earns you the difference every month of the lease, so
-          over twelve months it is worth twelve times the increase. Divide
-          that by what a day empty costs you, and you get the number of extra
-          vacant days the increase can absorb before you are behind.
+          The carrying costs are shown separately on purpose. A mortgage
+          payment, HOA fee and insurance premium are owed whether or not
+          anyone is living there, so they are not caused by the vacancy. What
+          the vacancy does is remove the rent that would otherwise meet them,
+          which is why the total is described as cash-flow exposure rather
+          than a loss.
+        </p>
+
+        <h3>Break-even on a higher rent</h3>
+        <p>
+          This compares two outcomes over the same lease term, so the
+          comparison is like for like: letting now at your asking rent, or
+          letting later at the higher rent after some additional empty days.
+          The break-even is the point where both leave you with the same
+          rental income over that period.
         </p>
         <p>
-          It is deliberately simple. It does not model taxes, depreciation,
-          rent growth, or the risk that a tenant who only accepted a stretched
-          rent leaves at the first renewal.
+          Carrying costs are deliberately left out of this second calculation.
+          They are identical in both scenarios, so including them would
+          understate how long you can afford to wait. The figure does account
+          for something owners often miss: days spent waiting are days that no
+          longer earn rent inside the same fixed term.
+        </p>
+        <p>
+          The assumption is that the only cost of waiting is the rent you do
+          not collect. If a longer marketing period means real extra spend,
+          that is not modelled here.
         </p>
       </div>
 
       <div>
-        <Disclosure label="A note on this tool">
+        <Disclosure label="Please read">
           <p>
-            This calculator is a general estimate for planning purposes. It is
-            not financial, tax or investment advice, and it does not account
-            for the specifics of your property or your circumstances. Actual
-            vacancy periods depend on the market, the season, the condition of
-            the property and the rent you ask.
+            This calculator provides general estimates for educational
+            purposes only. Results are based on user-provided assumptions and
+            do not constitute financial, tax, legal, or investment advice.
+            Actual rental performance and vacancy periods may vary.
           </p>
         </Disclosure>
 
-        <div class="mt-8 rounded-lg border border-line bg-surface-2 p-6">
+        <div class="mt-8 rounded-lg border border-line bg-surface p-6">
           <h2 class="font-serif text-base font-semibold text-ink">
-            Want the real number for your property?
+            Your figures stay with you
           </h2>
           <p class="mt-2 text-sm leading-relaxed text-ink-muted">
-            A rental evaluation looks at what comparable homes in your area
-            are actually renting for and how long they are taking to lease,
-            rather than an average month.
+            Everything you type here is worked out in your own browser.
+            Nothing is sent to us, stored, or required before you see your
+            results. If you choose to request a rental evaluation, the figures
+            are copied into the message box on our contact form so you can
+            check them before anything is sent.
           </p>
-          <a href="/contact" class="btn btn-secondary mt-5">
-            Request a rental evaluation
-          </a>
         </div>
       </div>
     </div>
   </Section>
-
-  <Cta />
 </BaseLayout>

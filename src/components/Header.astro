@@ -42,7 +42,7 @@ const isCurrent = (href: string) => path === href;
       <Logo />
     </a>
 
-    <!-- Desktop navigation -->
+    {/* Desktop navigation */}
     <nav aria-label="Primary" class="hidden lg:block">
       <ul class="flex items-center gap-1 whitespace-nowrap">
         {
@@ -68,7 +68,7 @@ const isCurrent = (href: string) => path === href;
       >
         {CONTACT.phone}
       </a>
-      <!-- Mobile menu trigger -->
+      {/* Mobile menu trigger */}
       <button
         type="button"
         id="nav-open"
@@ -92,10 +92,10 @@ const isCurrent = (href: string) => path === href;
     </div>
   </div>
 
-  <!--
+  {/*
     Native <dialog> gives us the focus trap, Escape-to-close and background
     inerting for free, which is most of what a hand-rolled menu gets wrong.
-  -->
+  */}
   <dialog
     id="nav-dialog"
     aria-label="Site menu"

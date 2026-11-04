@@ -75,11 +75,9 @@ export const inquirySchema = z.object({
     }),
   altPhone: z.string().trim().max(40).optional(),
   heardAbout: z.string().trim().max(200).optional(),
-  propertyAddress: z
-    .string()
-    .trim()
-    .min(5, 'Please tell us which property this is about.')
-    .max(300),
+  // Optional: Antonio asked for the rental-evaluation route to work without
+  // one, and requiring an address up front costs more leads than it gains.
+  propertyAddress: z.string().trim().max(300).optional(),
   propertyType: optionalChoice(PROPERTY_TYPES),
   occupancy: optionalChoice(OCCUPANCY),
   timeline: optionalChoice(TIMELINES),
@@ -185,7 +183,7 @@ async function store(data: InquiryInput, meta: { ip: string | null }) {
       ${data.name}, ${data.email}, ${data.phone},
       ${data.altEmail || null}, ${data.altPhone || null},
       ${data.heardAbout || null},
-      ${data.propertyAddress}, ${data.propertyType ?? null},
+      ${data.propertyAddress || null}, ${data.propertyType ?? null},
       ${data.occupancy ?? null}, ${data.timeline ?? null},
       ${data.message || null}, ${meta.ip}
     )
@@ -201,7 +199,7 @@ function plainText(data: InquiryInput): string {
     `Alt phone: ${data.altPhone || '(none)'}`,
     `Heard about us: ${data.heardAbout || '(not specified)'}`,
     '',
-    `Property: ${data.propertyAddress}`,
+    `Property: ${data.propertyAddress || '(not provided)'}`,
     `Type: ${data.propertyType ?? '(not specified)'}`,
     `Status: ${data.occupancy ?? '(not specified)'}`,
     `Timeline: ${data.timeline ?? '(not specified)'}`,
@@ -229,7 +227,7 @@ async function notify(data: InquiryInput) {
     from,
     to,
     replyTo: data.email,
-    subject: `Owner inquiry: ${data.propertyAddress}`,
+    subject: `Owner inquiry: ${data.propertyAddress || data.name}`,
     text: plainText(data),
   });
 

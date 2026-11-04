@@ -24,11 +24,11 @@ const { title, description, noindex } = Astro.props;
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
-    <!--
+    {/*
       The two latin variable fonts are the only blocking subresources on the
       site. Preloading them removes the second round trip that would otherwise
       delay the largest text block.
-    -->
+    */}
     <link
       rel="preload"
       href="/fonts/source-serif-4-latin-wght-normal.woff2"

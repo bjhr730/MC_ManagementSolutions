@@ -1,269 +1,476 @@
 ---
-import { computeVacancy, days, EXAMPLE, money } from '~/lib/vacancy';
+import {
+  computeVacancy,
+  days,
+  EXAMPLE,
+  LEASE_TERMS,
+  LIMITS,
+  money,
+  share,
+} from '~/lib/vacancy';
 
 /**
- * The example result is computed here, at build time, so the tool shows a
- * worked answer before any JavaScript runs. The browser script recomputes the
- * same numbers from the same module as the inputs change.
+ * The example result is computed at build time, so the tool shows a worked
+ * answer before any JavaScript runs. The browser script recomputes the same
+ * numbers from the same module as the inputs move.
  */
-const initial = computeVacancy(EXAMPLE);
+const r = computeVacancy(EXAMPLE);
 
-const fields = [
+const amounts = [
   {
     id: 'rent',
-    label: 'Monthly rent',
-    prefix: '$',
+    label: 'Monthly asking rent',
     value: EXAMPLE.rent,
     step: 25,
-    hint: 'What you are asking per month.',
-  },
-  {
-    id: 'days',
-    label: 'Days vacant',
-    prefix: null,
-    value: EXAMPLE.days,
-    step: 1,
-    hint: 'How long you expect it to sit empty between tenants.',
+    hint: 'What you plan to ask per month.',
   },
   {
     id: 'carrying',
     label: 'Monthly carrying costs',
-    prefix: '$',
     value: EXAMPLE.carrying,
     step: 25,
-    hint: 'Loan, HOA, insurance and utilities that keep running while it is empty.',
+    hint: 'Mortgage, HOA fees, insurance and utilities. These continue whether or not the property is occupied.',
   },
   {
     id: 'turnover',
-    label: 'One-time turnover costs',
-    prefix: '$',
+    label: 'One-time turnover expenses',
     value: EXAMPLE.turnover,
     step: 25,
-    hint: 'Make-ready, cleaning, and any leasing charge.',
+    hint: 'Cleaning, repairs, make-ready and leasing charges between tenants.',
   },
 ] as const;
 ---
 
 <div class="rounded-xl border border-line bg-surface p-6 md:p-8" id="vacancy-calculator">
-  <form
-    id="vacancy-form"
-    novalidate
-    onsubmit="return false"
-    class="grid gap-10 lg:grid-cols-[1fr_1fr] lg:gap-12"
-  >
-    <div>
-      <fieldset>
-        <legend class="font-serif text-h3 font-semibold text-ink">
-          Your property
-        </legend>
-        <p class="mt-2 text-sm text-ink-muted">
-          These are example figures. Change them to yours.
-        </p>
+  <form id="vacancy-form" novalidate onsubmit="return false">
+    <div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:gap-12">
+      <div>
+        <fieldset>
+          <legend class="font-serif text-h3 font-semibold text-ink">
+            Your property
+          </legend>
+          <p class="mt-2 text-sm text-ink-muted">
+            These are example figures. Change them to yours &mdash; nothing is
+            sent anywhere.
+          </p>
 
-        <div class="mt-6 space-y-5">
-          {
-            fields.map((field) => (
-              <div>
-                <label for={`v-${field.id}`} class="field-label">
-                  {field.label}
-                </label>
-                <div class="relative">
-                  {field.prefix && (
+          <div class="mt-6 space-y-5">
+            {
+              amounts.map((field) => (
+                <div>
+                  <label for={`v-${field.id}`} class="field-label">
+                    {field.label}
+                  </label>
+                  <div class="relative">
                     <span
                       aria-hidden="true"
                       class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-ink-muted"
                     >
-                      {field.prefix}
+                      $
                     </span>
-                  )}
-                  <input
-                    id={`v-${field.id}`}
-                    name={field.id}
-                    type="number"
-                    inputmode="numeric"
-                    min="0"
-                    step={field.step}
-                    value={field.value}
-                    aria-describedby={`v-${field.id}-hint`}
-                    class={`field-input tabular-nums ${field.prefix ? 'pl-7' : ''}`}
-                  />
+                    <input
+                      id={`v-${field.id}`}
+                      name={field.id}
+                      type="number"
+                      inputmode="numeric"
+                      min="0"
+                      step={field.step}
+                      value={field.value}
+                      aria-describedby={`v-${field.id}-hint`}
+                      class="field-input tabular-nums pl-7"
+                    />
+                  </div>
+                  <span id={`v-${field.id}-hint`} class="mt-1.5 block text-sm text-ink-muted">
+                    {field.hint}
+                  </span>
                 </div>
-                <span id={`v-${field.id}-hint`} class="mt-1.5 block text-sm text-ink-muted">
-                  {field.hint}
-                </span>
+              ))
+            }
+
+            <div>
+              <div class="flex items-baseline justify-between gap-3">
+                <label for="v-vacancyDays" class="field-label mb-0">
+                  Expected vacancy
+                </label>
+                <output
+                  for="v-vacancyDays"
+                  data-out="vacancyDaysLabel"
+                  class="font-serif text-lg font-semibold tabular-nums text-ink"
+                >
+                  {days(EXAMPLE.vacancyDays)}
+                </output>
               </div>
-            ))
-          }
-        </div>
-      </fieldset>
+              <input
+                id="v-vacancyDays"
+                name="vacancyDays"
+                type="range"
+                min={LIMITS.vacancyDays.min}
+                max={LIMITS.vacancyDays.max}
+                step={LIMITS.vacancyDays.step}
+                value={EXAMPLE.vacancyDays}
+                aria-describedby="v-vacancyDays-hint"
+                class="range-input mt-3"
+              />
+              <span id="v-vacancyDays-hint" class="mt-1.5 block text-sm text-ink-muted">
+                How long you expect it to sit empty between tenants.
+              </span>
+            </div>
 
-      <fieldset class="mt-9 border-t border-line pt-7">
-        <legend class="font-serif text-h3 font-semibold text-ink">
-          Holding out for more?
-        </legend>
-        <p class="mt-2 text-sm text-ink-muted">
-          The question is not whether a higher rent is better. It is whether
-          it is worth the extra time empty.
-        </p>
+            <div>
+              <div class="flex items-baseline justify-between gap-3">
+                <label for="v-increase" class="field-label mb-0">
+                  Proposed rent increase
+                </label>
+                <output
+                  for="v-increase"
+                  data-out="increaseLabel"
+                  class="font-serif text-lg font-semibold tabular-nums text-ink"
+                >
+                  {money(EXAMPLE.increase)}
+                </output>
+              </div>
+              <input
+                id="v-increase"
+                name="increase"
+                type="range"
+                min={LIMITS.increase.min}
+                max={LIMITS.increase.max}
+                step={LIMITS.increase.step}
+                value={EXAMPLE.increase}
+                aria-describedby="v-increase-hint"
+                class="range-input mt-3"
+              />
+              <span id="v-increase-hint" class="mt-1.5 block text-sm text-ink-muted">
+                Per month, above your asking rent.
+              </span>
+            </div>
 
-        <div class="mt-6">
-          <label for="v-increase" class="field-label">
-            Rent increase you are considering
-          </label>
-          <div class="relative">
-            <span
-              aria-hidden="true"
-              class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-ink-muted"
-            >
-              $
-            </span>
-            <input
-              id="v-increase"
-              name="increase"
-              type="number"
-              inputmode="numeric"
-              min="0"
-              step="25"
-              value={EXAMPLE.increase}
-              aria-describedby="v-increase-hint"
-              class="field-input tabular-nums pl-7"
-            />
+            <div>
+              <label for="v-leaseMonths" class="field-label">
+                Expected lease term
+              </label>
+              <select
+                id="v-leaseMonths"
+                name="leaseMonths"
+                class="field-input"
+                aria-describedby="v-leaseMonths-hint"
+              >
+                {
+                  LEASE_TERMS.map((term) => (
+                    <option value={term} selected={term === EXAMPLE.leaseMonths}>
+                      {term} months
+                    </option>
+                  ))
+                }
+              </select>
+              <span id="v-leaseMonths-hint" class="mt-1.5 block text-sm text-ink-muted">
+                The period both scenarios are compared over.
+              </span>
+            </div>
           </div>
-          <span id="v-increase-hint" class="mt-1.5 block text-sm text-ink-muted">
-            Per month, on a 12-month lease.
-          </span>
-        </div>
-      </fieldset>
+        </fieldset>
+
+        <button type="reset" class="btn btn-secondary mt-7">
+          Reset calculator
+        </button>
+      </div>
+
+      <output for="vacancy-form" aria-live="polite" class="block space-y-8">
+        <section class="rounded-lg bg-surface-2 p-6 md:p-7" aria-labelledby="calc-a">
+          <h2 id="calc-a" class="font-serif text-h3 font-semibold text-ink">
+            What the vacancy exposes you to
+          </h2>
+
+          <dl class="mt-6 space-y-3">
+            <div class="flex items-baseline justify-between gap-4">
+              <dt class="text-ink-muted">Lost rental income</dt>
+              <dd class="font-medium tabular-nums text-ink" data-out="lostRent">
+                {money(r.lostRent)}
+              </dd>
+            </div>
+            <div class="flex items-baseline justify-between gap-4">
+              <dt class="text-ink-muted">Carrying costs while empty</dt>
+              <dd class="font-medium tabular-nums text-ink" data-out="carryingCost">
+                {money(r.carryingCost)}
+              </dd>
+            </div>
+            <div class="flex items-baseline justify-between gap-4">
+              <dt class="text-ink-muted">One-time turnover expenses</dt>
+              <dd class="font-medium tabular-nums text-ink" data-out="turnoverCost">
+                {money(r.turnoverCost)}
+              </dd>
+            </div>
+          </dl>
+
+          {/*
+            Proportions of the total. Decorative: every figure it encodes is
+            in the list above, so it carries no information of its own.
+          */}
+          <div
+            aria-hidden="true"
+            class="mt-6 flex h-3 w-full overflow-hidden rounded-full bg-surface-3"
+          >
+            <span
+              data-bar="lostRent"
+              class="block h-full bg-cost"
+              style={`width:${share(r.lostRent, r.totalExposure)}%`}></span>
+            <span
+              data-bar="carryingCost"
+              class="block h-full bg-navy-500"
+              style={`width:${share(r.carryingCost, r.totalExposure)}%`}></span>
+            <span
+              data-bar="turnoverCost"
+              class="block h-full bg-evergreen-500"
+              style={`width:${share(r.turnoverCost, r.totalExposure)}%`}></span>
+          </div>
+
+          <div class="mt-6 border-t-2 border-accent pt-5">
+            <p class="text-sm font-semibold uppercase tracking-[0.08em] text-ink-muted">
+              Total cash-flow exposure
+            </p>
+            <p
+              class="mt-1 font-serif text-display font-semibold tabular-nums text-cost"
+              data-out="totalExposure"
+            >
+              {money(r.totalExposure)}
+            </p>
+          </div>
+
+          <p class="mt-5 text-sm leading-relaxed text-ink-muted">
+            Of that, <strong class="font-semibold text-ink" data-out="vacancyCaused"
+              >{money(r.vacancyCaused)}</strong
+            > exists only because the property is empty. The carrying costs would
+            fall due anyway &mdash; while it is vacant there is simply no rent
+            coming in to meet them.
+          </p>
+        </section>
+
+        <section class="rounded-lg border border-line p-6 md:p-7" aria-labelledby="calc-b">
+          <h2 id="calc-b" class="font-serif text-h3 font-semibold text-ink">
+            Is holding out for more rent worth it?
+          </h2>
+
+          <p class="mt-4 text-sm leading-relaxed text-ink-muted">
+            Asking <strong class="font-semibold text-ink" data-out="increaseLabel2"
+              >{money(EXAMPLE.increase)}</strong
+            > more is worth <strong class="font-semibold text-ink" data-out="increaseOverPeriod"
+              >{money(r.increaseOverPeriod)}</strong
+            > across a <span data-out="leaseLabel">{EXAMPLE.leaseMonths}</span>-month
+            lease &mdash; but only if it does not cost you too much extra time
+            empty.
+          </p>
+
+          <div class="mt-6 rounded-md border-l-4 border-accent bg-surface-3 px-4 py-4">
+            <p class="text-sm font-semibold uppercase tracking-[0.08em] text-ink-muted">
+              Break-even
+            </p>
+            <p
+              class="mt-1 font-serif text-h2 font-semibold tabular-nums text-evergreen-text"
+              data-out="breakEvenDays"
+            >
+              {days(r.breakEvenDays)}
+            </p>
+            <p class="mt-2 text-sm leading-relaxed text-ink" data-out="verdict">
+              If the higher rent takes more than {days(r.breakEvenDays)} longer to
+              achieve, you would have been better off letting it at your current
+              asking rent.
+            </p>
+          </div>
+
+          <p class="mt-5 text-xs leading-relaxed text-ink-muted">
+            Both scenarios are compared over the same <span data-out="leaseLabel2"
+              >{EXAMPLE.leaseMonths}</span
+            > months, counting only the days that actually earn rent. Mortgage, HOA
+            and insurance costs are deliberately excluded here: they are identical
+            whether you let now or later, so they cannot tip the decision. The only
+            cost of waiting that is counted is the rent not collected.
+          </p>
+        </section>
+      </output>
     </div>
-
-    {/*
-      aria-live="polite" so the figures are announced as they change, but
-      only once the person stops typing — the script debounces the update.
-    */}
-    <output
-      for="vacancy-form"
-      aria-live="polite"
-      class="block rounded-lg bg-surface-2 p-6 md:p-7"
-    >
-      <h2 class="font-serif text-h3 font-semibold text-ink">
-        What the vacancy costs
-      </h2>
-
-      <dl class="mt-6 space-y-3">
-        <div class="flex items-baseline justify-between gap-4">
-          <dt class="text-ink-muted">Lost rent</dt>
-          <dd class="font-medium tabular-nums text-ink" data-out="lostRent">
-            {money(initial.lostRent)}
-          </dd>
-        </div>
-        <div class="flex items-baseline justify-between gap-4">
-          <dt class="text-ink-muted">Carrying costs</dt>
-          <dd class="font-medium tabular-nums text-ink" data-out="carryingCost">
-            {money(initial.carryingCost)}
-          </dd>
-        </div>
-        <div class="flex items-baseline justify-between gap-4">
-          <dt class="text-ink-muted">Turnover costs</dt>
-          <dd class="font-medium tabular-nums text-ink" data-out="turnoverCost">
-            {money(initial.turnoverCost)}
-          </dd>
-        </div>
-      </dl>
-
-      <div class="mt-6 border-t-2 border-accent pt-5">
-        <p class="text-sm font-semibold uppercase tracking-[0.08em] text-ink-muted">
-          Total cost of this vacancy
-        </p>
-        <p
-          class="mt-1 font-serif text-display font-semibold tabular-nums text-cost"
-          data-out="total"
-        >
-          {money(initial.total)}
-        </p>
-        <p class="mt-2 text-sm text-ink-muted">
-          Every further day empty costs
-          <strong class="font-semibold text-ink" data-out="perDay">
-            {money(initial.perDay)}
-          </strong>.
-        </p>
-      </div>
-
-      <div class="mt-7 rounded-md border-l-4 border-accent bg-surface-3 px-4 py-4">
-        <p class="text-sm leading-relaxed text-ink">
-          Asking <strong data-out="increaseLabel">{money(EXAMPLE.increase)}</strong>
-          more per month pays for about
-          <strong class="whitespace-nowrap" data-out="breakEvenDays">
-            {days(initial.breakEvenDays)}
-          </strong>
-          of extra vacancy over a 12-month lease. Longer than that and the
-          higher rent leaves you behind.
-        </p>
-      </div>
-    </output>
   </form>
 
   <noscript>
     <p class="mt-6 rounded-md bg-surface-3 px-4 py-3 text-sm text-ink">
       The figures above are a worked example. The calculator updates as you
-      type, which needs JavaScript — or
+      change the inputs, which needs JavaScript &mdash; or
       <a href="/contact" class="underline underline-offset-2">send us the property details</a>
       and we will run the numbers with you.
     </p>
   </noscript>
 </div>
 
+<section
+  class="mt-10 rounded-xl bg-evergreen p-8 text-evergreen-soft md:p-12"
+  aria-labelledby="calc-cta"
+>
+  <div class="max-w-2xl">
+    <h2 id="calc-cta" class="text-h2 text-on-evergreen">
+      What Could These Numbers Mean for Your Property?
+    </h2>
+    <p class="mt-5 text-lead">
+      Every rental property is different. Your ideal rental price depends on
+      market conditions, property features, location, and tenant demand.
+    </p>
+    <p class="mt-4 text-lead">
+      At M&amp;A Management Solutions, we believe informed decisions begin with
+      understanding the numbers. Let&rsquo;s discuss your property, your rental
+      goals, and how we may be able to help you minimize vacancy and maximize
+      your investment&rsquo;s potential.
+    </p>
+
+    <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+      <a href="/contact" class="btn btn-on-dark w-full sm:w-auto">
+        Let&rsquo;s Talk About Your Property
+      </a>
+      <a
+        href="/contact#inquiry"
+        id="send-figures"
+        class="btn w-full border border-white/40 text-on-evergreen hover:bg-white/10 sm:w-auto"
+      >
+        Request a Personalized Rental Evaluation
+      </a>
+    </div>
+
+    <p class="mt-4 text-sm">
+      No pressure. No obligation. Just a conversation about your investment.
+    </p>
+
+    {/*
+      Consent, in plain words. The figures are written into the message box on
+      the contact form where they can be read, edited or removed before
+      anything is sent. Nothing leaves the browser until the form is submitted.
+    */}
+    <p class="mt-5 text-xs leading-relaxed text-evergreen-soft">
+      Choosing a rental evaluation copies the figures above into the message
+      box on our contact form, so you can check them before you send anything.
+    </p>
+  </div>
+</section>
+
 <script>
-  import { computeVacancy, days, money } from '~/lib/vacancy';
+  import {
+    computeVacancy,
+    days,
+    money,
+    share,
+    type VacancyInput,
+  } from '~/lib/vacancy';
 
   const form = document.getElementById('vacancy-form') as HTMLFormElement | null;
 
   if (form) {
+    const root = document.getElementById('vacancy-calculator');
     const out = (key: string) =>
-      form.parentElement?.querySelector<HTMLElement>(`[data-out="${key}"]`);
+      root?.querySelector<HTMLElement>(`[data-out="${key}"]`);
+    const bar = (key: string) =>
+      root?.querySelector<HTMLElement>(`[data-bar="${key}"]`);
 
-    const read = (name: string) =>
+    const num = (name: string) =>
       Number((form.elements.namedItem(name) as HTMLInputElement | null)?.value);
 
-    const render = () => {
-      const increase = read('increase');
-      const result = computeVacancy({
-        rent: read('rent'),
-        days: read('days'),
-        carrying: read('carrying'),
-        turnover: read('turnover'),
-        increase,
-      });
+    const read = (): VacancyInput => ({
+      rent: num('rent'),
+      vacancyDays: num('vacancyDays'),
+      carrying: num('carrying'),
+      turnover: num('turnover'),
+      increase: num('increase'),
+      leaseMonths: num('leaseMonths'),
+    });
 
-      const set = (key: string, value: string) => {
-        const el = out(key);
-        if (el) el.textContent = value;
-      };
+    const set = (key: string, value: string) => {
+      const el = out(key);
+      if (el) el.textContent = value;
+    };
+
+    let latest = read();
+
+    const render = () => {
+      const input = read();
+      latest = input;
+      const result = computeVacancy(input);
+
+      set('vacancyDaysLabel', days(input.vacancyDays));
+      set('increaseLabel', money(input.increase));
+      set('increaseLabel2', money(input.increase));
+      set('leaseLabel', String(input.leaseMonths));
+      set('leaseLabel2', String(input.leaseMonths));
 
       set('lostRent', money(result.lostRent));
       set('carryingCost', money(result.carryingCost));
       set('turnoverCost', money(result.turnoverCost));
-      set('total', money(result.total));
-      set('perDay', money(result.perDay));
-      set('increaseLabel', money(Number.isFinite(increase) ? increase : 0));
+      set('totalExposure', money(result.totalExposure));
+      set('vacancyCaused', money(result.vacancyCaused));
+
+      for (const key of ['lostRent', 'carryingCost', 'turnoverCost'] as const) {
+        const el = bar(key);
+        if (el) el.style.width = `${share(result[key], result.totalExposure)}%`;
+      }
+
+      set('increaseOverPeriod', money(result.increaseOverPeriod));
       set('breakEvenDays', days(result.breakEvenDays));
 
-      // Brief flash on the headline figure so it is obvious the number
-      // responded to what was just typed. Restarted by removing the class
-      // and forcing a reflow before adding it back.
-      const total = out('total');
-      if (total) {
-        total.classList.remove('figure-tick');
-        void total.offsetWidth;
-        total.classList.add('figure-tick');
+      // The verdict has to stay honest at the edges: with no increase, or no
+      // earning days left in the period, there is nothing to break even on.
+      let verdict: string;
+      if (input.increase <= 0) {
+        verdict =
+          'With no increase there is nothing to wait for: every extra day empty is simply rent you do not collect.';
+      } else if (result.earningDaysNow <= 0) {
+        verdict =
+          'The vacancy already fills the whole comparison period, so there is no rent-earning time left for a higher rent to recover.';
+      } else if (result.breakEvenDays < 1) {
+        verdict =
+          'At these figures the increase barely buys any extra time. Letting it at your current asking rent is very likely the better move.';
+      } else {
+        verdict = `If the higher rent takes more than ${days(
+          result.breakEvenDays
+        )} longer to achieve, you would have been better off letting it at your current asking rent.`;
       }
+      set('verdict', verdict);
     };
 
-    // Debounced so a screen reader announces the settled figure rather than
-    // every keystroke along the way.
-    let pending: number | undefined;
-    form.addEventListener('input', () => {
-      window.clearTimeout(pending);
-      pending = window.setTimeout(render, 350);
+    form.addEventListener('input', render);
+
+    // Native reset restores the markup defaults; re-render once it has.
+    form.addEventListener('reset', () => {
+      window.setTimeout(render, 0);
     });
+
+    /**
+     * Carry the figures to the contact form, but only when the visitor asks
+     * for a rental evaluation. sessionStorage rather than the URL: these are
+     * someone's property finances and do not belong in a shareable link or a
+     * server log.
+     */
+    document.getElementById('send-figures')?.addEventListener('click', () => {
+      const result = computeVacancy(latest);
+      const summary = [
+        'My figures from the vacancy calculator:',
+        '',
+        `Monthly asking rent: ${money(latest.rent)}`,
+        `Expected vacancy: ${days(latest.vacancyDays)}`,
+        `Monthly carrying costs: ${money(latest.carrying)}`,
+        `One-time turnover expenses: ${money(latest.turnover)}`,
+        `Proposed rent increase: ${money(latest.increase)} per month`,
+        `Lease term compared: ${latest.leaseMonths} months`,
+        '',
+        `Lost rental income: ${money(result.lostRent)}`,
+        `Carrying costs while empty: ${money(result.carryingCost)}`,
+        `Total cash-flow exposure: ${money(result.totalExposure)}`,
+        `Break-even on the increase: ${days(result.breakEvenDays)}`,
+        '',
+        'I would like a personalized rental evaluation.',
+      ].join('\n');
+
+      try {
+        sessionStorage.setItem('ma:vacancy-summary', summary);
+      } catch {
+        // Private browsing or blocked storage: the link still works, the
+        // figures just do not travel with it.
+      }
+    });
+
+    render();
   }
 </script>

@@ -174,3 +174,32 @@ const formError = result?.status === 'error' ? result.message : undefined;
     </p>
   </Section>
 </BaseLayout>
+<script>
+  /*
+   * The vacancy calculator can hand its figures over when someone asks for a
+   * rental evaluation. They land in the message box, visible and editable, so
+   * nothing is sent that the person has not seen. Read once, then cleared.
+   */
+  const KEY = 'ma:vacancy-summary';
+
+  try {
+    const summary = sessionStorage.getItem(KEY);
+    const field = document.getElementById('message') as HTMLTextAreaElement | null;
+
+    if (summary && field && !field.value.trim()) {
+      field.value = summary;
+      sessionStorage.removeItem(KEY);
+
+      const note = document.createElement('p');
+      note.setAttribute('role', 'status');
+      note.className =
+        'mb-2 rounded-md bg-surface-3 px-3 py-2 text-sm font-medium text-ink';
+      note.textContent =
+        'Your calculator figures have been added below. Edit or delete them before sending.';
+      field.parentElement?.insertBefore(note, field);
+    }
+  } catch {
+    // Storage blocked or unavailable; the form simply arrives empty.
+  }
+</script>
+
