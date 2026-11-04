@@ -19,7 +19,7 @@ export const HERO = {
     'rental property of his own. Reliable, transparent management for ' +
     'Northern Virginia owners, whether you have one rental home or a ' +
     'growing portfolio.',
-  primaryCta: { label: 'Request an owner consultation', href: '/contact' },
+  primaryCta: { label: 'Request a consultation', href: '/contact' },
   secondaryCta: { label: 'See what we handle', href: '/services' },
 } as const;
 
