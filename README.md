@@ -247,6 +247,24 @@ first.
 
 ---
 
+## Launch preflight
+
+Setting `SITE_INDEXABLE="true"` is what makes this site public. A build with
+that flag set **fails** unless the things that silently lose business are in
+place:
+
+- Resend configured, or inquiries are stored and nobody is told about them
+- `DATABASE_URL` set, or they are not stored either
+- a real Turnstile secret, not Cloudflare's always-pass test key
+- `SITE_URL` set to the real domain, not the placeholder
+
+Nothing runs while the flag is off, so staging builds are untouched. It fails
+rather than warns because each of these produces a site that looks perfectly
+fine and quietly does the wrong thing. A failed deploy costs a minute; a
+fortnight of lost leads does not.
+
+The check lives in `launchPreflight()` in `astro.config.mjs`.
+
 ## Before launch
 
 Owned by the business, not the code:

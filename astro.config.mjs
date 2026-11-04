@@ -8,6 +8,84 @@ import tailwindcss from '@tailwindcss/vite';
 // tags, sitemap.xml, robots.txt and Open Graph URLs all read from here.
 const site = process.env.SITE_URL || 'https://replace-me.example.com';
 
+/**
+ * Launch preflight.
+ *
+ * SITE_INDEXABLE="true" is the switch that makes this site public to search
+ * engines, so it is the moment to check the things that silently lose
+ * business if they are wrong. Nothing here runs while the flag is off, so
+ * staging builds are untouched.
+ *
+ * It fails the build rather than warning, because every condition below
+ * produces a site that looks fine and quietly does the wrong thing: an
+ * inquiry nobody is told about, or a spam filter that lets everything
+ * through. A failed deploy is recoverable in a minute; a fortnight of lost
+ * leads is not.
+ */
+const CLOUDFLARE_TEST_SECRETS = [
+  '1x0000000000000000000000000000000AA',
+  '2x0000000000000000000000000000000AA',
+  '3x0000000000000000000000000000000AA',
+];
+
+function launchPreflight() {
+  return {
+    name: 'launch-preflight',
+    hooks: {
+      'astro:build:start': () => {
+        if (process.env.SITE_INDEXABLE !== 'true') return;
+
+        const problems = [];
+        const env = process.env;
+
+        if (!env.RESEND_API_KEY || !env.INQUIRY_FROM_EMAIL || !env.INQUIRY_TO_EMAIL) {
+          problems.push(
+            'Resend is not configured (RESEND_API_KEY, INQUIRY_FROM_EMAIL, INQUIRY_TO_EMAIL). ' +
+              'Inquiries would be stored but nobody would be told about them.'
+          );
+        }
+
+        if (!env.DATABASE_URL) {
+          problems.push(
+            'DATABASE_URL is not set, so inquiries would not be stored.'
+          );
+        }
+
+        if (!env.TURNSTILE_SECRET_KEY) {
+          problems.push(
+            'TURNSTILE_SECRET_KEY is not set. In production every submission is rejected.'
+          );
+        } else if (CLOUDFLARE_TEST_SECRETS.includes(env.TURNSTILE_SECRET_KEY)) {
+          problems.push(
+            "TURNSTILE_SECRET_KEY is still Cloudflare's always-pass test key, so the form has no spam protection."
+          );
+        }
+
+        if (!env.SITE_URL || env.SITE_URL.includes('replace-me')) {
+          problems.push(
+            'SITE_URL is missing or still the placeholder, so canonical tags and the sitemap would be wrong.'
+          );
+        }
+
+        if (problems.length > 0) {
+          // NL via fromCharCode so no escape sequence has to survive the
+          // trip through whatever writes this file.
+          const NL = String.fromCharCode(10);
+          throw new Error(
+            [
+              'Launch preflight failed. SITE_INDEXABLE is "true", which makes this site public, but:',
+              '',
+              ...problems.map((problem) => '  - ' + problem),
+              '',
+              'Fix these, or unset SITE_INDEXABLE to keep the deploy private.',
+            ].join(NL)
+          );
+        }
+      },
+    },
+  };
+}
+
 export default defineConfig({
   site,
   // Static by default. Only `src/pages/api/inquiry.ts` opts out with
@@ -15,6 +93,7 @@ export default defineConfig({
   output: 'static',
   adapter: vercel(),
   integrations: [
+    launchPreflight(),
     sitemap({
       filter: (page) =>
         // Utility pages that should not appear in search results.
