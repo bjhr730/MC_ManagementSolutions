@@ -16,6 +16,24 @@ import {
  */
 const r = computeVacancy(EXAMPLE);
 
+/**
+ * Breakdown bar geometry. Drawn as SVG with `width` and `x` presentation
+ * attributes rather than a styled div: a CSP without 'unsafe-inline' reports
+ * (and may one day block) every inline style attribute, and this bar needs to
+ * change on every keystroke. Presentation attributes are not styles, so the
+ * policy never touches them.
+ */
+const segW = {
+  lostRent: share(r.lostRent, r.totalExposure),
+  carryingCost: share(r.carryingCost, r.totalExposure),
+  turnoverCost: share(r.turnoverCost, r.totalExposure),
+};
+const segX = {
+  lostRent: 0,
+  carryingCost: segW.lostRent,
+  turnoverCost: segW.lostRent + segW.carryingCost,
+};
+
 const amounts = [
   {
     id: 'rent',
@@ -206,23 +224,34 @@ const amounts = [
             Proportions of the total. Decorative: every figure it encodes is
             in the list above, so it carries no information of its own.
           */}
-          <div
+          <svg
             aria-hidden="true"
-            class="mt-6 flex h-3 w-full overflow-hidden rounded-full bg-surface-3"
+            viewBox="0 0 100 1"
+            preserveAspectRatio="none"
+            class="mt-6 block h-3 w-full overflow-hidden rounded-full bg-surface-3"
           >
-            <span
+            <rect
               data-bar="lostRent"
-              class="block h-full bg-cost"
-              style={`width:${share(r.lostRent, r.totalExposure)}%`}></span>
-            <span
+              x={segX.lostRent}
+              y="0"
+              height="1"
+              width={segW.lostRent}
+              class="fill-cost"></rect>
+            <rect
               data-bar="carryingCost"
-              class="block h-full bg-navy-500"
-              style={`width:${share(r.carryingCost, r.totalExposure)}%`}></span>
-            <span
+              x={segX.carryingCost}
+              y="0"
+              height="1"
+              width={segW.carryingCost}
+              class="fill-navy-500"></rect>
+            <rect
               data-bar="turnoverCost"
-              class="block h-full bg-evergreen-500"
-              style={`width:${share(r.turnoverCost, r.totalExposure)}%`}></span>
-          </div>
+              x={segX.turnoverCost}
+              y="0"
+              height="1"
+              width={segW.turnoverCost}
+              class="fill-evergreen-500"></rect>
+          </svg>
 
           <div class="mt-6 border-t-2 border-accent pt-5">
             <p class="text-sm font-semibold uppercase tracking-[0.08em] text-ink-muted">
@@ -402,9 +431,16 @@ const amounts = [
       set('totalExposure', money(result.totalExposure));
       set('vacancyCaused', money(result.vacancyCaused));
 
+      // Presentation attributes, not styles: nothing here trips the CSP.
+      let offset = 0;
       for (const key of ['lostRent', 'carryingCost', 'turnoverCost'] as const) {
+        const width = share(result[key], result.totalExposure);
         const el = bar(key);
-        if (el) el.style.width = `${share(result[key], result.totalExposure)}%`;
+        if (el) {
+          el.setAttribute('x', String(offset));
+          el.setAttribute('width', String(width));
+        }
+        offset += width;
       }
 
       set('increaseOverPeriod', money(result.increaseOverPeriod));
