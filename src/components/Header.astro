@@ -6,7 +6,7 @@ const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
 const isCurrent = (href: string) => path === href;
 ---
 
-<header class="sticky top-0 z-40 border-b border-line bg-surface/95 backdrop-blur-sm">
+<header class="sticky top-0 z-40 border-b border-line bg-surface/95 backdrop-blur-sm relative">
   {/*
     Portal utility bar. Until Buildium is live these point at /portals, which
     says so and gives people the direct route instead; the master checklist
@@ -30,6 +30,11 @@ const isCurrent = (href: string) => path === href;
         ))
       }
     </nav>
+  </div>
+
+  {/* How far down the page you are. Driven by scroll(), no JavaScript. */}
+  <div aria-hidden="true" class="absolute inset-x-0 bottom-0 h-0.5 bg-transparent">
+    <div class="scroll-progress h-full w-full bg-accent"></div>
   </div>
 
   <div class="container-page flex h-16 items-center justify-between gap-4 md:h-20">

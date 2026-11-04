@@ -175,7 +175,7 @@ const fields = [
           Total cost of this vacancy
         </p>
         <p
-          class="mt-1 font-serif text-display font-semibold tabular-nums text-ink"
+          class="mt-1 font-serif text-display font-semibold tabular-nums text-cost"
           data-out="total"
         >
           {money(initial.total)}
@@ -246,6 +246,16 @@ const fields = [
       set('perDay', money(result.perDay));
       set('increaseLabel', money(Number.isFinite(increase) ? increase : 0));
       set('breakEvenDays', days(result.breakEvenDays));
+
+      // Brief flash on the headline figure so it is obvious the number
+      // responded to what was just typed. Restarted by removing the class
+      // and forcing a reflow before adding it back.
+      const total = out('total');
+      if (total) {
+        total.classList.remove('figure-tick');
+        void total.offsetWidth;
+        total.classList.add('figure-tick');
+      }
     };
 
     // Debounced so a screen reader announces the settled figure rather than

@@ -70,6 +70,34 @@ Two config files hold everything else:
 - **`src/config/compliance.ts`** — fair housing statement, brokerage
   disclosure, pricing disclosure, licence numbers.
 
+### Colour and motion
+
+A second brand colour (evergreen) joins navy and the bronze accent, and bands
+alternate white / sage / evergreen / navy to give the pages some rhythm.
+Colour is also used functionally: the cost figures in the calculator are clay,
+not navy, because they are costs.
+
+`node scripts/check-contrast.mjs` parses the tokens out of `global.css` and
+checks every text-on-surface pair in both themes against WCAG. **Run it after
+touching any colour.** It already caught two real defects: form inputs and
+buttons had 1.58:1 borders, failing WCAG 2.2 1.4.11 for component boundaries
+(now a dedicated `--color-control-border`), and a bronze eyebrow on the
+evergreen band measured 4.09:1.
+
+Motion is CSS-only — the whole layer adds nothing to the JavaScript budget.
+Scroll reveals use native `animation-timeline: view()` inside `@supports`, so
+browsers without it simply show the content rather than leaving it at
+`opacity: 0`.
+
+**The reveal classes go on small elements only** — a card, a row, a heading.
+On a tall section wrapper the `entry` range stretches across most of the
+scroll through that section, which leaves content sitting on screen fully
+transparent. That was measured, not theorised: an element 800px down a 1015px
+viewport was invisible. The range is now `entry 0% entry 70%`, so an element
+is opaque well before it finishes entering.
+
+Everything is inside `prefers-reduced-motion: no-preference`.
+
 ### The vacancy calculator
 
 `/tools` holds a vacancy cost calculator. The arithmetic lives in

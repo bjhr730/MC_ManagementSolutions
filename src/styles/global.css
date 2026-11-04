@@ -29,6 +29,22 @@
   --color-bronze-600: #8c6239;
   --color-bronze-300: #c9a27a;
 
+  /* Second brand colour. Virginia is green and the business is about
+     long-term property value, so evergreen carries the "growth" surfaces
+     (tools, outcomes) while navy keeps the authority surfaces. Chosen over
+     the warmer terracotta that every generated site reaches for. */
+  --color-evergreen-900: #12302700;
+  --color-evergreen-800: #163B30;
+  --color-evergreen-700: #1d4d3e;
+  --color-evergreen-500: #3f7c68;
+  --color-evergreen-300: #7fbfa6;
+  --color-evergreen-100: #d9e8e1;
+  --color-sage-50: #eef3f0;
+
+  /* Functional colour: what something costs. Not decorative. */
+  --color-clay-700: #9a3f2b;
+  --color-clay-300: #e8a08c;
+
   /* Semantic tokens — these flip in dark mode below */
   --color-surface: #ffffff;
   --color-surface-2: #f7f9fa;
@@ -45,6 +61,22 @@
   --color-cta-hover: #1c232b;
   --color-cta-ink: #ffffff; /* 11.4:1 on cta */
   --color-focus: #2f6db5;
+
+  /* Coloured bands and the second brand colour, as semantic tokens. */
+  --color-control-border: #6f7b88; /* 4.3:1 on surface; WCAG 2.2 1.4.11 */
+  --color-surface-sage: #eef3f0;
+  --color-evergreen: #1d4d3e;
+  --color-on-evergreen: #ffffff;
+  --color-evergreen-soft: #d9e8e1;
+  --color-evergreen-text: #1d4d3e;
+  --color-cost: #9a3f2b;
+
+  /* Motion. Short, flat easing: this brand promises no surprises, so
+     nothing overshoots or bounces. */
+  --ease-out-quiet: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --duration-fast: 140ms;
+  --duration-base: 200ms;
+  --duration-slow: 420ms;
 
   /* Fluid type scale */
   --text-display: clamp(2.125rem, 1.55rem + 2.7vw, 3.5rem);
@@ -82,6 +114,13 @@
     --color-cta-hover: #ffffff;
     --color-cta-ink: #151a20; /* 15.0:1 on cta */
     --color-focus: #8ab4f8;
+    --color-control-border: #6b7684; /* 3.9:1 on the dark surface */
+    --color-surface-sage: #16221d;
+    --color-evergreen: #16221d;
+    --color-on-evergreen: #e6eaef;
+    --color-evergreen-soft: #a9c9bc;
+    --color-evergreen-text: #7fbfa6;
+    --color-cost: #e8a08c;
   }
 }
 
@@ -238,7 +277,7 @@
   }
 
   .btn-secondary {
-    border: 1px solid var(--color-line-strong);
+    border: 1px solid var(--color-control-border);
     color: var(--color-ink);
     background-color: transparent;
   }
@@ -278,7 +317,7 @@
     width: 100%;
     min-height: 2.75rem;
     padding: 0.625rem 0.75rem;
-    border: 1px solid var(--color-line-strong);
+    border: 1px solid var(--color-control-border);
     border-radius: 0.375rem;
     background-color: var(--color-surface);
     color: var(--color-ink);
@@ -305,6 +344,123 @@
     }
     .field-error {
       color: #fda29b;
+    }
+  }
+
+  /* ------------------------------------------------------------------
+     Motion
+
+     Scroll reveals use native scroll-driven animations, so there is no
+     IntersectionObserver and no JavaScript. The whole thing sits inside
+     @supports: where `animation-timeline` is unsupported the content is
+     simply visible, which is the opposite of the usual bug where elements
+     are left at opacity:0 because the observer never fired.
+
+     Easing is flat and short on purpose. This brand's promise is "no
+     surprises"; nothing here overshoots or bounces.
+  ------------------------------------------------------------------ */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      /* IMPORTANT: only put these on SMALL elements — a heading, a card, a
+         list item. On a tall section wrapper the `entry` range spans most of
+         the scroll through that section, which leaves content sitting on
+         screen at opacity 0. Measured: an element 800px down a 1015px
+         viewport was still fully transparent.
+
+         `entry 70%` means the element is opaque well before it has finished
+         entering, so it is never both on screen and invisible. */
+      .reveal,
+      .reveal-group > * {
+        animation: reveal-rise linear both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 70%;
+      }
+    }
+  }
+
+  @keyframes reveal-rise {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* A rule that draws itself in on hover. The 2px bronze rule is already
+     part of the page's language, so this animates what is there instead of
+     adding the universal card-lift. */
+  .rule-hover {
+    position: relative;
+  }
+
+  .rule-hover::after {
+    content: '';
+    position: absolute;
+    inset-block-start: -2px;
+    inset-inline-start: 0;
+    height: 2px;
+    width: 0;
+    background-color: var(--color-accent);
+    transition: width var(--duration-base) var(--ease-out-quiet);
+  }
+
+  .rule-hover:hover::after,
+  .rule-hover:focus-within::after {
+    width: 100%;
+  }
+
+  /* Rows that behave like controls: a real affordance, not decoration. */
+  .row-hover {
+    transition:
+      background-color var(--duration-fast) var(--ease-out-quiet),
+      transform var(--duration-fast) var(--ease-out-quiet);
+  }
+
+  .row-hover:hover {
+    background-color: var(--color-surface-3);
+  }
+
+  .row-hover:hover .row-hover-icon {
+    transform: translateX(2px);
+  }
+
+  .row-hover-icon {
+    transition: transform var(--duration-fast) var(--ease-out-quiet);
+  }
+
+  /* A figure that just changed. Brief, so it reads as "this recalculated"
+     rather than as an effect. */
+  .figure-tick {
+    animation: figure-tick var(--duration-slow) var(--ease-out-quiet);
+  }
+
+  @keyframes figure-tick {
+    from {
+      color: var(--color-accent);
+    }
+    to {
+      color: var(--color-cost);
+    }
+  }
+
+  /* Progress line under the sticky header, driven by document scroll. */
+  @supports (animation-timeline: scroll()) {
+    .scroll-progress {
+      transform-origin: 0 50%;
+      animation: scroll-progress linear;
+      animation-timeline: scroll(root block);
+    }
+  }
+
+  @keyframes scroll-progress {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
     }
   }
 

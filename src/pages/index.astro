@@ -68,14 +68,19 @@ const exampleCost = money(example.lostRent + example.carryingCost);
       </a>
     </div>
 
-    <ul class="mt-10 grid gap-x-10 gap-y-5 sm:grid-cols-2 lg:grid-cols-3">
+    <ul class="reveal-group mt-10 grid gap-x-10 gap-y-5 sm:grid-cols-2 lg:grid-cols-3">
       {
         SERVICES.map((service) => (
-          <li class="flex items-center gap-3">
-            <span class="text-accent">
-              <Icon name={service.icon} class="size-5" />
-            </span>
-            <span class="font-medium text-ink">{service.title}</span>
+          <li>
+            <a
+              href={`/services#${service.slug}`}
+              class="row-hover -mx-3 flex min-h-11 items-center gap-3 rounded-md px-3"
+            >
+              <span class="row-hover-icon text-evergreen-text">
+                <Icon name={service.icon} class="size-5" />
+              </span>
+              <span class="font-medium text-ink">{service.title}</span>
+            </a>
           </li>
         ))
       }
@@ -83,8 +88,8 @@ const exampleCost = money(example.lostRent + example.carryingCost);
   </Section>
 
   {/* --------------------------------------------------------------- Tools */}
-  <Section labelledby="tools-heading">
-    <div class="rounded-xl border border-line bg-surface-2 p-8 md:p-12">
+  <Section tone="sage" labelledby="tools-heading">
+    <div class="rounded-xl border border-line bg-surface p-8 md:p-12">
       <div class="grid gap-8 lg:grid-cols-[1.3fr_1fr] lg:items-center lg:gap-14">
         <div>
           <p class="eyebrow">{TOOLS_TEASER.eyebrow}</p>
@@ -104,7 +109,7 @@ const exampleCost = money(example.lostRent + example.carryingCost);
           <p class="text-sm font-semibold uppercase tracking-[0.08em] text-ink-muted">
             A {EXAMPLE.days}-day vacancy on a {money(EXAMPLE.rent)} rental
           </p>
-          <p class="mt-2 font-serif text-display font-semibold tabular-nums text-ink">
+          <p class="mt-2 font-serif text-display font-semibold tabular-nums text-cost">
             {exampleCost}
           </p>
           <p class="mt-2 text-sm text-ink-muted">
@@ -116,7 +121,7 @@ const exampleCost = money(example.lostRent + example.carryingCost);
   </Section>
 
   {/* ------------------------------------------------------------- Founder */}
-  <Section tone="muted" labelledby="founder-heading">
+  <Section labelledby="founder-heading">
     <div class="grid gap-12 lg:grid-cols-[1fr_1.3fr] lg:items-center lg:gap-16">
       {/*
         Headshot slot. The real portrait drops into this exact 4:5 box with
