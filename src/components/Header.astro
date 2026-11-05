@@ -1,5 +1,6 @@
 ---
 import Logo from './Logo.astro';
+import NavIcon from './NavIcon.astro';
 import { CONTACT, NAV, PORTAL_LINKS, PORTALS_LIVE } from '~/config/site';
 
 const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
@@ -44,16 +45,19 @@ const isCurrent = (href: string) => path === href;
 
     {/* Desktop navigation */}
     <nav aria-label="Primary" class="hidden lg:block">
-      <ul class="flex items-center gap-1 whitespace-nowrap">
+      <ul class="flex items-end gap-0.5 whitespace-nowrap">
         {
           NAV.map((item) => (
             <li>
               <a
                 href={item.href}
                 aria-current={isCurrent(item.href) ? 'page' : undefined}
-                class="inline-flex min-h-11 items-center rounded px-3 text-sm font-medium text-ink-muted hover:bg-surface-3 hover:text-ink aria-[current=page]:text-ink aria-[current=page]:underline aria-[current=page]:decoration-accent aria-[current=page]:decoration-2 aria-[current=page]:underline-offset-8"
+                class="nav-item group flex min-h-11 flex-col items-center gap-1 rounded px-2.5 py-1.5 hover:bg-surface-3"
               >
-                {item.label}
+                <NavIcon icon={item.icon} size={28} class="nav-item-icon size-7" />
+                <span class="text-[0.8125rem] font-medium leading-none text-ink-muted group-hover:text-ink group-aria-[current=page]:text-ink group-aria-[current=page]:underline group-aria-[current=page]:decoration-accent group-aria-[current=page]:decoration-2 group-aria-[current=page]:underline-offset-4">
+                  {item.label}
+                </span>
               </a>
             </li>
           ))
@@ -131,8 +135,9 @@ const isCurrent = (href: string) => path === href;
               <a
                 href={item.href}
                 aria-current={isCurrent(item.href) ? 'page' : undefined}
-                class="flex min-h-14 items-center text-lg font-medium text-ink aria-[current=page]:text-accent"
+                class="nav-item flex min-h-14 items-center gap-4 text-lg font-medium text-ink aria-[current=page]:text-accent"
               >
+                <NavIcon icon={item.icon} size={32} class="nav-item-icon size-8 shrink-0" />
                 {item.label}
               </a>
             </li>

@@ -431,6 +431,52 @@
     transition: transform var(--duration-fast) var(--ease-out-quiet);
   }
 
+  /*
+    Navigation icons.
+
+    These are raster images, so they cannot take their colour from the text
+    the way an inline SVG would. The resting state is therefore dimmed
+    slightly and the active state is full strength: that reads as a real
+    state change without needing to recolour the artwork.
+
+    The reduced-motion block in @layer base already flattens every
+    transition-duration, so the transform here needs no guard of its own.
+  */
+  .nav-item-icon {
+    opacity: 0.72;
+    transition:
+      opacity var(--duration-fast) var(--ease-out-quiet),
+      transform var(--duration-base) var(--ease-out-quiet);
+  }
+
+  .nav-item:hover .nav-item-icon,
+  .nav-item:focus-visible .nav-item-icon,
+  .nav-item[aria-current='page'] .nav-item-icon {
+    opacity: 1;
+  }
+
+  /*
+    The current page keeps its icon lifted a touch, so the page you are on
+    still reads as different from the rest of the row.
+
+    This has to come before the hover and focus rules: all three have the
+    same specificity, so source order decides, and with it last the item for
+    the current page would be the one item in the nav that does not react to
+    being hovered or focused.
+  */
+  .nav-item[aria-current='page'] .nav-item-icon {
+    transform: translateY(-1px);
+  }
+
+  .nav-item:hover .nav-item-icon,
+  .nav-item:focus-visible .nav-item-icon {
+    transform: translateY(-2px) scale(1.09);
+  }
+
+  .nav-item:active .nav-item-icon {
+    transform: translateY(0) scale(1.02);
+  }
+
   /* Progress line under the sticky header, driven by document scroll. */
   @supports (animation-timeline: scroll()) {
     .scroll-progress {

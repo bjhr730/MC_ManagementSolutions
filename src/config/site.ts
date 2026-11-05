@@ -183,14 +183,19 @@ export const SOCIAL: { label: string; href: string | null }[] = [
   { label: 'Instagram', href: null }, // REPLACE when the account is live
 ];
 
+/**
+ * `icon` names a file in `src/assets/nav/`, generated from Antonio's PNGs by
+ * `scripts/prepare-nav-icons.mjs`. Adding an item here without adding its
+ * icon is a build error, not a silently missing picture: see NavIcon.astro.
+ */
 export const NAV = [
-  { href: '/services', label: 'Services' },
-  { href: '/management-plans', label: 'Management Plans' },
-  { href: '/why-us', label: 'Why Choose Us' },
-  { href: '/about', label: 'About' },
-  { href: '/tools', label: 'Tools' },
-  { href: '/faq', label: 'FAQ' },
-  { href: '/contact', label: 'Contact Us' },
+  { href: '/services', label: 'Services', icon: 'services' },
+  { href: '/management-plans', label: 'Management Plans', icon: 'management-plans' },
+  { href: '/why-us', label: 'Why Choose Us', icon: 'why-us' },
+  { href: '/about', label: 'About', icon: 'about' },
+  { href: '/tools', label: 'Tools', icon: 'tools' },
+  { href: '/faq', label: 'FAQ', icon: 'faq' },
+  { href: '/contact', label: 'Contact Us', icon: 'contact' },
 ] as const;
 
 export const FOOTER_NAV = {
