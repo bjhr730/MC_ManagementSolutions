@@ -304,9 +304,9 @@ Owned by the business, not the code:
 
 ## Deploying
 
-**Staging:** https://manda-management-solutions.vercel.app
+**Staging:** https://mc-management-solutions.vercel.app
 
-The Vercel project `manda-management-solutions` is linked to this repository,
+The Vercel project `mc-management-solutions` is linked to this repository,
 so every push to `main` deploys. The `@astrojs/vercel` adapter is already
 configured; no build settings need changing.
 
