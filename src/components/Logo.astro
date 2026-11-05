@@ -13,6 +13,11 @@ import mark from '~/assets/mc-logo-mark.webp';
  * The badge is decorative: the company name is right beside it as real text,
  * which keeps it crisp at any size, selectable, and readable by assistive
  * technology without relying on alt text.
+ *
+ * Sizing: the badge and the wordmark scale together, so the lockup keeps its
+ * proportions instead of growing a big mark next to small type. The header bar
+ * is h-16 on mobile and md:h-20 from the medium breakpoint, so the badge steps
+ * up at the same breakpoint and never gets within 8px of the bar edges.
  */
 interface Props {
   /** Larger treatment for the footer. */
@@ -23,30 +28,43 @@ interface Props {
 
 const { size = 'sm', onDark = false } = Astro.props;
 
-const badge = size === 'sm' ? 'size-9' : 'size-11';
-const name = size === 'sm' ? 'text-[1.0625rem]' : 'text-xl';
+const isSm = size === 'sm';
+
+// Badge: 44px → 56px in the header, 56px → 64px in the footer.
+const badge = isSm ? 'size-11 md:size-14' : 'size-14 sm:size-16';
+
+// The largest the badge is ever painted, used to pick the srcset widths so
+// the browser has a 2x source and nothing larger.
+const renderedPx = isSm ? 56 : 64;
+
+const mcType = isSm ? 'text-[1.375rem] md:text-[1.75rem]' : 'text-[1.75rem] sm:text-[2rem]';
+const subType = isSm
+  ? 'text-[0.6875rem] md:text-[0.8125rem]'
+  : 'text-[0.8125rem] sm:text-[0.875rem]';
+const divider = isSm ? 'h-5 md:h-7' : 'h-7 sm:h-8';
+const gap = isSm ? 'gap-3 md:gap-3.5' : 'gap-3.5 sm:gap-4';
 ---
 
-<span class="inline-flex items-center gap-2.5">
+<span class={`inline-flex items-center ${gap}`}>
   <Image
     src={mark}
     alt=""
-    widths={[72, 144]}
-    sizes="44px"
+    widths={[renderedPx, renderedPx * 2]}
+    sizes={`${renderedPx}px`}
     loading="eager"
-    class={`${badge} shrink-0 rounded-md`}
+    class={`${badge} shrink-0 rounded-lg`}
   />
-  <span class="inline-flex items-baseline gap-2">
+  <span class="inline-flex items-baseline gap-2.5">
     <span
-      class={`font-serif font-semibold tracking-tight ${name} ${onDark ? 'text-white' : 'text-ink'}`}
+      class={`font-serif font-semibold tracking-tight ${mcType} ${onDark ? 'text-white' : 'text-ink'}`}
       >MC</span
     >
     <span
       aria-hidden="true"
-      class={`h-4 w-px self-center ${onDark ? 'bg-white/40' : 'bg-line-strong'}`}
+      class={`${divider} w-px self-center ${onDark ? 'bg-white/40' : 'bg-line-strong'}`}
     ></span>
     <span
-      class={`font-sans text-[0.625rem] font-semibold uppercase leading-tight tracking-[0.14em] ${onDark ? 'text-silver-300' : 'text-ink-muted'}`}
+      class={`font-sans ${subType} font-semibold uppercase leading-tight tracking-[0.14em] ${onDark ? 'text-silver-300' : 'text-ink-muted'}`}
       >Management <br />Solutions</span
     >
   </span>
