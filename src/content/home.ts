@@ -75,13 +75,13 @@ export const PATHS: readonly {
   },
   {
     id: 'investor',
-    tab: 'I’m buying an investment property',
+    tab: 'I want to maximize my rental income',
     heading: 'Run the numbers before you own it',
     body:
       'The costs that catch investors out are the ones between tenants. ' +
       'Work out what a vacancy actually costs on the property you are ' +
-      'looking at, then talk to a broker who owns rentals himself about ' +
-      'whether the deal stands up.',
+      'looking at, then talk to a specialist on how to maximize profit and ' +
+      'minimize risk.',
     cta: 'Open the vacancy calculator',
     href: '/tools',
   },
