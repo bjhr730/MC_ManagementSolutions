@@ -27,7 +27,7 @@ const panels = [
     tagline: 'Rent sooner',
     scenario: EXAMPLE_A,
     result: c.a,
-    accent: 'border-evergreen-500',
+    accent: 'border-blue-500',
   },
   {
     key: 'b',
@@ -35,7 +35,7 @@ const panels = [
     tagline: 'Wait for higher rent',
     scenario: EXAMPLE_B,
     result: c.b,
-    accent: 'border-accent',
+    accent: 'border-gold',
   },
 ] as const;
 ---
@@ -188,7 +188,7 @@ const panels = [
             width="34"
             height={(barShare(c.a.income, maxIncome) * 46) / 100}
             rx="1"
-            class="fill-evergreen-500"></rect>
+            class="fill-blue-500"></rect>
           <rect
             data-chart="b"
             x="60"
@@ -196,7 +196,7 @@ const panels = [
             width="34"
             height={(barShare(c.b.income, maxIncome) * 46) / 100}
             rx="1"
-            class="fill-bronze-600"></rect>
+            class="fill-gold-600"></rect>
         </svg>
 
         <div class="mt-3 grid grid-cols-2 gap-4 text-center text-sm">
@@ -224,7 +224,7 @@ const panels = [
           Break-even additional vacancy
         </p>
         <p
-          class="mt-1 font-serif text-h2 font-semibold tabular-nums text-evergreen-text"
+          class="mt-1 font-serif text-h2 font-semibold tabular-nums text-band-text"
           data-out="breakEven"
         >
           {days(c.breakEvenExtraDays)}

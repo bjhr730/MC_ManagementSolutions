@@ -3,43 +3,56 @@
 /* ---------------------------------------------------------------------------
    Design tokens
 
-   The navy is #303A46 — recovered from the brand PDFs, where it is the body
-   text ink. Paired with silver per the branding checklist, plus a restrained
-   bronze for eyebrow text and rules.
+   Blue, silver and a sprinkle of gold, to Antonio's brief (November 2026),
+   replacing the earlier navy/bronze/evergreen scheme. The blue is the one in
+   his logo badge; the gold is the logo's gold.
+
+   The one rule that shapes everything here: gold cannot carry text. The
+   logo's gold is 2.25:1 on white, and the darkest gold that reaches 4.5:1 is
+   a muddy olive — which is how the old bronze came about in the first place.
+   So gold is an ornament colour only (rules, bars, marks, the current-page
+   underline) and blue carries every accent that is text. That keeps the gold
+   a sprinkle rather than a wash, which is also what was asked for.
+
+   Where gold does carry meaning rather than decoration it still has to reach
+   3:1, so --color-gold is the dimmer #a87c10 and --color-gold-bright is for
+   decoration only, never for anything a reader has to make out.
 
    Every colour used for text has been contrast-checked against the surface it
-   sits on. Ratios are noted inline; none below 4.5:1 is used for text.
+   sits on by scripts/check-contrast.mjs. Run it after touching any colour.
 --------------------------------------------------------------------------- */
 @theme {
   --font-sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-serif: 'Source Serif 4 Variable', ui-serif, Georgia, Cambria, serif;
 
   /* Brand scale */
-  --color-navy-950: #11161b;
-  --color-navy-900: #1c232b;
-  --color-navy-800: #242d37;
-  --color-navy-700: #303a46; /* brand */
-  --color-navy-600: #3e4a59;
-  --color-navy-500: #5a6675;
+  --color-navy-950: #0a1018;
+  --color-navy-900: #111b28;
+  --color-navy-800: #1a2736;
+  --color-navy-700: #243447;
+  --color-navy-600: #35485e;
+  --color-navy-500: #51677f;
+
+  /* The brand blue, from the logo badge. */
+  --color-blue-800: #0e3464;
+  --color-blue-700: #14477f;
+  --color-blue-600: #1a5fae;
+  --color-blue-500: #2f80d8;
+  --color-blue-300: #8dc3f2;
+  --color-blue-100: #d8e8fb;
+  --color-blue-50: #eef4fb;
+
   --color-silver-400: #9aa4af;
   --color-silver-300: #c8ced6;
   --color-silver-200: #dde2e8;
   --color-silver-100: #eef1f4;
   --color-silver-50: #f7f9fa;
-  --color-bronze-600: #8c6239;
-  --color-bronze-300: #c9a27a;
 
-  /* Second brand colour. Virginia is green and the business is about
-     long-term property value, so evergreen carries the "growth" surfaces
-     (tools, outcomes) while navy keeps the authority surfaces. Chosen over
-     the warmer terracotta that every generated site reaches for. */
-  --color-evergreen-900: #12302700;
-  --color-evergreen-800: #163B30;
-  --color-evergreen-700: #1d4d3e;
-  --color-evergreen-500: #3f7c68;
-  --color-evergreen-300: #7fbfa6;
-  --color-evergreen-100: #d9e8e1;
-  --color-sage-50: #eef3f0;
+  /* Gold. Ornament only — see the note above about text. */
+  --color-gold-600: #a87c10;
+  --color-gold-400: #d9a520;
+  --color-gold-300: #e0b84a;
+  --color-gold-100: #f6e8c2;
 
   /* Functional colour: what something costs. Not decorative. */
   --color-clay-700: #9a3f2b;
@@ -47,28 +60,39 @@
 
   /* Semantic tokens — these flip in dark mode below */
   --color-surface: #ffffff;
-  --color-surface-2: #f7f9fa;
-  --color-surface-3: #eef1f4;
-  --color-surface-inverse: #242d37;
-  --color-ink: #1c232b; /* 14.5:1 on surface */
-  --color-ink-muted: #5a6675; /* 5.8:1 on surface */
+  --color-surface-2: #f6f8fb;
+  --color-surface-3: #e9eef5;
+  --color-surface-inverse: #1a2736;
+  --color-ink: #10192a; /* 17.6:1 on surface */
+  --color-ink-muted: #4a5a70; /* 7.0:1 on surface */
   --color-ink-inverse: #ffffff;
-  --color-line: #dde2e8;
-  --color-line-strong: #c8ced6;
-  --color-accent: #8c6239; /* 5.4:1 on surface */
-  --color-ornament: #7d8894; /* 3.6:1 on surface; large text only */
-  --color-cta: #303a46;
-  --color-cta-hover: #1c232b;
-  --color-cta-ink: #ffffff; /* 11.4:1 on cta */
+  --color-line: #dbe3ed;
+  --color-line-strong: #c3cfde;
+  --color-accent: #1a5fae; /* 6.4:1 on surface */
+  --color-ornament: #68788c; /* 4.3:1 on surface */
+  --color-cta: #14477f;
+  --color-cta-hover: #0e3464;
+  --color-cta-ink: #ffffff; /* 9.4:1 on cta */
   --color-focus: #2f6db5;
 
-  /* Coloured bands and the second brand colour, as semantic tokens. */
-  --color-control-border: #6f7b88; /* 4.3:1 on surface; WCAG 2.2 1.4.11 */
-  --color-surface-sage: #eef3f0;
-  --color-evergreen: #1d4d3e;
-  --color-on-evergreen: #ffffff;
-  --color-evergreen-soft: #d9e8e1;
-  --color-evergreen-text: #1d4d3e;
+  /* Gold, as semantics rather than a raw scale value.
+     --color-gold reaches 3:1 and may carry meaning (the current-page rule).
+     --color-gold-bright is decoration only. */
+  --color-gold: #a87c10;
+  --color-gold-bright: #d9a520;
+
+  /* Coloured bands. */
+  --color-control-border: #68788c; /* 4.3:1 on surface; WCAG 2.2 1.4.11 */
+  --color-surface-band: #eef4fb;
+  --color-band-deep: #0e3464;
+  --color-on-band-deep: #ffffff;
+  /* Body and small print on the deep band. Silver-blue, not gold: this is
+     set on whole paragraphs, and a paragraph of gold is a wash rather than
+     a sprinkle however well it measures. */
+  --color-band-deep-soft: #c9d8ea;
+  /* The gold sprinkle on the deep band — eyebrows and rules only. */
+  --color-band-deep-gold: #d9a520;
+  --color-band-text: #14477f;
   --color-cost: #9a3f2b;
 
   /* Motion. Short, flat easing: this brand promises no surprises, so
@@ -99,27 +123,30 @@
    No toggle and no JavaScript — the OS preference is respected. */
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-surface: #151a20;
-    --color-surface-2: #1c232b;
-    --color-surface-3: #242d37;
-    --color-surface-inverse: #eef1f4;
-    --color-ink: #e6eaef; /* 15.0:1 on surface */
-    --color-ink-muted: #a8b2bd; /* 8.5:1 on surface */
-    --color-ink-inverse: #151a20;
-    --color-line: #2c353f;
-    --color-line-strong: #3e4a59;
-    --color-accent: #c9a27a; /* 8.4:1 on surface */
-    --color-ornament: #7d8894; /* 5.0:1 on the dark surface */
-    --color-cta: #e6eaef;
+    --color-surface: #0d131c;
+    --color-surface-2: #141d29;
+    --color-surface-3: #1d2937;
+    --color-surface-inverse: #e9eef5;
+    --color-ink: #e8edf4; /* 16.4:1 on surface */
+    --color-ink-muted: #a3b1c2; /* 8.6:1 on surface */
+    --color-ink-inverse: #0d131c;
+    --color-line: #263345;
+    --color-line-strong: #3a4a60;
+    --color-accent: #7db3ea; /* 8.4:1 on surface */
+    --color-ornament: #8194a9; /* 5.3:1 on the dark surface */
+    --color-cta: #e8edf4;
     --color-cta-hover: #ffffff;
-    --color-cta-ink: #151a20; /* 15.0:1 on cta */
+    --color-cta-ink: #0d131c; /* 16.4:1 on cta */
     --color-focus: #8ab4f8;
-    --color-control-border: #6b7684; /* 3.9:1 on the dark surface */
-    --color-surface-sage: #16221d;
-    --color-evergreen: #16221d;
-    --color-on-evergreen: #e6eaef;
-    --color-evergreen-soft: #a9c9bc;
-    --color-evergreen-text: #7fbfa6;
+    --color-control-border: #71839a; /* 4.2:1 on the dark surface */
+    --color-gold: #d9a520; /* 8.3:1 on the dark surface */
+    --color-gold-bright: #e0b84a;
+    --color-surface-band: #111d2d;
+    --color-band-deep: #0b1f38;
+    --color-on-band-deep: #e8edf4;
+    --color-band-deep-soft: #b9cbe2;
+    --color-band-deep-gold: #e0b84a;
+    --color-band-text: #7db3ea;
     --color-cost: #e8a08c;
   }
 }
@@ -233,15 +260,25 @@
     margin-block-start: 1.75em;
   }
 
+  /*
+    Prose links. The underline is a gold rule drawn as a background image so
+    it can animate its width, which a text-decoration cannot. The link keeps
+    a real text-decoration underneath for forced-colors mode and for any
+    engine that ignores the background, so the affordance never depends on
+    the decorative layer.
+  */
   .prose-site a {
     color: var(--color-ink);
     text-decoration: underline;
-    text-decoration-thickness: 1px;
+    text-decoration-color: var(--color-gold);
+    text-decoration-thickness: 2px;
     text-underline-offset: 3px;
+    transition: color var(--duration-fast) var(--ease-out-quiet);
   }
 
   .prose-site a:hover {
-    text-decoration-thickness: 2px;
+    color: var(--color-accent);
+    text-decoration-color: var(--color-accent);
   }
 
   .prose-site strong {
@@ -264,7 +301,20 @@
     transition:
       background-color 160ms ease,
       color 160ms ease,
-      border-color 160ms ease;
+      border-color 160ms ease,
+      transform var(--duration-fast) var(--ease-out-quiet),
+      box-shadow var(--duration-base) var(--ease-out-quiet);
+  }
+
+  /* A button that answers the pointer: 1px up on hover, back down on press.
+     The press state matters more than the hover one on a phone, where there
+     is no hover at all. */
+  .btn:hover {
+    transform: translateY(-1px);
+  }
+
+  .btn:active {
+    transform: translateY(0);
   }
 
   .btn-primary {
@@ -274,6 +324,7 @@
 
   .btn-primary:hover {
     background-color: var(--color-cta-hover);
+    box-shadow: 0 8px 20px -10px color-mix(in srgb, var(--color-blue-800) 70%, transparent);
   }
 
   .btn-secondary {
@@ -389,7 +440,7 @@
     }
   }
 
-  /* A rule that draws itself in on hover. The 2px bronze rule is already
+  /* A rule that draws itself in on hover. The 2px gold rule is already
      part of the page's language, so this animates what is there instead of
      adding the universal card-lift. */
   .rule-hover {
@@ -403,7 +454,7 @@
     inset-inline-start: 0;
     height: 2px;
     width: 0;
-    background-color: var(--color-accent);
+    background-color: var(--color-gold);
     transition: width var(--duration-base) var(--ease-out-quiet);
   }
 
@@ -448,18 +499,97 @@
     A flat band read as a page of text with nothing to look at, so it gets
     some depth. The gradient runs between two surfaces the contrast checker
     already validates for ink, muted ink and accent in both themes
-    (--color-surface-2 and --color-surface-sage), which is why those two were
+    (--color-surface-2 and --color-surface-band), which is why those two were
     chosen: every text colour over this band stays above 4.5:1 at both ends,
     so the gradient cannot smuggle in a contrast failure.
   */
   .hero-band {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
     background-color: var(--color-surface-2);
     background-image: linear-gradient(
       165deg,
       var(--color-surface-2) 0%,
       var(--color-surface-2) 28%,
-      var(--color-surface-sage) 100%
+      var(--color-surface-band) 100%
     );
+  }
+
+  /*
+    The drifting wash behind the headline: two soft blue pools and one small
+    gold one, oversized and slowly moved.
+
+    It sits on a pseudo-element at z-index -1 rather than on the band itself
+    so the gradient can move without the text moving with it, and the band
+    gets `isolation: isolate` so that -1 cannot escape behind the page
+    background.
+
+    The colours are mixed to low alpha from the brand tokens rather than
+    hard-coded, so they follow dark mode. Because they are translucent over
+    a surface the checker already validates, and because nothing is read off
+    them, they cannot move any text/background pair out of range.
+  */
+  .hero-band::before {
+    content: '';
+    position: absolute;
+    inset: -40%;
+    z-index: -1;
+    background-image:
+      radial-gradient(
+        38% 44% at 22% 28%,
+        color-mix(in srgb, var(--color-blue-500) 22%, transparent) 0%,
+        transparent 70%
+      ),
+      radial-gradient(
+        32% 38% at 78% 68%,
+        color-mix(in srgb, var(--color-blue-600) 18%, transparent) 0%,
+        transparent 70%
+      ),
+      radial-gradient(
+        18% 22% at 64% 22%,
+        color-mix(in srgb, var(--color-gold-bright) 16%, transparent) 0%,
+        transparent 70%
+      );
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-band::before {
+      animation: hero-drift 28s ease-in-out infinite alternate;
+    }
+  }
+
+  @keyframes hero-drift {
+    from {
+      transform: translate3d(-2%, -1%, 0) scale(1);
+    }
+    to {
+      transform: translate3d(2%, 1.5%, 0) scale(1.08);
+    }
+  }
+
+  /*
+    Cards that respond to the pointer. Deliberately small: a 2px rise and a
+    border that warms to gold, rather than the large shadow-and-scale lift
+    that makes a page feel like a toy. focus-within is included so keyboard
+    users get the same signal.
+  */
+  .card-lift {
+    transition:
+      transform var(--duration-base) var(--ease-out-quiet),
+      border-color var(--duration-base) var(--ease-out-quiet),
+      box-shadow var(--duration-base) var(--ease-out-quiet);
+  }
+
+  .card-lift:hover,
+  .card-lift:focus-within {
+    transform: translateY(-2px);
+    border-color: var(--color-gold);
+    box-shadow: 0 10px 28px -14px color-mix(in srgb, var(--color-blue-800) 55%, transparent);
+  }
+
+  .card-lift:active {
+    transform: translateY(0);
   }
 
   .nav-item-icon {
@@ -517,7 +647,7 @@
 
   .range-input {
     width: 100%;
-    accent-color: var(--color-evergreen-text);
+    accent-color: var(--color-accent);
     cursor: pointer;
   }
 

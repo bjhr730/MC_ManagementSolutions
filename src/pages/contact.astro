@@ -72,7 +72,13 @@ const formError = result?.status === 'error' ? result.message : undefined;
         </div>
       </div>
 
-      <aside class="lg:border-l lg:border-line lg:pl-12">
+      {/*
+        A div, not an <aside>: a complementary landmark nested inside <main>
+        is what axe flags as landmark-complementary-is-top-level. The h2
+        below still makes this block reachable by heading navigation, which
+        is how a reader would actually get to it.
+      */}
+      <div class="lg:border-l lg:border-line lg:pl-12">
         <h2 class="text-h3">Reach us directly</h2>
         <dl class="mt-6 space-y-5">
           <div>
@@ -137,7 +143,7 @@ const formError = result?.status === 'error' ? result.message : undefined;
             </p>
           </Disclosure>
         </div>
-      </aside>
+      </div>
     </div>
   </Section>
 
@@ -150,7 +156,7 @@ const formError = result?.status === 'error' ? result.message : undefined;
     <dl class="reveal-group mt-12 grid gap-x-10 gap-y-8 md:grid-cols-2 lg:grid-cols-3">
       {
         SERVICE_AREAS.map((area) => (
-          <div class="border-t-2 border-accent pt-4">
+          <div class="border-t-2 border-gold pt-4">
             <dt class="font-serif text-base font-semibold text-ink">
               {area.county}
             </dt>

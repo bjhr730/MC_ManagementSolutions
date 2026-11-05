@@ -35,7 +35,7 @@ const isCurrent = (href: string) => path === href;
 
   {/* How far down the page you are. Driven by scroll(), no JavaScript. */}
   <div aria-hidden="true" class="absolute inset-x-0 bottom-0 h-0.5 bg-transparent">
-    <div class="scroll-progress h-full w-full bg-accent"></div>
+    <div class="scroll-progress h-full w-full bg-gold"></div>
   </div>
 
   <div class="container-page flex h-16 items-center justify-between gap-4 md:h-20">
@@ -55,7 +55,7 @@ const isCurrent = (href: string) => path === href;
                 class="nav-item group flex min-h-11 flex-col items-center gap-1 rounded px-2.5 py-1.5 hover:bg-surface-3"
               >
                 <NavIcon icon={item.icon} size={28} class="nav-item-icon size-7" />
-                <span class="text-[0.8125rem] font-medium leading-none text-ink-muted group-hover:text-ink group-aria-[current=page]:text-ink group-aria-[current=page]:underline group-aria-[current=page]:decoration-accent group-aria-[current=page]:decoration-2 group-aria-[current=page]:underline-offset-4">
+                <span class="text-[0.8125rem] font-medium leading-none text-ink-muted group-hover:text-ink group-aria-[current=page]:text-ink group-aria-[current=page]:underline group-aria-[current=page]:decoration-gold group-aria-[current=page]:decoration-2 group-aria-[current=page]:underline-offset-4">
                   {item.label}
                 </span>
               </a>

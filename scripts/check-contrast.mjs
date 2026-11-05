@@ -71,16 +71,22 @@ const PAIRS = [
   ['color-ornament', 'color-surface', 3.0, 'large decorative numerals'],
   ['color-control-border', 'color-surface', 3.0, 'control borders'],
   ['color-focus', 'color-surface', 3.0, 'focus ring'],
-  // Second brand colour and its band.
-  ['color-ink', 'color-surface-sage', 4.5, 'body text on sage band'],
-  ['color-ink-muted', 'color-surface-sage', 4.5, 'secondary text on sage band'],
-  ['color-accent', 'color-surface-sage', 4.5, 'accent on sage band'],
-  ['color-on-evergreen', 'color-evergreen', 4.5, 'text on evergreen band'],
-  ['color-evergreen-soft', 'color-evergreen', 4.5, 'muted text on evergreen band'],
-  // Note: bronze-300 on evergreen measures 4.09:1 and must NOT be used for
-  // text there. Use color-evergreen-soft for eyebrows on that band.
-  ['color-evergreen-text', 'color-surface', 4.5, 'evergreen text on white'],
-  ['color-evergreen-text', 'color-surface-sage', 4.5, 'evergreen text on sage'],
+  // The blue band and the deep blue band.
+  ['color-ink', 'color-surface-band', 4.5, 'body text on blue band'],
+  ['color-ink-muted', 'color-surface-band', 4.5, 'secondary text on blue band'],
+  ['color-accent', 'color-surface-band', 4.5, 'accent on blue band'],
+  ['color-on-band-deep', 'color-band-deep', 4.5, 'text on deep blue band'],
+  ['color-band-deep-soft', 'color-band-deep', 4.5, 'body text on deep band'],
+  ['color-band-deep-gold', 'color-band-deep', 4.5, 'gold eyebrow on deep band'],
+  ['color-band-text', 'color-surface', 4.5, 'blue text on white'],
+  ['color-band-text', 'color-surface-band', 4.5, 'blue text on blue band'],
+  // Gold is ornament only. It never carries text, so it is held to the 3:1
+  // required of a meaningful non-text mark, and only --color-gold is: the
+  // bright one is decoration and is deliberately not checked, because
+  // checking it would imply it may be used for something readable.
+  ['color-gold', 'color-surface', 3.0, 'gold rule on white'],
+  ['color-gold', 'color-surface-2', 3.0, 'gold rule on muted band'],
+  ['color-gold', 'color-surface-band', 3.0, 'gold rule on blue band'],
   // Functional colour in the calculator.
   ['color-cost', 'color-surface', 4.5, 'cost figures'],
   ['color-cost', 'color-surface-2', 4.5, 'cost figures on muted band'],

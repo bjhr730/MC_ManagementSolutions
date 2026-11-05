@@ -3,21 +3,27 @@ import { Image } from 'astro:assets';
 import mark from '~/assets/mc-logo-mark.webp';
 
 /**
- * The logo lockup: Antonio's badge, then the name set in type.
+ * The logo lockup: Antonio's badge, then "Management Solutions" in type.
  *
  * The badge he supplied has an opaque dark-navy background, so it cannot sit
  * directly on a light surface. Rounding it and treating it as a badge makes
  * that deliberate rather than accidental. When a version with a transparent
  * background arrives, the mark can sit bare and the rounding can go.
  *
- * The badge is decorative: the company name is right beside it as real text,
- * which keeps it crisp at any size, selectable, and readable by assistive
- * technology without relying on alt text.
+ * The visible "MC" came out in November 2026 — Antonio found it redundant
+ * next to a badge that already has the letters in it. They stay in the
+ * accessible text as a visually hidden span, because they are part of the
+ * company's name and are only *visually* redundant: without them the footer
+ * and the mobile menu, where the lockup is not wrapped in a labelled link,
+ * would announce the company as "Management Solutions".
+ *
+ * The badge itself stays decorative. Giving it alt="MC" instead would be
+ * ignored in the header, where the link's own aria-label wins, and would
+ * read as a stray letter wherever it was not.
  *
  * Sizing: the badge and the wordmark scale together, so the lockup keeps its
- * proportions instead of growing a big mark next to small type. The header bar
- * is h-16 on mobile and md:h-20 from the medium breakpoint, so the badge steps
- * up at the same breakpoint and never gets within 8px of the bar edges.
+ * proportions. The header bar is h-16 on mobile and md:h-20 from the medium
+ * breakpoint, so the badge steps up at the same breakpoint.
  */
 interface Props {
   /** Larger treatment for the footer. */
@@ -37,11 +43,11 @@ const badge = isSm ? 'size-11 md:size-14' : 'size-14 sm:size-16';
 // the browser has a 2x source and nothing larger.
 const renderedPx = isSm ? 56 : 64;
 
-const mcType = isSm ? 'text-[1.375rem] md:text-[1.75rem]' : 'text-[1.75rem] sm:text-[2rem]';
-const subType = isSm
-  ? 'text-[0.6875rem] md:text-[0.8125rem]'
-  : 'text-[0.8125rem] sm:text-[0.875rem]';
-const divider = isSm ? 'h-5 md:h-7' : 'h-7 sm:h-8';
+// A step up from the old sizes: with "MC" gone this is the only text in the
+// lockup, so it carries the weight the pairing used to share.
+const nameType = isSm
+  ? 'text-[0.8125rem] md:text-[0.9375rem]'
+  : 'text-[0.9375rem] sm:text-[1.0625rem]';
 const gap = isSm ? 'gap-3 md:gap-3.5' : 'gap-3.5 sm:gap-4';
 ---
 
@@ -54,18 +60,9 @@ const gap = isSm ? 'gap-3 md:gap-3.5' : 'gap-3.5 sm:gap-4';
     loading="eager"
     class={`${badge} shrink-0 rounded-lg`}
   />
-  <span class="inline-flex items-baseline gap-2.5">
-    <span
-      class={`font-serif font-semibold tracking-tight ${mcType} ${onDark ? 'text-white' : 'text-ink'}`}
-      >MC</span
-    >
-    <span
-      aria-hidden="true"
-      class={`${divider} w-px self-center ${onDark ? 'bg-white/40' : 'bg-line-strong'}`}
-    ></span>
-    <span
-      class={`font-sans ${subType} font-semibold uppercase leading-tight tracking-[0.14em] ${onDark ? 'text-silver-300' : 'text-ink-muted'}`}
-      >Management <br />Solutions</span
-    >
+  <span
+    class={`font-sans ${nameType} font-semibold uppercase leading-tight tracking-[0.12em] ${onDark ? 'text-silver-200' : 'text-ink'}`}
+  >
+    <span class="sr-only">MC </span>Management <br />Solutions
   </span>
 </span>

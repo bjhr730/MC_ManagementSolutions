@@ -35,9 +35,9 @@ const first = primary === 'evaluation' ? evaluation : conversation;
 const second = primary === 'evaluation' ? conversation : evaluation;
 ---
 
-<section class="mt-10 rounded-xl bg-evergreen p-8 text-evergreen-soft md:p-12" aria-labelledby={`${handoffId}-heading`}>
+<section class="mt-10 rounded-xl bg-band-deep p-8 text-band-deep-soft md:p-12" aria-labelledby={`${handoffId}-heading`}>
   <div class="max-w-2xl">
-    <h3 id={`${handoffId}-heading`} class="text-h2 text-on-evergreen">
+    <h3 id={`${handoffId}-heading`} class="text-h2 text-on-band-deep">
       {heading}
     </h3>
 
@@ -50,7 +50,7 @@ const second = primary === 'evaluation' ? conversation : evaluation;
       <a
         href={second.href}
         id={second.id}
-        class="btn w-full border border-white/40 text-on-evergreen hover:bg-white/10 sm:w-auto"
+        class="btn w-full border border-white/40 text-on-band-deep hover:bg-white/10 sm:w-auto"
       >
         {second.label}
       </a>
@@ -60,7 +60,7 @@ const second = primary === 'evaluation' ? conversation : evaluation;
       No pressure. No obligation. Just a conversation about your investment.
     </p>
 
-    <p class="mt-5 text-xs leading-relaxed text-evergreen-soft">
+    <p class="mt-5 text-xs leading-relaxed text-band-deep-soft">
       Choosing a rental evaluation copies the figures above into the message
       box on our contact form, so you can check them before you send anything.
       Nothing is collected if you do not.

@@ -1,7 +1,7 @@
 ---
 /** Vertical rhythm wrapper. `tone` paints the band behind the content. */
 interface Props {
-  tone?: 'default' | 'muted' | 'sage' | 'evergreen' | 'inverse';
+  tone?: 'default' | 'muted' | 'band' | 'deep' | 'inverse';
   /** Tightens the vertical padding for dense bands. */
   compact?: boolean;
   labelledby?: string;
@@ -18,8 +18,8 @@ const {
 const tones = {
   default: 'bg-surface',
   muted: 'bg-surface-2',
-  sage: 'bg-surface-sage',
-  evergreen: 'bg-evergreen text-evergreen-soft',
+  band: 'bg-surface-band',
+  deep: 'bg-band-deep text-band-deep-soft',
   inverse: 'bg-navy-800 text-silver-200',
 };
 

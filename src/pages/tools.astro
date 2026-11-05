@@ -38,7 +38,7 @@ const tools = [
     lead="Two tools for the decisions that cost owners the most money. Free to use, nothing is sent anywhere, and no email is required to see your results."
   />
 
-  <Section tone="sage" compact>
+  <Section tone="band" compact>
     <nav aria-label="Tools on this page">
       <ul class="grid gap-4 sm:grid-cols-2">
         {
@@ -46,7 +46,7 @@ const tools = [
             <li>
               <a
                 href={`#${tool.id}`}
-                class="rule-hover block h-full rounded-lg border border-line bg-surface p-5 hover:border-line-strong"
+                class="rule-hover card-lift block h-full rounded-lg border border-line bg-surface p-5"
               >
                 <p class="font-sans text-xs font-semibold uppercase tracking-[0.1em] text-accent">
                   Tool {index + 1}
@@ -95,7 +95,7 @@ const tools = [
   </Section>
 
   {/* ---------------------------------------- Tool 2: pricing comparison */}
-  <Section tone="sage" labelledby="pricing-comparison-heading">
+  <Section tone="band" labelledby="pricing-comparison-heading">
     <div id="pricing-comparison" class="scroll-mt-28">
       <p class="eyebrow">Tool 2</p>
       <h2 id="pricing-comparison-heading" class="mt-3 text-h2">
