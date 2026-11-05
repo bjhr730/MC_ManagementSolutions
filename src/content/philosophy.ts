@@ -11,7 +11,7 @@ export interface Principle {
 }
 
 export const PHILOSOPHY_HEADING =
-  'The Principles Behind M&A Management Solutions';
+  'The Principles Behind MC Management Solutions';
 
 export const PRINCIPLES: readonly Principle[] = [
   {

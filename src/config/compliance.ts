@@ -21,7 +21,7 @@ export const REVIEW_MODE = true;
  * landing page rather than behind a link.
  */
 export const EQUAL_HOUSING =
-  'M&A Management Solutions of Virginia, LLC is committed to providing ' +
+  'MC Management Solutions of Virginia, LLC is committed to providing ' +
   'equal housing opportunities and conducting business in accordance with ' +
   'all applicable federal, state, and local fair housing laws. We do not ' +
   'discriminate on the basis of any legally protected characteristic.';
@@ -68,7 +68,7 @@ export const VA_PROTECTED_CLASSES = [
 export const BROKERAGE = {
   name: 'REPLACE — licensed brokerage firm name',
   licenseNumber: 'REPLACE — Virginia DPOR firm licence number',
-  brokerName: 'Antonio Melendez',
+  brokerName: 'Antonio Melendez Cabrera',
   brokerLicenseNumber: 'REPLACE — Virginia DPOR broker licence number',
 } as const;
 
@@ -77,7 +77,7 @@ export const BROKERAGE_DISCLOSURE =
   'Leasing, tenant placement and brokerage services are provided through ' +
   'our affiliated licensed Virginia real estate brokerage, separately from ' +
   'the property management services of ' +
-  'M&A Management Solutions of Virginia, LLC.';
+  'MC Management Solutions of Virginia, LLC.';
 
 /** Shown wherever the site discusses fees or management plans. */
 export const PRICING_DISCLOSURE =

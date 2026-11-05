@@ -1,6 +1,6 @@
-# M&A Management Solutions
+# MC Management Solutions
 
-Marketing website for **M&A Management Solutions of Virginia, LLC**, a
+Marketing website for **MC Management Solutions of Virginia, LLC**, a
 residential property management company serving Northern Virginia.
 
 The site has one job: turn a property owner into a consultation request.

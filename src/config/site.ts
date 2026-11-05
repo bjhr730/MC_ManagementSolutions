@@ -23,10 +23,10 @@ export const SITE_URL: string = (
 ).replace(/\/$/, '');
 
 /** Public-facing brand name, used in headings and nav. */
-export const BRAND = 'M&A Management Solutions';
+export const BRAND = 'MC Management Solutions';
 
 /** Full legal entity. Required in advertising alongside the brand name. */
-export const LEGAL_ENTITY = 'M&A Management Solutions of Virginia, LLC';
+export const LEGAL_ENTITY = 'MC Management Solutions of Virginia, LLC';
 
 export const TAGLINE = 'Your Property. Our Responsibility.';
 
@@ -174,9 +174,13 @@ export const BROKERAGE_SITE: {
   brokerage: 'REPLACE — licensed brokerage firm name',
 };
 
-/** Set to a real profile URL to show the link; leave null to hide it. */
+/**
+ * Social profiles. A null href renders the entry as "coming soon" in the
+ * footer rather than hiding it or linking nowhere; set the URL and it becomes
+ * an ordinary link with no other change.
+ */
 export const SOCIAL: { label: string; href: string | null }[] = [
-  { label: 'Instagram', href: null }, // REPLACE when the account is ready
+  { label: 'Instagram', href: null }, // REPLACE when the account is live
 ];
 
 export const NAV = [

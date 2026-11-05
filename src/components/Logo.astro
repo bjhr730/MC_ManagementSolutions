@@ -1,10 +1,18 @@
 ---
+import { Image } from 'astro:assets';
+import mark from '~/assets/mc-logo-mark.webp';
+
 /**
- * Typographic wordmark, standing in until a real logo exists.
+ * The logo lockup: Antonio's badge, then the name set in type.
  *
- * It is drawn in text rather than an image so it is crisp at every size,
- * costs no bytes, and is readable by assistive technology. When the real logo
- * arrives, replace the markup here and nothing else changes.
+ * The badge he supplied has an opaque dark-navy background, so it cannot sit
+ * directly on a light surface. Rounding it and treating it as a badge makes
+ * that deliberate rather than accidental. When a version with a transparent
+ * background arrives, the mark can sit bare and the rounding can go.
+ *
+ * The badge is decorative: the company name is right beside it as real text,
+ * which keeps it crisp at any size, selectable, and readable by assistive
+ * technology without relying on alt text.
  */
 interface Props {
   /** Larger treatment for the footer. */
@@ -15,18 +23,31 @@ interface Props {
 
 const { size = 'sm', onDark = false } = Astro.props;
 
-const mark = size === 'sm' ? 'text-[1.0625rem]' : 'text-xl';
-const rule = size === 'sm' ? 'h-4' : 'h-5';
+const badge = size === 'sm' ? 'size-9' : 'size-11';
+const name = size === 'sm' ? 'text-[1.0625rem]' : 'text-xl';
 ---
 
-<span class={`inline-flex items-baseline gap-2 font-serif font-semibold tracking-tight ${mark} ${onDark ? 'text-white' : 'text-ink'}`}>
-  <span>M&amp;A</span>
-  <span
-    aria-hidden="true"
-    class={`${rule} w-px self-center ${onDark ? 'bg-white/40' : 'bg-line-strong'}`}
-  ></span>
-  <span
-    class={`font-sans text-[0.625rem] font-semibold uppercase leading-tight tracking-[0.14em] ${onDark ? 'text-silver-300' : 'text-ink-muted'}`}
-    >Management <br />Solutions</span
-  >
+<span class="inline-flex items-center gap-2.5">
+  <Image
+    src={mark}
+    alt=""
+    widths={[72, 144]}
+    sizes="44px"
+    loading="eager"
+    class={`${badge} shrink-0 rounded-md`}
+  />
+  <span class="inline-flex items-baseline gap-2">
+    <span
+      class={`font-serif font-semibold tracking-tight ${name} ${onDark ? 'text-white' : 'text-ink'}`}
+      >MC</span
+    >
+    <span
+      aria-hidden="true"
+      class={`h-4 w-px self-center ${onDark ? 'bg-white/40' : 'bg-line-strong'}`}
+    ></span>
+    <span
+      class={`font-sans text-[0.625rem] font-semibold uppercase leading-tight tracking-[0.14em] ${onDark ? 'text-silver-300' : 'text-ink-muted'}`}
+      >Management <br />Solutions</span
+    >
+  </span>
 </span>

@@ -241,7 +241,7 @@ async function notify(data: InquiryInput): Promise<boolean> {
   await resend.emails.send({
     from,
     to: data.email,
-    subject: 'We received your inquiry — M&A Management Solutions',
+    subject: 'We received your inquiry — MC Management Solutions',
     text: [
       `Hi ${firstName},`,
       '',
@@ -252,7 +252,7 @@ async function notify(data: InquiryInput): Promise<boolean> {
       '',
       plainText(data),
       '',
-      '— M&A Management Solutions of Virginia, LLC',
+      '— MC Management Solutions of Virginia, LLC',
     ].join('\n'),
   });
 

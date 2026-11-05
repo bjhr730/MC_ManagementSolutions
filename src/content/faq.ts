@@ -5,7 +5,7 @@
  * Two deliberate departures from the text he sent, both flagged to him:
  *
  * 1. His draft of the leasing answer reads "MC Management Solutions of
- *    Virginia, LLC". The company is M&A. Publishing the wrong legal entity
+ *    Virginia, LLC". The company is MC. Publishing the wrong legal entity
  *    name in a brokerage disclosure is exactly the kind of error the DPOR
  *    advertising rules exist to catch, so it is spelled correctly here.
  *
@@ -33,7 +33,7 @@ export interface FaqSection {
 }
 
 export const FAQ_INTRO =
-  'At M&A Management Solutions, we believe property owners deserve ' +
+  'At MC Management Solutions, we believe property owners deserve ' +
   'straightforward answers, clear communication, and transparency. Below are ' +
   'answers to common questions about our services.';
 
@@ -107,7 +107,7 @@ export const FAQ_SECTIONS: readonly FaqSection[] = [
         q: 'Do you provide leasing and tenant placement services?',
         a: [
           'Yes. Leasing and tenant placement services are available through our affiliated licensed Virginia real estate brokerage.',
-          'Brokerage services are provided separately from the property management operations of M&A Management Solutions of Virginia, LLC.',
+          'Brokerage services are provided separately from the property management operations of MC Management Solutions of Virginia, LLC.',
         ],
       },
       {

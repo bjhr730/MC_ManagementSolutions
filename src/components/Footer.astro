@@ -17,9 +17,6 @@ import {
   SOCIAL,
 } from '~/config/site';
 
-// Only render social links that actually have a URL yet.
-const social = SOCIAL.filter((item) => item.href);
-
 const year = new Date().getFullYear();
 
 // The portals page is only worth linking to once the portals exist.
@@ -81,23 +78,42 @@ const serviceLinks = FOOTER_NAV.services.filter(
           </div>
         </dl>
 
-        {
-          social.length > 0 && (
-            <ul class="mt-5 flex gap-4">
-              {social.map((item) => (
-                <li>
+        {/*
+          Social links. Where a profile has no URL yet, the entry is a native
+          <details>: clicking it says so, with no JavaScript and no dead link
+          pretending to go somewhere. Fill in the href in site.ts and it
+          becomes an ordinary link.
+        */}
+        <ul class="mt-5 flex flex-wrap gap-x-5 gap-y-2">
+          {
+            SOCIAL.map((item) => (
+              <li>
+                {item.href ? (
                   <a
-                    href={item.href!}
+                    href={item.href}
                     rel="noopener"
                     class="text-sm text-silver-200 underline decoration-white/30 underline-offset-4 hover:text-white"
                   >
                     {item.label}
                   </a>
-                </li>
-              ))}
-            </ul>
-          )
-        }
+                ) : (
+                  <details class="inline-block">
+                    <summary class="inline-flex cursor-pointer items-center gap-1.5 text-sm text-silver-200 underline decoration-dotted decoration-white/40 underline-offset-4 hover:text-white">
+                      {item.label}
+                      <span class="text-[0.625rem] uppercase tracking-wider text-silver-400">
+                        soon
+                      </span>
+                    </summary>
+                    <p class="mt-1.5 max-w-xs text-xs leading-relaxed text-silver-300">
+                      Coming soon. Our {item.label} profile is not live yet
+                      &mdash; call or email us in the meantime.
+                    </p>
+                  </details>
+                )}
+              </li>
+            ))
+          }
+        </ul>
       </div>
 
       <nav aria-labelledby="footer-company">

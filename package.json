@@ -1,9 +1,9 @@
 {
-  "name": "manda-management-solutions",
+  "name": "mc-management-solutions",
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Marketing website for M&A Management Solutions of Virginia, LLC",
+  "description": "Marketing website for MC Management Solutions of Virginia, LLC",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",

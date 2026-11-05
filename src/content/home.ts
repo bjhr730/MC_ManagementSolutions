@@ -15,7 +15,7 @@ export const HERO = {
   eyebrow: 'Northern Virginia Property Management',
   headline: 'Your property deserves an owner’s attention.',
   subhead:
-    'M&A Management Solutions is run by a licensed broker who manages ' +
+    'MC Management Solutions is run by a licensed broker who manages ' +
     'rental property of his own. Reliable, transparent management for ' +
     'Northern Virginia owners, whether you have one rental home or a ' +
     'growing portfolio.',
@@ -75,7 +75,7 @@ export const PATHS: readonly {
 ];
 
 export const HOME_FOUNDER_TEASER =
-  'Antonio Melendez is a Northern Virginia real estate broker who has ' +
+  'Antonio Melendez Cabrera is a Northern Virginia real estate broker who has ' +
   'personally managed rental homes and led an entire property management ' +
   'operation. He is also a rental property owner himself, which is the ' +
   'part most owners care about.';

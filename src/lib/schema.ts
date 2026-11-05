@@ -66,7 +66,7 @@ export function founderPerson() {
     '@context': 'https://schema.org',
     '@type': 'Person',
     '@id': person,
-    name: 'Antonio Melendez',
+    name: 'Antonio Melendez Cabrera',
     jobTitle: 'Founder and Real Estate Broker',
     worksFor: { '@id': org },
     url: `${SITE_URL}/founder`,

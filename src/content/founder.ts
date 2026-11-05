@@ -16,14 +16,14 @@ export interface FounderSection {
   readonly quote?: string;
 }
 
-export const FOUNDER_NAME = 'Antonio Melendez';
+export const FOUNDER_NAME = 'Antonio Melendez Cabrera';
 
 export const FOUNDER_ROLE = 'Founder | Real Estate Broker | Property Investor';
 
 export const FOUNDER_SECTIONS: readonly FounderSection[] = [
   {
     paragraphs: [
-      'Antonio Melendez is a Northern Virginia real estate broker, property manager, and real estate investor with extensive experience in residential sales, leasing, and property management.',
+      'Antonio Melendez Cabrera is a Northern Virginia real estate broker, property manager, and real estate investor with extensive experience in residential sales, leasing, and property management.',
       'Over the course of his career, Antonio has helped buyers, sellers, landlords, and investors navigate the Northern Virginia real estate market.',
       'His property management experience began with personally overseeing a portfolio of approximately 60 residential properties, handling the day-to-day responsibilities of leasing, tenant relations, maintenance coordination, and owner communications. As his career progressed, Antonio assumed a leadership role overseeing an entire property management operation, leading a team responsible for a substantially larger portfolio.',
       'This progression provided him with a comprehensive understanding of property management, from the smallest day-to-day details to the operational demands of managing a substantial portfolio.',
@@ -39,9 +39,9 @@ export const FOUNDER_SECTIONS: readonly FounderSection[] = [
       'I believe the relationships we build are more valuable than the transactions we complete.',
   },
   {
-    heading: 'The Vision Behind M&A Management Solutions',
+    heading: 'The Vision Behind MC Management Solutions',
     paragraphs: [
-      'Antonio founded M&A Management Solutions of Virginia, LLC with a simple objective: to provide property owners with experienced, reliable, and transparent property management services built on a foundation of integrity and accountability.',
+      'Antonio founded MC Management Solutions of Virginia, LLC with a simple objective: to provide property owners with experienced, reliable, and transparent property management services built on a foundation of integrity and accountability.',
       'Drawing on years of hands-on experience and leadership, Antonio believes that successful property management requires more than collecting rent and coordinating repairs. It requires proactive planning, sound judgment, clear communication, and a genuine commitment to the owner\u2019s best interests.',
       'His philosophy is rooted in three guiding principles: integrity over profit, honesty and transparency in every interaction, and treating each property with the same care and responsibility he would give his own.',
     ],
@@ -50,7 +50,7 @@ export const FOUNDER_SECTIONS: readonly FounderSection[] = [
   },
   {
     paragraphs: [
-      'Through M&A Management Solutions, Antonio brings together his experience as a real estate broker, property management professional, and investor to help Northern Virginia property owners protect their investments and pursue their long-term real estate goals.',
+      'Through MC Management Solutions, Antonio brings together his experience as a real estate broker, property management professional, and investor to help Northern Virginia property owners protect their investments and pursue their long-term real estate goals.',
     ],
   },
 ];
