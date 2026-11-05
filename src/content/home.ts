@@ -76,12 +76,11 @@ export const PATHS: readonly {
   {
     id: 'investor',
     tab: 'I want to maximize my rental income',
-    heading: 'Run the numbers before you own it',
+    heading: 'Run the numbers on what vacancy is costing you',
     body:
-      'The costs that catch investors out are the ones between tenants. ' +
-      'Work out what a vacancy actually costs on the property you are ' +
-      'looking at, then talk to a specialist on how to maximize profit and ' +
-      'minimize risk.',
+      'The costs that catch owners out are the ones between tenants. ' +
+      'Work out what a vacancy actually costs on your property, then talk ' +
+      'to a specialist on how to maximize profit and minimize risk.',
     cta: 'Open the vacancy calculator',
     href: '/tools',
   },
