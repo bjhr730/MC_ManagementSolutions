@@ -11,14 +11,27 @@
  * and the vacancy calculator gives people something to do rather than read.
  */
 
+/**
+ * The headline is split rather than written as one string so the place can
+ * carry the accent colour without putting markup inside the copy.
+ *
+ * Revised November 2026 to Antonio's note: make the home page catchier on
+ * arrival and emphasise property management in Northern Virginia. Both the
+ * category and the region were previously only in the small eyebrow above
+ * the headline; they now open the h1, which is the first thing read aloud by
+ * a screen reader and the line search engines weigh most heavily. The
+ * counties moved up into the eyebrow so the service area is visible without
+ * scrolling.
+ */
 export const HERO = {
-  eyebrow: 'Northern Virginia Property Management',
-  headline: 'Your property deserves an owner’s attention.',
+  /** Rendered as the lead of the h1, in the accent colour. */
+  headlineLead: 'Northern Virginia property management',
+  /** The rest of the same sentence. */
+  headlineRest: 'with an owner’s attention.',
   subhead:
     'MC Management Solutions is run by a licensed broker who manages ' +
-    'rental property of his own. Reliable, transparent management for ' +
-    'Northern Virginia owners, whether you have one rental home or a ' +
-    'growing portfolio.',
+    'rental property of his own. Reliable, transparent management whether ' +
+    'you have one rental home or a growing portfolio.',
   primaryCta: { label: 'Request a consultation', href: '/contact' },
   secondaryCta: { label: 'See what we handle', href: '/services' },
 } as const;

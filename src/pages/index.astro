@@ -9,6 +9,7 @@ import PathChooser from '~/components/PathChooser.astro';
 import Section from '~/components/Section.astro';
 
 import { HERO, HOME_FOUNDER_TEASER, TOOLS_TEASER } from '~/content/home';
+import { SERVICE_COUNTIES_SHORT } from '~/config/site';
 import { FEATURED_FAQ } from '~/content/faq';
 import { SERVICES } from '~/content/services';
 import { founderPerson, localBusiness } from '~/lib/schema';
@@ -31,11 +32,33 @@ const exampleCost = money(example.lostRent + example.carryingCost);
   <JsonLd slot="head" schema={founderPerson()} />
 
   {/* ---------------------------------------------------------------- Hero */}
-  <div class="border-b border-line bg-surface-2">
+  <div class="hero-band border-b border-line">
     <div class="container-page py-16 md:py-24">
       <div class="max-w-3xl">
-        <p class="eyebrow">{HERO.eyebrow}</p>
-        <h1 class="mt-4 text-display">{HERO.headline}</h1>
+        {/*
+          The counties, right at the top: the first question an owner has is
+          whether this company covers where their property is.
+        */}
+        <p class="eyebrow flex flex-wrap items-center gap-x-2 gap-y-1">
+          {
+            SERVICE_COUNTIES_SHORT.map((county, i) => (
+              <>
+                {i > 0 && (
+                  <span aria-hidden="true" class="text-ornament">
+                    &middot;
+                  </span>
+                )}
+                <span>{county}</span>
+              </>
+            ))
+          }
+        </p>
+
+        <h1 class="mt-4 text-display text-balance">
+          <span class="text-accent">{HERO.headlineLead}</span>{' '}
+          {HERO.headlineRest}
+        </h1>
+
         <p class="mt-6 max-w-2xl text-lead text-ink-muted">{HERO.subhead}</p>
 
         <div class="mt-9 flex flex-col gap-3 sm:flex-row">

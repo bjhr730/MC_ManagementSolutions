@@ -132,6 +132,15 @@ export const SERVICE_COUNTIES: readonly string[] = SERVICE_AREAS.map(
 );
 
 /**
+ * The same places with "County" and "City of" dropped, for the tight line
+ * under the home page headline. Derived rather than typed out a second time,
+ * so adding a county in one place cannot leave the home page behind.
+ */
+export const SERVICE_COUNTIES_SHORT: readonly string[] = SERVICE_COUNTIES.map(
+  (county) => county.replace(/^City of /, '').replace(/ County$/, '')
+);
+
+/**
  * Buildium owner and tenant portals are not live yet. The master checklist is
  * explicit: "Add portal links and Buildium mention only when live." While this
  * is false the portal links in the utility bar point at /portals, which
