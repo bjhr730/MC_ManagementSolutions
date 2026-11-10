@@ -61,6 +61,10 @@ function ratio(a, b) {
  */
 const PAIRS = [
   ['color-ink', 'color-surface', 4.5, 'body text'],
+  ['color-ink', 'color-page', 4.5, 'body text on the page colour'],
+  ['color-ink-muted', 'color-page', 4.5, 'secondary text on the page colour'],
+  ['color-accent', 'color-page', 4.5, 'accent on the page colour'],
+  ['color-gold', 'color-page', 3.0, 'gold rule on the page colour'],
   ['color-ink', 'color-surface-2', 4.5, 'body text on muted band'],
   ['color-ink', 'color-surface-3', 4.5, 'body text on deep band'],
   ['color-ink-muted', 'color-surface', 4.5, 'secondary text'],

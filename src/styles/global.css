@@ -59,15 +59,19 @@
   --color-clay-300: #e8a08c;
 
   /* Semantic tokens — these flip in dark mode below */
-  --color-surface: #ffffff;
-  --color-surface-2: #f6f8fb;
-  --color-surface-3: #e9eef5;
+  /* The page behind every section. Nothing on this site is pure white:
+     the lightest large surface is a tinted blue-grey, so the palette reads
+     blue and grey with gold on top rather than white with blue on it. */
+  --color-page: #dde7f2;
+  --color-surface: #eef3f9;
+  --color-surface-2: #e2ebf5;
+  --color-surface-3: #d2dfed;
   --color-surface-inverse: #1a2736;
   --color-ink: #10192a; /* 17.6:1 on surface */
   --color-ink-muted: #4a5a70; /* 7.0:1 on surface */
   --color-ink-inverse: #ffffff;
-  --color-line: #dbe3ed;
-  --color-line-strong: #c3cfde;
+  --color-line: #c2d1e2;
+  --color-line-strong: #a7bbd1;
   --color-accent: #1a5fae; /* 6.4:1 on surface */
   --color-ornament: #68788c; /* 4.3:1 on surface */
   --color-cta: #14477f;
@@ -78,12 +82,12 @@
   /* Gold, as semantics rather than a raw scale value.
      --color-gold reaches 3:1 and may carry meaning (the current-page rule).
      --color-gold-bright is decoration only. */
-  --color-gold: #a87c10;
+  --color-gold: #9a700e;
   --color-gold-bright: #d9a520;
 
   /* Coloured bands. */
   --color-control-border: #68788c; /* 4.3:1 on surface; WCAG 2.2 1.4.11 */
-  --color-surface-band: #eef4fb;
+  --color-surface-band: #dbe8f7;
   --color-band-deep: #0e3464;
   --color-on-band-deep: #ffffff;
   /* Body and small print on the deep band. Silver-blue, not gold: this is
@@ -127,6 +131,7 @@
    No toggle and no JavaScript — the OS preference is respected. */
 @media (prefers-color-scheme: dark) {
   :root {
+    --color-page: #090e15;
     --color-surface: #0d131c;
     --color-surface-2: #141d29;
     --color-surface-3: #1d2937;
@@ -179,7 +184,7 @@
   }
 
   body {
-    background-color: var(--color-surface);
+    background-color: var(--color-page);
     color: var(--color-ink);
     font-family: var(--font-sans);
     font-size: 1rem;
