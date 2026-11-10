@@ -8,6 +8,7 @@ Regenerate with `node scripts/prepare-photos.mjs`.
 
 | File | Unsplash photo | Description |
 | --- | --- | --- |
+| `hero.webp` | https://unsplash.com/photos/1781264896328-c7ce738762fc | Three residential houses with driveways and green trees |
 | `neighborhood.webp` | https://unsplash.com/photos/1781264896328-c7ce738762fc | Three residential houses with driveways and green trees |
 | `homes-street.webp` | https://unsplash.com/photos/1782116987589-046f4908e130 | Row of traditional brick houses along a sidewalk |
 | `living-room.webp` | https://unsplash.com/photos/1649083048770-82e8ffd80431 | A living room with a couch, a chair and a fireplace |

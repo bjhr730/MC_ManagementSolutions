@@ -30,6 +30,7 @@ const OUT_DIR = 'src/assets/photos';
  * the pixels they are shown.
  */
 const PHOTOS = [
+  ['hero', 'photo-1781264896328-c7ce738762fc', 'Three residential houses with driveways and green trees', 16 / 9],
   ['neighborhood', 'photo-1781264896328-c7ce738762fc', 'Three residential houses with driveways and green trees', 4 / 3],
   ['homes-street', 'photo-1782116987589-046f4908e130', 'Row of traditional brick houses along a sidewalk', 16 / 7],
   ['living-room', 'photo-1649083048770-82e8ffd80431', 'A living room with a couch, a chair and a fireplace', 16 / 7],
@@ -42,7 +43,7 @@ const PHOTOS = [
 ];
 
 /** Master width. astro:assets derives everything smaller from this. */
-const WIDTH = 1800;
+const WIDTH = 2400;
 
 await mkdir(OUT_DIR, { recursive: true });
 

@@ -103,6 +103,9 @@
   --duration-slow: 420ms;
 
   /* Fluid type scale */
+  --text-hero: clamp(2.5rem, 1.6rem + 4.2vw, 4.75rem);
+  --text-hero--line-height: 1.04;
+  --text-hero--letter-spacing: -0.028em;
   --text-display: clamp(2.125rem, 1.55rem + 2.7vw, 3.5rem);
   --text-display--line-height: 1.08;
   --text-display--letter-spacing: -0.02em;
@@ -337,6 +340,35 @@
     background-color: var(--color-surface-3);
   }
 
+  /*
+    The hero's primary action. Gold fill with near-black text: on a
+    photograph the button has to hold its own against whatever is behind it,
+    and a dark-on-gold chip does that better than a navy button sitting on a
+    navy scrim. #1c1402 on #d9a520 measures 9.6:1.
+  */
+  .btn-gold {
+    background-color: var(--color-gold-bright);
+    color: #1c1402;
+  }
+
+  .btn-gold:hover {
+    background-color: #e8b734;
+    box-shadow: 0 10px 26px -12px rgba(217, 165, 32, 0.75);
+  }
+
+  /* The hero's secondary action: outlined, for use directly on a photo. */
+  .btn-on-photo {
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(2px);
+  }
+
+  .btn-on-photo:hover {
+    background-color: rgba(255, 255, 255, 0.18);
+    border-color: #ffffff;
+  }
+
   .btn-on-dark {
     background-color: #ffffff;
     color: var(--color-navy-900);
@@ -503,6 +535,116 @@
     chosen: every text colour over this band stays above 4.5:1 at both ends,
     so the gradient cannot smuggle in a contrast failure.
   */
+  /* ------------------------------------------------------------------
+     The home hero: a photograph with the headline over it.
+
+     The scrim is two gradients. The horizontal one carries the contrast:
+     it is near-solid at the left edge, where every line of text sits, and
+     thins out to the right where only the picture shows. The vertical one
+     darkens the very top so the sticky header never floats over a bright
+     patch of sky.
+
+     The navy is a literal rgba rather than a token because it has to stay
+     the same in both themes: the photograph underneath does not get darker
+     in dark mode, so a scrim that followed --color-surface would stop
+     covering it.
+  ------------------------------------------------------------------ */
+  .hero-scrim {
+    background-image:
+      linear-gradient(
+        180deg,
+        rgba(6, 18, 36, 0.55) 0%,
+        rgba(6, 18, 36, 0) 22%
+      ),
+      linear-gradient(
+        100deg,
+        rgba(6, 18, 36, 0.95) 0%,
+        rgba(6, 18, 36, 0.92) 38%,
+        rgba(6, 18, 36, 0.72) 58%,
+        rgba(6, 18, 36, 0.35) 78%,
+        rgba(6, 18, 36, 0.18) 100%
+      );
+  }
+
+  /* Below the large breakpoint the text spans most of the width, so the
+     horizontal thinning would run underneath it. There the scrim is flat. */
+  @media (max-width: 63.999rem) {
+    .hero-scrim {
+      background-image: linear-gradient(
+        180deg,
+        rgba(6, 18, 36, 0.9) 0%,
+        rgba(6, 18, 36, 0.86) 60%,
+        rgba(6, 18, 36, 0.92) 100%
+      );
+    }
+  }
+
+  /*
+    A slow push on the photograph as the hero scrolls away. The movement is
+    on the picture only — the text is in a separate layer and stays put, so
+    nothing a reader is in the middle of reading moves under them.
+  */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .hero-photo {
+        animation: hero-pan linear both;
+        animation-timeline: view();
+        animation-range: exit -20% exit 100%;
+      }
+    }
+  }
+
+  @keyframes hero-pan {
+    from {
+      transform: scale(1.06) translateY(0);
+    }
+    to {
+      transform: scale(1.06) translateY(-4%);
+    }
+  }
+
+  /*
+    The hero's four blocks rise into place in sequence on load.
+
+    They move; they do not fade. An earlier version animated opacity from 0,
+    and measurement on the dev server showed the animation's startTime at
+    3.4 seconds — style and decode latency — which meant the headline sat at
+    opacity 0 for the first three seconds of the page's life, because
+    `fill: both` holds the `from` state until the animation begins.
+
+    Production is far quicker, but the failure mode is the wrong one to
+    accept for the most important text on the site: anything that delays the
+    animation hides the headline. With transform alone the worst case is the
+    text sitting 14px low until it animates, which nobody notices. It is the
+    same trap the scroll reveals below are already commented for.
+  */
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-in {
+      animation: hero-rise 620ms var(--ease-out-quiet) both;
+    }
+    .hero-in-1 {
+      animation-delay: 60ms;
+    }
+    .hero-in-2 {
+      animation-delay: 160ms;
+    }
+    .hero-in-3 {
+      animation-delay: 280ms;
+    }
+    .hero-in-4 {
+      animation-delay: 380ms;
+    }
+  }
+
+  @keyframes hero-rise {
+    from {
+      transform: translateY(14px);
+    }
+    to {
+      transform: none;
+    }
+  }
+
   .hero-band {
     position: relative;
     isolation: isolate;
@@ -565,6 +707,85 @@
     }
     to {
       transform: translate3d(2%, 1.5%, 0) scale(1.08);
+    }
+  }
+
+  /*
+    Banner photographs drift inside their frame as the page scrolls. The
+    frame is a fixed aspect ratio with overflow hidden and the picture is
+    oversized, so the movement never exposes an edge and never changes the
+    height of anything — the layout below does not move.
+  */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .parallax-img {
+        animation: parallax-drift linear both;
+        animation-timeline: view();
+        animation-range: entry 0% exit 100%;
+      }
+    }
+  }
+
+  @keyframes parallax-drift {
+    from {
+      transform: scale(1.12) translateY(-3.5%);
+    }
+    to {
+      transform: scale(1.12) translateY(3.5%);
+    }
+  }
+
+  /*
+    A card whose picture leans in when the card is hovered or focused. The
+    zoom is on the image inside a clipped frame, so the card's own box never
+    changes size and nothing around it reflows.
+  */
+  .media-card {
+    transition:
+      transform var(--duration-base) var(--ease-out-quiet),
+      border-color var(--duration-base) var(--ease-out-quiet),
+      box-shadow var(--duration-base) var(--ease-out-quiet);
+  }
+
+  .media-card:hover,
+  .media-card:focus-within {
+    transform: translateY(-3px);
+    border-color: var(--color-gold);
+    box-shadow: 0 18px 40px -22px color-mix(in srgb, var(--color-blue-800) 70%, transparent);
+  }
+
+  .media-card-img {
+    transition: transform 520ms var(--ease-out-quiet);
+  }
+
+  .media-card:hover .media-card-img,
+  .media-card:focus-within .media-card-img {
+    transform: scale(1.06);
+  }
+
+  /* The arrow on a card that leads somewhere. */
+  .media-card-arrow {
+    transition: transform var(--duration-base) var(--ease-out-quiet);
+  }
+
+  .media-card:hover .media-card-arrow,
+  .media-card:focus-within .media-card-arrow {
+    transform: translateX(4px);
+  }
+
+  /*
+    Staggered entrance for a grid of cards. Each child gets its own view()
+    timeline, so they already arrive in sequence as the row scrolls in; the
+    delay here separates them a little further within a row.
+  */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .reveal-stagger > *:nth-child(3n + 2) {
+        animation-range: entry 4% entry 74%;
+      }
+      .reveal-stagger > *:nth-child(3n + 3) {
+        animation-range: entry 8% entry 78%;
+      }
     }
   }
 

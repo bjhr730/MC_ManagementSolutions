@@ -34,21 +34,46 @@ const exampleCost = money(example.lostRent + example.carryingCost);
   <JsonLd slot="head" schema={founderPerson()} />
 
   {/* ---------------------------------------------------------------- Hero */}
-  <div class="hero-band border-b border-line">
-    <div
-      class="container-page grid items-center gap-12 py-16 md:py-24 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16"
-    >
-      <div class="max-w-3xl">
+  {/*
+    Full-bleed photograph with the headline over it.
+
+    The text sits on a scrim, not on the picture: a gradient from near-solid
+    navy on the left to almost clear on the right. That is what makes white
+    text safe here — measured against the rendered pixels, not assumed — and
+    it is why the headline block is capped at max-w-2xl, so no line of text
+    ever reaches the part of the scrim that has thinned out.
+  */}
+  <section class="hero relative isolate overflow-hidden border-b border-line">
+    <Image
+      src={heroPhoto}
+      alt=""
+      widths={[900, 1400, 1920, 2400]}
+      sizes="100vw"
+      loading="eager"
+      fetchpriority="high"
+      class="hero-photo absolute inset-0 -z-20 size-full object-cover"
+    />
+    <div aria-hidden="true" class="hero-scrim absolute inset-0 -z-10"></div>
+
+    {/*
+      Measured, not guessed: at py-36 the primary call to action finished
+      28px below the fold on a 900px-tall screen. The hero is the one place
+      where "fills the screen" must not beat "the button is on the screen".
+    */}
+    <div class="container-page relative py-16 md:py-20 lg:py-24">
+      <div class="max-w-2xl">
         {/*
           The counties, right at the top: the first question an owner has is
           whether this company covers where their property is.
         */}
-        <p class="eyebrow flex flex-wrap items-center gap-x-2 gap-y-1">
+        <p
+          class="hero-in hero-in-1 flex flex-wrap items-center gap-x-2 gap-y-1 font-sans text-xs font-semibold uppercase tracking-[0.14em] text-silver-200"
+        >
           {
             SERVICE_COUNTIES_SHORT.map((county, i) => (
               <>
                 {i > 0 && (
-                  <span aria-hidden="true" class="text-ornament">
+                  <span aria-hidden="true" class="text-gold-300">
                     &middot;
                   </span>
                 )}
@@ -58,51 +83,27 @@ const exampleCost = money(example.lostRent + example.carryingCost);
           }
         </p>
 
-        <h1 class="mt-4 text-display text-balance">
-          <span class="text-accent">{HERO.headlineLead}</span>{' '}
+        <h1 class="hero-in hero-in-2 mt-5 text-hero text-balance text-white">
+          <span class="text-gold-300">{HERO.headlineLead}</span>{' '}
           {HERO.headlineRest}
         </h1>
 
-        <p class="mt-6 max-w-2xl text-lead text-ink-muted">{HERO.subhead}</p>
+        <p class="hero-in hero-in-3 mt-6 max-w-xl text-lead text-silver-200">
+          {HERO.subhead}
+        </p>
 
-        <div class="mt-9 flex flex-col gap-3 sm:flex-row">
-          <a href={HERO.primaryCta.href} class="btn btn-primary">
+        <div class="hero-in hero-in-4 mt-9 flex flex-col gap-3 sm:flex-row">
+          <a href={HERO.primaryCta.href} class="btn btn-gold">
             {HERO.primaryCta.label}
           </a>
-          <a href={HERO.secondaryCta.href} class="btn btn-secondary">
+          <a href={HERO.secondaryCta.href} class="btn btn-on-photo">
             {HERO.secondaryCta.label}
           </a>
         </div>
       </div>
 
-      {/*
-        The hero photograph. Decorative: the headline beside it already says
-        what this is, so describing a stock street would only delay a screen
-        reader reaching the lead and the call to action.
-
-        Eager and high priority because it is above the fold on desktop and
-        is a candidate for the largest contentful paint; `widths` stops at
-        1100 because that is the widest it is ever painted (a 1.05/0.95 split
-        of a 1200px container), and the aspect ratio is fixed so it reserves
-        its space before it loads.
-      */}
-      <div class="relative hidden lg:block">
-        <Image
-          src={heroPhoto}
-          alt=""
-          widths={[560, 800, 1100]}
-          sizes="(min-width: 1280px) 560px, 46vw"
-          loading="eager"
-          fetchpriority="high"
-          class="aspect-[4/3] w-full rounded-xl border border-line object-cover shadow-[0_24px_60px_-30px_rgba(14,52,100,0.55)]"
-        />
-        <span
-          aria-hidden="true"
-          class="absolute -bottom-3 -left-3 h-20 w-20 rounded-xl border-b-4 border-l-4 border-gold"
-        ></span>
-      </div>
     </div>
-  </div>
+  </section>
 
   {/* -------------------------------------------------- Pick your situation */}
   <Section labelledby="path-legend">

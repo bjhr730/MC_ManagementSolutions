@@ -28,6 +28,53 @@ import { breadcrumbs } from '~/lib/schema';
     lead="Every property is unique, and so are the needs of its owner. At MC Management Solutions, we believe property management should be tailored to your goals, expectations, and investment needs."
   />
 
+  {/*
+    A visual index before the detail. Seven services previously arrived as
+    seven stacked text sections, so a visitor could not see the shape of
+    what is on offer without scrolling the whole page. The cards are jump
+    links, not a replacement — every detail section below is untouched.
+  */}
+  <Section tone="band" compact labelledby="services-index-heading">
+    <h2 id="services-index-heading" class="sr-only">What we handle</h2>
+    <ul class="reveal-group reveal-stagger grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        SERVICES.map((service) => (
+          <li>
+            <a
+              href={`#${service.slug}`}
+              class="media-card group flex h-full flex-col rounded-xl border border-line bg-surface p-6"
+            >
+              <span class="inline-flex size-11 items-center justify-center rounded-lg bg-surface-3 text-accent">
+                <Icon name={service.icon} />
+              </span>
+              <h3 class="mt-4 font-serif text-h3 font-semibold text-ink">
+                {service.title}
+              </h3>
+              <p class="mt-2 line-clamp-3 text-sm leading-relaxed text-ink-muted">
+                {service.summary}
+              </p>
+              <span class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-accent">
+                What this includes
+                <svg
+                  aria-hidden="true"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="media-card-arrow size-4"
+                >
+                  <path d="M4 10h11M11 6l4 4-4 4" />
+                </svg>
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
   <Section>
     <div class="space-y-14">
       {
