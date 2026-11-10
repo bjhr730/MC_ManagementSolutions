@@ -22,6 +22,7 @@ import { breadcrumbs } from '~/lib/schema';
   />
 
   <PageHeader
+    photo="reporting"
     eyebrow="Why choose us"
     title="Why Choose Us"
     lead="Plenty of companies will collect your rent. Fewer will tell you the truth about your property when the news is bad."
@@ -29,11 +30,27 @@ import { breadcrumbs } from '~/lib/schema';
 
   <Section labelledby="reasons-heading">
     <h2 id="reasons-heading" class="sr-only">Reasons owners choose us</h2>
-    <ul class="reveal-group grid gap-x-12 gap-y-12 md:grid-cols-2">
+    {/*
+      Cards rather than a bare two-column text grid. The numeral gives each
+      reason an anchor the eye can land on, which is what this page was
+      missing: six headings of similar length over six paragraphs of similar
+      length read as one block of grey.
+
+      The numerals are decorative and hidden from assistive technology —
+      they imply a ranking that does not exist, and the list is already a
+      list.
+    */}
+    <ul class="reveal-group grid gap-6 md:grid-cols-2">
       {
-        REASONS.map((reason) => (
-          <li class="rule-hover border-t border-line pt-5">
-            <h3 class="text-h3">{reason.title}</h3>
+        REASONS.map((reason, i) => (
+          <li class="relative rounded-xl border border-line bg-surface p-6 md:p-7">
+            <span
+              aria-hidden="true"
+              class="font-serif text-h2 font-semibold leading-none text-gold"
+            >
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <h3 class="mt-4 text-h3">{reason.title}</h3>
             <p class="mt-3 text-ink-muted">{reason.body}</p>
           </li>
         ))

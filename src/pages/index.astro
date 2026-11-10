@@ -10,6 +10,8 @@ import Section from '~/components/Section.astro';
 
 import { HERO, HOME_FOUNDER_TEASER, TOOLS_TEASER } from '~/content/home';
 import { SERVICE_COUNTIES_SHORT } from '~/config/site';
+import { Image } from 'astro:assets';
+import heroPhoto from '~/assets/photos/neighborhood.webp';
 import { FEATURED_FAQ } from '~/content/faq';
 import { SERVICES } from '~/content/services';
 import { founderPerson, localBusiness } from '~/lib/schema';
@@ -33,7 +35,9 @@ const exampleCost = money(example.lostRent + example.carryingCost);
 
   {/* ---------------------------------------------------------------- Hero */}
   <div class="hero-band border-b border-line">
-    <div class="container-page py-16 md:py-24">
+    <div
+      class="container-page grid items-center gap-12 py-16 md:py-24 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16"
+    >
       <div class="max-w-3xl">
         {/*
           The counties, right at the top: the first question an owner has is
@@ -69,6 +73,33 @@ const exampleCost = money(example.lostRent + example.carryingCost);
             {HERO.secondaryCta.label}
           </a>
         </div>
+      </div>
+
+      {/*
+        The hero photograph. Decorative: the headline beside it already says
+        what this is, so describing a stock street would only delay a screen
+        reader reaching the lead and the call to action.
+
+        Eager and high priority because it is above the fold on desktop and
+        is a candidate for the largest contentful paint; `widths` stops at
+        1100 because that is the widest it is ever painted (a 1.05/0.95 split
+        of a 1200px container), and the aspect ratio is fixed so it reserves
+        its space before it loads.
+      */}
+      <div class="relative hidden lg:block">
+        <Image
+          src={heroPhoto}
+          alt=""
+          widths={[560, 800, 1100]}
+          sizes="(min-width: 1280px) 560px, 46vw"
+          loading="eager"
+          fetchpriority="high"
+          class="aspect-[4/3] w-full rounded-xl border border-line object-cover shadow-[0_24px_60px_-30px_rgba(14,52,100,0.55)]"
+        />
+        <span
+          aria-hidden="true"
+          class="absolute -bottom-3 -left-3 h-20 w-20 rounded-xl border-b-4 border-l-4 border-gold"
+        ></span>
       </div>
     </div>
   </div>

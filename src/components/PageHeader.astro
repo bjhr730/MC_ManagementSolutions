@@ -1,20 +1,77 @@
 ---
+import { Image } from 'astro:assets';
+
+import agreement from '~/assets/photos/agreement.webp';
+import homesStreet from '~/assets/photos/homes-street.webp';
+import housesTrees from '~/assets/photos/houses-trees.webp';
+import keys from '~/assets/photos/keys.webp';
+import livingRoom from '~/assets/photos/living-room.webp';
+import numbers from '~/assets/photos/numbers.webp';
+import reporting from '~/assets/photos/reporting.webp';
+import streetRow from '~/assets/photos/street-row.webp';
+
+/**
+ * The band at the top of every inner page.
+ *
+ * `photo` adds a banner under the heading. It is a key into the map below
+ * rather than an imported image passed in, so that a page cannot pick a
+ * photo that does not exist, and so the alt text travels with the picture
+ * instead of being retyped (and eventually mistyped) at each call site.
+ *
+ * Photos are decorative here: every one of them sits directly beneath a
+ * heading and a lead paragraph that already say what the page is. Giving
+ * them descriptive alt text would make a screen reader read the subject of
+ * a stock photograph before the content it is decorating, which is noise.
+ * They are marked alt="" deliberately, not by omission.
+ */
+const PHOTOS = {
+  'homes-street': homesStreet,
+  'living-room': livingRoom,
+  reporting,
+  agreement,
+  keys,
+  numbers,
+  'houses-trees': housesTrees,
+  'street-row': streetRow,
+} as const;
+
 interface Props {
   eyebrow?: string;
   title: string;
   lead?: string;
+  photo?: keyof typeof PHOTOS;
 }
 
-const { eyebrow, title, lead } = Astro.props;
+const { eyebrow, title, lead, photo } = Astro.props;
 ---
 
 <div class="border-b border-line bg-surface-2">
   <div class="container-page py-12 md:py-16">
     {eyebrow && <p class="eyebrow">{eyebrow}</p>}
     <h1 class="mt-3 max-w-3xl text-h2 md:text-display">{title}</h1>
+    {lead && <p class="mt-5 max-w-2xl text-lead text-ink-muted">{lead}</p>}
+
     {
-      lead && (
-        <p class="mt-5 max-w-2xl text-lead text-ink-muted">{lead}</p>
+      /*
+        A band, not a block. At 16:7 across the full container the
+        photograph pushed the page's first real paragraph off the bottom of
+        a 900px screen, which is a decorative image winning an argument
+        against the content. It gets shorter as the viewport widens, since
+        a 3:1 strip is a band on a desktop and an unreadable sliver on a
+        phone.
+      */
+      photo && (
+        <div class="mt-10 overflow-hidden rounded-xl border border-line">
+          <Image
+            src={PHOTOS[photo]}
+            alt=""
+            widths={[640, 960, 1400, 1800]}
+            sizes="(min-width: 1280px) 1200px, (min-width: 768px) 92vw, 100vw"
+            loading="lazy"
+            decoding="async"
+            class="aspect-[16/9] w-full object-cover sm:aspect-[21/9] lg:aspect-[3/1]"
+          />
+        </div>
       )
     }
   </div>
