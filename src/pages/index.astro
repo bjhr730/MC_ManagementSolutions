@@ -124,18 +124,28 @@ const exampleCost = money(example.lostRent + example.carryingCost);
       </a>
     </div>
 
-    <ul class="reveal-group mt-10 grid gap-x-10 gap-y-5 sm:grid-cols-2 lg:grid-cols-3">
+    {/*
+      Cards rather than a list of seven links. As a plain row list this read
+      as a table of contents; the service is the product, so it should look
+      like something rather than like navigation.
+    */}
+    <ul class="reveal-group reveal-stagger mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {
         SERVICES.map((service) => (
           <li>
             <a
               href={`/services#${service.slug}`}
-              class="row-hover -mx-3 flex min-h-11 items-center gap-3 rounded-md px-3"
+              class="media-card flex h-full items-start gap-4 rounded-xl border border-line bg-surface p-5"
             >
-              <span class="row-hover-icon text-band-text">
+              <span class="inline-flex size-10 shrink-0 items-center justify-center rounded-lg bg-surface-3 text-accent">
                 <Icon name={service.icon} class="size-5" />
               </span>
-              <span class="font-medium text-ink">{service.title}</span>
+              <span class="min-w-0">
+                <span class="block font-semibold text-ink">{service.title}</span>
+                <span class="mt-1 block text-sm leading-relaxed text-ink-muted">
+                  {service.summary}
+                </span>
+              </span>
             </a>
           </li>
         ))
@@ -144,34 +154,46 @@ const exampleCost = money(example.lostRent + example.carryingCost);
   </Section>
 
   {/* --------------------------------------------------------------- Tools */}
-  <Section tone="band" labelledby="tools-heading">
-    <div class="rounded-xl border border-line bg-surface p-8 md:p-12">
-      <div class="grid gap-8 lg:grid-cols-[1.3fr_1fr] lg:items-center lg:gap-14">
-        <div>
-          <p class="eyebrow">{TOOLS_TEASER.eyebrow}</p>
-          <h2 id="tools-heading" class="mt-3 text-h2">
-            {TOOLS_TEASER.heading}
-          </h2>
-          <p class="mt-5 max-w-2xl text-lead text-ink-muted">
-            {TOOLS_TEASER.body}
-          </p>
-          <a href={TOOLS_TEASER.href} class="btn btn-primary mt-8">
-            {TOOLS_TEASER.cta}
-          </a>
-        </div>
+  {/*
+    The one dark band on the page. The home page was five light sections in
+    a row, so nothing told the eye where it had got to; this breaks that run
+    and puts the weight on the single most persuasive thing here, which is a
+    number an owner recognises as their own money.
+  */}
+  <Section tone="deep" labelledby="tools-heading">
+    <div class="grid gap-10 lg:grid-cols-[1.15fr_1fr] lg:items-center lg:gap-16">
+      <div>
+        <p
+          class="font-sans text-xs font-semibold uppercase tracking-[0.12em] text-band-deep-gold"
+        >
+          {TOOLS_TEASER.eyebrow}
+        </p>
+        <h2 id="tools-heading" class="mt-3 text-h2 text-on-band-deep">
+          {TOOLS_TEASER.heading}
+        </h2>
+        <p class="mt-5 max-w-2xl text-lead text-band-deep-soft">
+          {TOOLS_TEASER.body}
+        </p>
+        <a href={TOOLS_TEASER.href} class="btn btn-gold mt-8">
+          {TOOLS_TEASER.cta}
+        </a>
+      </div>
 
-        {/* A still of what the tool produces, so the link is not a leap. */}
-        <div class="rounded-lg border border-line bg-surface p-6">
-          <p class="text-sm font-semibold uppercase tracking-[0.08em] text-ink-muted">
-            A {EXAMPLE.vacancyDays}-day vacancy on a {money(EXAMPLE.rent)} rental
-          </p>
-          <p class="mt-2 font-serif text-display font-semibold tabular-nums text-cost">
-            {exampleCost}
-          </p>
-          <p class="mt-2 text-sm text-ink-muted">
-            Lost rent plus carrying costs, before turnover.
-          </p>
-        </div>
+      {/* A still of what the tool produces, so the link is not a leap. */}
+      <div class="rounded-xl border border-white/15 bg-white/5 p-8 backdrop-blur-sm">
+        <p
+          class="text-sm font-semibold uppercase tracking-[0.08em] text-band-deep-soft"
+        >
+          A {EXAMPLE.vacancyDays}-day vacancy on a {money(EXAMPLE.rent)} rental
+        </p>
+        <p
+          class="mt-3 font-serif text-hero font-semibold tabular-nums text-cost-on-deep"
+        >
+          {exampleCost}
+        </p>
+        <p class="mt-3 text-sm text-band-deep-soft">
+          Lost rent plus carrying costs, before turnover.
+        </p>
       </div>
     </div>
   </Section>

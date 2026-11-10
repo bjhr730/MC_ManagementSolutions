@@ -78,6 +78,7 @@ const PAIRS = [
   ['color-on-band-deep', 'color-band-deep', 4.5, 'text on deep blue band'],
   ['color-band-deep-soft', 'color-band-deep', 4.5, 'body text on deep band'],
   ['color-band-deep-gold', 'color-band-deep', 4.5, 'gold eyebrow on deep band'],
+  ['color-cost-on-deep', 'color-band-deep', 4.5, 'cost figure on deep band'],
   ['color-band-text', 'color-surface', 4.5, 'blue text on white'],
   ['color-band-text', 'color-surface-band', 4.5, 'blue text on blue band'],
   // Gold is ornament only. It never carries text, so it is held to the 3:1

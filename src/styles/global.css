@@ -93,6 +93,7 @@
   /* The gold sprinkle on the deep band — eyebrows and rules only. */
   --color-band-deep-gold: #d9a520;
   --color-band-text: #14477f;
+  --color-cost-on-deep: #f4a58e;
   --color-cost: #9a3f2b;
 
   /* Motion. Short, flat easing: this brand promises no surprises, so
@@ -150,6 +151,7 @@
     --color-band-deep-soft: #b9cbe2;
     --color-band-deep-gold: #e0b84a;
     --color-band-text: #7db3ea;
+    --color-cost-on-deep: #f4a58e;
     --color-cost: #e8a08c;
   }
 }
