@@ -803,6 +803,80 @@
     }
   }
 
+  /* ------------------------------------------------------------------
+     The services picker: a list on the left, a photograph on the right,
+     and the selected service named over it. From the reference.
+
+     CSS only. It is a real radio group — arrow keys move between options,
+     the legend names it, and it works with JavaScript off. The rows need no
+     enumerated rules because each input is nested inside its own label, so
+     `:has(input:checked)` reaches it from the row itself. Only the panels
+     need an id each, because they are not inside the label.
+
+     `.svc-panel:first-of-type` is visible by default so that a browser
+     without :has() shows the first service rather than an empty frame.
+  ------------------------------------------------------------------ */
+  .svc-option {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 3.25rem;
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    color: var(--color-ink);
+    transition:
+      background-color var(--duration-fast) var(--ease-out-quiet),
+      color var(--duration-fast) var(--ease-out-quiet);
+  }
+
+  .svc-option:hover {
+    background-color: var(--color-surface-3);
+  }
+
+  .svc-option:has(input:focus-visible) {
+    outline: 2.4px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  .svc-option:has(input:checked) {
+    background-color: var(--color-cta);
+    color: var(--color-cta-ink);
+  }
+
+  .svc-option:has(input:checked) .svc-icon {
+    color: var(--color-gold-bright);
+  }
+
+  .svc-panel {
+    display: none;
+  }
+
+  .svc-panel:first-of-type {
+    display: block;
+  }
+
+  .svc-picker:has(#home-svc-0:checked) [data-panel='0'],
+  .svc-picker:has(#home-svc-1:checked) [data-panel='1'],
+  .svc-picker:has(#home-svc-2:checked) [data-panel='2'],
+  .svc-picker:has(#home-svc-3:checked) [data-panel='3'],
+  .svc-picker:has(#home-svc-4:checked) [data-panel='4'],
+  .svc-picker:has(#home-svc-5:checked) [data-panel='5'],
+  .svc-picker:has(#home-svc-6:checked) [data-panel='6'] {
+    display: block;
+  }
+
+  /* Any panel whose input is not the checked one goes away, including the
+     first — without this the first-of-type fallback would stay on screen
+     underneath every other selection. */
+  .svc-picker:has(input:checked) .svc-panel:first-of-type {
+    display: none;
+  }
+
+  .svc-picker:has(#home-svc-0:checked) [data-panel='0'] {
+    display: block;
+  }
+
   /*
     Banner photographs drift inside their frame as the page scrolls. The
     frame is a fixed aspect ratio with overflow hidden and the picture is

@@ -11,7 +11,8 @@ import Section from '~/components/Section.astro';
 import { HERO, HOME_FOUNDER_TEASER, TOOLS_TEASER } from '~/content/home';
 import { SERVICE_COUNTIES_SHORT } from '~/config/site';
 import { Image } from 'astro:assets';
-import heroPhoto from '~/assets/photos/neighborhood.webp';
+import heroPhoto from '~/assets/photos/hero.webp';
+import servicesPhoto from '~/assets/photos/neighborhood.webp';
 import founderPhoto from '~/assets/antonio-melendez.webp';
 import { FOUNDER_NAME } from '~/content/founder';
 import { FEATURED_FAQ } from '~/content/faq';
@@ -24,6 +25,13 @@ const featured = FEATURED_FAQ.slice(0, 3);
 
 // The teaser figure comes from the calculator so the two can never disagree.
 // Rent plus carrying costs only; turnover is excluded and the caption says so.
+if (SERVICES.length > 7) {
+  throw new Error(
+    `The home page services picker has CSS for 7 panels but SERVICES has ` +
+      `${SERVICES.length}. Add the matching .svc-picker rules in global.css.`
+  );
+}
+
 const example = computeVacancy(EXAMPLE);
 const exampleCost = money(example.lostRent + example.carryingCost);
 ---
@@ -161,32 +169,86 @@ const exampleCost = money(example.lostRent + example.carryingCost);
     </div>
 
     {/*
-      Cards rather than a list of seven links. As a plain row list this read
-      as a table of contents; the service is the product, so it should look
-      like something rather than like navigation.
+      The picker from the reference: the list on the left selects, the
+      photograph on the right names what was selected.
+
+      It is a real radio group rather than buttons and script — arrow keys
+      move through it, it is announced as a group, and it works with
+      JavaScript off. The CSS that drives it enumerates one rule per panel,
+      so the guard below fails the build rather than letting an eighth
+      service silently stop working.
     */}
-    <ul class="reveal-group reveal-stagger mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {
-        SERVICES.map((service) => (
-          <li>
-            <a
-              href={`/services#${service.slug}`}
-              class="media-card flex h-full items-start gap-4 rounded-xl border border-line bg-surface p-5"
+    <div class="svc-picker mt-10 grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:gap-12">
+      <fieldset class="min-w-0">
+        <legend class="sr-only">Choose a service to see</legend>
+        <ul class="space-y-1.5">
+          {
+            SERVICES.map((service, i) => (
+              <li>
+                <label class="svc-option">
+                  <input
+                    type="radio"
+                    name="home-service"
+                    id={`home-svc-${i}`}
+                    checked={i === 0}
+                    class="sr-only"
+                  />
+                  <span class="svc-icon shrink-0 text-accent">
+                    <Icon name={service.icon} class="size-5" />
+                  </span>
+                  <span class="text-sm font-semibold">{service.title}</span>
+                </label>
+              </li>
+            ))
+          }
+        </ul>
+      </fieldset>
+
+      <div class="relative overflow-hidden rounded-2xl border border-line">
+        <Image
+          src={servicesPhoto}
+          alt=""
+          widths={[640, 960, 1400]}
+          sizes="(min-width: 1024px) 680px, 92vw"
+          loading="lazy"
+          class="aspect-4/3 w-full object-cover"
+        />
+
+        {
+          SERVICES.map((service, i) => (
+            <div
+              data-panel={String(i)}
+              class="svc-panel absolute inset-x-4 bottom-4 rounded-xl border border-white/15 bg-[#081426]/88 p-5 backdrop-blur-sm sm:inset-x-6 sm:bottom-6"
             >
-              <span class="inline-flex size-10 shrink-0 items-center justify-center rounded-lg bg-surface-3 text-accent">
-                <Icon name={service.icon} class="size-5" />
-              </span>
-              <span class="min-w-0">
-                <span class="block font-semibold text-ink">{service.title}</span>
-                <span class="mt-1 block text-sm leading-relaxed text-ink-muted">
-                  {service.summary}
-                </span>
-              </span>
-            </a>
-          </li>
-        ))
-      }
-    </ul>
+              <p class="font-serif text-h3 font-semibold text-white">
+                {service.title}
+              </p>
+              <p class="mt-1.5 text-sm leading-relaxed text-silver-300">
+                {service.summary}
+              </p>
+              <a
+                href={`/services#${service.slug}`}
+                class="media-card-arrow mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-gold-300 hover:underline"
+              >
+                See how we handle it
+                <svg
+                  aria-hidden="true"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="size-4"
+                >
+                  <path d="M4 10h11M11 6l4 4-4 4" />
+                </svg>
+              </a>
+            </div>
+          ))
+        }
+      </div>
+    </div>
   </Section>
 
   {/* --------------------------------------------------------------- Tools */}
