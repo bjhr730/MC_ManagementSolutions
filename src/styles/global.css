@@ -712,6 +712,89 @@
     }
   }
 
+  /* ------------------------------------------------------------------
+     The FAQ's disclosure cards.
+
+     Still a native <details>: keyboard operable, announced correctly, and
+     findable by the browser's own in-page search once open. The animation
+     is layered on with ::details-content and interpolate-size, which is
+     what lets a height transition run to `auto` without measuring anything
+     in JavaScript.
+
+     All of it sits inside @supports. Where it is unsupported the panel
+     simply opens instantly, which is the behaviour this had before.
+  ------------------------------------------------------------------ */
+  .faq-item {
+    transition:
+      border-color var(--duration-base) var(--ease-out-quiet),
+      box-shadow var(--duration-base) var(--ease-out-quiet);
+  }
+
+  .faq-item:hover,
+  .faq-item:focus-within {
+    border-color: var(--color-gold);
+  }
+
+  .faq-item[open] {
+    border-color: var(--color-line-strong);
+    box-shadow: 0 10px 30px -20px color-mix(in srgb, var(--color-blue-800) 60%, transparent);
+  }
+
+  /* The summary's own marker, replaced by the circled plus in the markup. */
+  .faq-item > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-item > summary {
+    list-style: none;
+  }
+
+  /* A pill that behaves like a control: the FAQ's jump list uses these. */
+  .chip {
+    transition:
+      background-color var(--duration-fast) var(--ease-out-quiet),
+      border-color var(--duration-fast) var(--ease-out-quiet),
+      transform var(--duration-fast) var(--ease-out-quiet);
+  }
+
+  .chip:hover {
+    background-color: var(--color-surface-3);
+    border-color: var(--color-gold);
+    transform: translateY(-1px);
+  }
+
+  .faq-marker {
+    transition:
+      transform var(--duration-base) var(--ease-out-quiet),
+      background-color var(--duration-base) var(--ease-out-quiet),
+      border-color var(--duration-base) var(--ease-out-quiet),
+      color var(--duration-base) var(--ease-out-quiet);
+  }
+
+  .faq-item[open] .faq-marker {
+    transform: rotate(135deg);
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-surface);
+  }
+
+  @supports (interpolate-size: allow-keywords) {
+    @media (prefers-reduced-motion: no-preference) {
+      .faq-item::details-content {
+        block-size: 0;
+        overflow: hidden;
+        transition:
+          block-size 320ms var(--ease-out-quiet),
+          content-visibility 320ms allow-discrete;
+        interpolate-size: allow-keywords;
+      }
+
+      .faq-item[open]::details-content {
+        block-size: auto;
+      }
+    }
+  }
+
   /*
     Banner photographs drift inside their frame as the page scrolls. The
     frame is a fixed aspect ratio with overflow hidden and the picture is
