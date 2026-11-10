@@ -12,6 +12,8 @@ import { HERO, HOME_FOUNDER_TEASER, TOOLS_TEASER } from '~/content/home';
 import { SERVICE_COUNTIES_SHORT } from '~/config/site';
 import { Image } from 'astro:assets';
 import heroPhoto from '~/assets/photos/neighborhood.webp';
+import founderPhoto from '~/assets/antonio-melendez.webp';
+import { FOUNDER_NAME } from '~/content/founder';
 import { FEATURED_FAQ } from '~/content/faq';
 import { SERVICES } from '~/content/services';
 import { founderPerson, localBusiness } from '~/lib/schema';
@@ -101,6 +103,40 @@ const exampleCost = money(example.lostRent + example.carryingCost);
           </a>
         </div>
       </div>
+
+      {/*
+        Antonio, in the hero. The reference puts a small card with the
+        founder's face over the photograph, and it is the one element that
+        turns the hero from a stock street into a person's business.
+
+        It carries its own near-opaque background rather than relying on the
+        scrim: it sits on the right, where the scrim has deliberately thinned
+        out to let the photograph show, so there is nothing there to make
+        white text safe on its own.
+
+        Hidden below the large breakpoint, where the hero text already fills
+        the width and this would land on top of it.
+      */}
+      <figure
+        class="hero-in hero-in-4 absolute bottom-28 right-6 hidden max-w-xs items-center gap-3 rounded-full border border-white/20 bg-[#081426]/85 py-2 pl-2 pr-5 backdrop-blur-sm lg:flex xl:right-[max(1.5rem,calc((100vw-75rem)/2))]"
+      >
+        <Image
+          src={founderPhoto}
+          alt=""
+          widths={[52, 104]}
+          sizes="52px"
+          loading="eager"
+          class="size-13 shrink-0 rounded-full object-cover"
+        />
+        <figcaption class="min-w-0">
+          <span class="block text-sm font-semibold text-white">
+            {FOUNDER_NAME}
+          </span>
+          <span class="block text-xs leading-snug text-silver-300">
+            Founder, broker and rental owner
+          </span>
+        </figcaption>
+      </figure>
 
     </div>
   </section>
