@@ -150,9 +150,28 @@ const exampleCost = money(example.lostRent + example.carryingCost);
   </section>
 
   {/* -------------------------------------------------- Pick your situation */}
-  <Section labelledby="path-legend">
-    <PathChooser />
-  </Section>
+  {/*
+    The chooser lifts onto the bottom of the hero, as in the reference. It
+    is the first thing asked of a visitor, and overlapping the photograph
+    ties the question to the picture instead of starting a fresh page of
+    its own below it.
+
+    The lift only happens from the large breakpoint. Below that the hero's
+    own text runs to the bottom of the band, and pulling a card up over it
+    would land on the call to action.
+  */}
+  <section
+    class="relative z-10 pb-16 md:pb-20 lg:-mt-20"
+    aria-labelledby="path-legend"
+  >
+    <div class="container-page">
+      <div
+        class="rounded-2xl border border-line bg-surface p-6 shadow-[0_24px_60px_-34px_rgba(10,29,56,0.5)] md:p-10"
+      >
+        <PathChooser />
+      </div>
+    </div>
+  </section>
 
   {/* ------------------------------------------------------------ Services */}
   <Section tone="band" labelledby="services-heading">

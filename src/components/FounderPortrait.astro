@@ -24,13 +24,19 @@ import { LEGAL_ENTITY } from '~/config/site';
 interface Props {
   /** Eager above the fold (the founder page), lazy below it (the home page). */
   priority?: boolean;
+  /**
+   * The small badge over the portrait, as in the reference. Off by default:
+   * on the home page the teaser beside it already says Antonio owns rental
+   * property, and the badge would be the same claim twice in one block.
+   */
+  badge?: boolean;
   class?: string;
 }
 
-const { priority = false, class: className = '' } = Astro.props;
+const { priority = false, badge = false, class: className = '' } = Astro.props;
 ---
 
-<figure class={`m-0 ${className}`}>
+<figure class={`relative m-0 ${className}`}>
   <Image
     src={portrait}
     alt={`${FOUNDER_NAME}, founder of ${LEGAL_ENTITY}`}
@@ -41,4 +47,31 @@ const { priority = false, class: className = '' } = Astro.props;
     decoding={priority ? 'sync' : 'async'}
     class="aspect-3/4 w-full rounded-lg border border-line object-cover"
   />
+
+  {/*
+    Decorative: it restates, in three words, a fact the surrounding prose
+    already makes. A screen reader meeting it between the portrait and the
+    text would hear the same claim a third time.
+  */}
+  {
+    badge && (
+      <figcaption
+        aria-hidden="true"
+        class="absolute bottom-4 left-4 right-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-[#081426]/88 px-4 py-2 text-xs font-semibold text-white backdrop-blur-sm sm:right-auto"
+      >
+        <svg
+          viewBox="0 0 20 20"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.75"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="size-4 shrink-0 text-gold-bright"
+        >
+          <path d="M3 9.5 10 4l7 5.5V16a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5Z" />
+        </svg>
+        A rental property owner himself
+      </figcaption>
+    )
+  }
 </figure>
