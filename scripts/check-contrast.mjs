@@ -66,6 +66,12 @@ const PAIRS = [
   ['color-accent', 'color-page', 4.5, 'accent on the page colour'],
   ['color-gold', 'color-page', 3.0, 'gold rule on the page colour'],
   ['color-ink', 'color-surface-2', 4.5, 'body text on muted band'],
+  // The form's field surface. Added after a redesign moved inputs onto
+  // --color-surface-2 and the placeholder, still pointing at the ornament
+  // colour, quietly landed at 3.75:1.
+  ['color-placeholder', 'color-surface-2', 4.5, 'placeholder in a field'],
+  ['color-ink', 'color-surface-2', 4.5, 'typed value in a field'],
+  ['color-control-border', 'color-surface-2', 3.0, 'field border'],
   ['color-ink', 'color-surface-3', 4.5, 'body text on deep band'],
   ['color-ink-muted', 'color-surface', 4.5, 'secondary text'],
   ['color-ink-muted', 'color-surface-2', 4.5, 'secondary text on muted band'],
