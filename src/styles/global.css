@@ -114,6 +114,25 @@
      scale is redefined rather than renamed, so the `rounded-*` classes
      already in the markup land on it without touching a single file.
   ------------------------------------------------------------------ */
+  /*
+     Spacing. The scale is Tailwind's; what was missing is a rule about
+     which steps a given thing uses. These name the structural ones, so a
+     card's padding is a decision made once rather than at each call site —
+     the same card was spelled eight different ways before this.
+
+     Micro-spacing (the gap between an icon and its label, and such) is
+     deliberately left free. Those are optical adjustments, and forcing
+     them onto a scale makes them worse, not more consistent.
+  */
+  --space-card: 1.5rem;
+  --space-card-md: 1.75rem;
+  --space-panel: 2rem;
+  --space-panel-md: 2.5rem;
+  --space-section-y: 4rem;
+  --space-section-y-md: 6rem;
+  --space-section-y-compact: 3rem;
+  --space-section-y-compact-md: 3.5rem;
+
   --radius-sm: 0.5rem;
   --radius-md: 0.75rem;
   --radius-lg: 1rem;
@@ -1066,6 +1085,72 @@
       .reveal-stagger > *:nth-child(3n + 3) {
         animation-range: entry 8% entry 78%;
       }
+    }
+  }
+
+  /* ------------------------------------------------------------------
+     Cards.
+
+     One definition. An audit found the same card written eight ways —
+     rounded-lg and rounded-xl, on bg-surface and bg-surface-2, padded
+     p-5, p-6, p-6 md:p-7 and p-6 md:p-8 — which is drift, not variety.
+
+     A card is always --color-surface, the lightest surface there is, so
+     it reads as raised against whatever it sits on. That is also why
+     sections holding cards are toned muted or band rather than default:
+     a card on a `default` section had to be bg-surface-2, which is
+     *darker* than its section, so it read as sunken while carrying a
+     lift shadow. The two said opposite things.
+  ------------------------------------------------------------------ */
+  /*
+    The vertical rhythm of a band. Two steps only: the standard one, and a
+    compact one for dense bands such as the tools index. Named rather than
+    written as py-16 md:py-24 at each call site so the page's rhythm is one
+    decision.
+  */
+  .section-y {
+    padding-block: var(--space-section-y);
+  }
+
+  .section-y-compact {
+    padding-block: var(--space-section-y-compact);
+  }
+
+  @media (min-width: 48rem) {
+    .section-y {
+      padding-block: var(--space-section-y-md);
+    }
+    .section-y-compact {
+      padding-block: var(--space-section-y-compact-md);
+    }
+  }
+
+  .card {
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-surface);
+    box-shadow: var(--shadow-raised);
+    padding: var(--space-card);
+  }
+
+  @media (min-width: 48rem) {
+    .card {
+      padding: var(--space-card-md);
+    }
+  }
+
+  /* The larger surface: a feature block rather than an item in a grid. */
+  .panel {
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-xl);
+    background-color: var(--color-surface);
+    box-shadow: var(--shadow-raised);
+    padding: var(--space-panel);
+  }
+
+  @media (min-width: 48rem) {
+    .panel {
+      padding: var(--space-panel-md);
     }
   }
 

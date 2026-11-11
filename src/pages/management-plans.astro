@@ -52,7 +52,7 @@ import { breadcrumbs } from '~/lib/schema';
     <ul class="reveal-group reveal-stagger mt-10 grid gap-3 md:grid-cols-2">
       {
         COVERAGE.items.map((item) => (
-          <li class="flex items-start gap-3 rounded-xl border border-line bg-surface px-5 py-4">
+          <li class="card flex items-start gap-3 !px-5 !py-4">
             <Tick />
             <span>{item}</span>
           </li>
@@ -79,7 +79,7 @@ import { breadcrumbs } from '~/lib/schema';
         <ul class="reveal-group mt-6 space-y-3">
           {
             FEES.items.map((item) => (
-              <li class="rounded-xl border border-line bg-surface-2 shadow-raised px-5 py-4">
+              <li class="card !px-5 py-4">
                 <span class="font-medium text-ink">{item.label}</span>
                 {'note' in item && item.note && (
                   <span class="mt-1 block text-sm leading-relaxed text-ink-muted">
