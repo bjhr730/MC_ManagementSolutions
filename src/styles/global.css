@@ -803,6 +803,22 @@
     }
   }
 
+  /*
+    The closing call to action's scrim. Flat and heavy, unlike the hero's
+    graded one: the text here spans the full width on small screens and
+    two thirds on large, so there is no side of the band that can be left
+    uncovered for the photograph to show through.
+  */
+  .cta-scrim {
+    background-color: rgba(6, 16, 32, 0.84);
+    background-image: linear-gradient(
+      100deg,
+      rgba(6, 16, 32, 0.9) 0%,
+      rgba(6, 16, 32, 0.82) 70%,
+      rgba(6, 16, 32, 0.78) 100%
+    );
+  }
+
   /* ------------------------------------------------------------------
      The services picker: a list on the left, a photograph on the right,
      and the selected service named over it. From the reference.

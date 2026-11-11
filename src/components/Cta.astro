@@ -1,7 +1,24 @@
 ---
+import { Image } from 'astro:assets';
+
 import { PRICING_DISCLOSURE } from '~/config/compliance';
 import { CONTACT } from '~/config/site';
+import ctaPhoto from '~/assets/photos/keys.webp';
 
+/**
+ * The closing call to action, on every page.
+ *
+ * Rebuilt to the reference Antonio liked: a photograph with a scrim, the
+ * ask on the left, and what happens next as three numbered steps on the
+ * right.
+ *
+ * The steps are not new copy. They are the same sentence this block always
+ * carried — "tell us about your property and what you want from
+ * management, we will come back with a written proposal, every applicable
+ * fee disclosed" — set as three things in order instead of one sentence to
+ * read. A promise about a process is easier to believe when you can see it
+ * has steps.
+ */
 interface Props {
   heading?: string;
   /** One paragraph, or several. */
@@ -23,35 +40,101 @@ const {
 } = Astro.props;
 
 const paragraphs = Array.isArray(body) ? body : [body];
+
+const STEPS = [
+  {
+    title: 'Tell us about your property',
+    detail: 'and what you want from management',
+  },
+  {
+    title: 'We come back with a written proposal',
+    detail: 'customized to each property and owner',
+  },
+  {
+    title: 'Every applicable fee disclosed',
+    detail: 'before you sign',
+  },
+];
 ---
 
-<section class="bg-navy-800 py-16 md:py-20" aria-labelledby="cta-heading">
-  <div class="container-page">
-    <div class="max-w-2xl">
-      <h2 id="cta-heading" class="text-h2 text-white">{heading}</h2>
-      {paragraphs.map((paragraph) => <p class="mt-4 text-lead text-silver-200">{paragraph}</p>)}
+<section
+  class="relative isolate overflow-hidden py-16 md:py-20"
+  aria-labelledby="cta-heading"
+>
+  <Image
+    src={ctaPhoto}
+    alt=""
+    widths={[900, 1400, 1920]}
+    sizes="100vw"
+    loading="lazy"
+    decoding="async"
+    class="absolute inset-0 -z-20 size-full object-cover"
+  />
+  {/*
+    A near-solid scrim rather than a light one. This band sits at the foot
+    of every page and carries the only call to action some visitors will
+    read; the photograph is texture behind it, not something to look at, so
+    it is covered far harder than the hero's.
+  */}
+  <div aria-hidden="true" class="cta-scrim absolute inset-0 -z-10"></div>
 
-      <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-        <a href="/contact" class="btn btn-on-dark w-full sm:w-auto">
-          {ctaLabel}
-        </a>
-        <a
-          href={CONTACT.phoneHref}
-          class="btn w-full border border-white/30 text-white hover:bg-white/10 sm:w-auto"
-        >
-          Call {CONTACT.phone}
-        </a>
+  <div class="container-page">
+    <div class="grid gap-12 lg:grid-cols-[1fr_0.85fr] lg:items-center lg:gap-20">
+      <div class="max-w-2xl">
+        <h2 id="cta-heading" class="text-display text-white">{heading}</h2>
+        {
+          paragraphs.map((paragraph) => (
+            <p class="mt-4 text-lead text-silver-200">{paragraph}</p>
+          ))
+        }
+
+        <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+          <a href="/contact" class="btn btn-gold w-full sm:w-auto">
+            {ctaLabel}
+          </a>
+          <a
+            href={CONTACT.phoneHref}
+            class="btn btn-on-photo w-full sm:w-auto"
+          >
+            Call {CONTACT.phone}
+          </a>
+        </div>
+
+        {note && <p class="mt-5 text-sm text-silver-200">{note}</p>}
+
+        {
+          showDisclosure && (
+            <p class="mt-7 max-w-xl text-xs leading-relaxed text-silver-300">
+              {PRICING_DISCLOSURE}
+            </p>
+          )
+        }
       </div>
 
-      {note && <p class="mt-5 text-sm text-silver-200">{note}</p>}
-
-      {
-        showDisclosure && (
-          <p class="mt-7 max-w-xl text-xs leading-relaxed text-silver-400">
-            {PRICING_DISCLOSURE}
-          </p>
-        )
-      }
+      {/*
+        An ordered list, because the order is the point: a reader who skips
+        to step three should still understand it comes last.
+      */}
+      <ol class="space-y-6">
+        {
+          STEPS.map((step, i) => (
+            <li class="flex gap-4">
+              <span
+                aria-hidden="true"
+                class="inline-flex size-9 shrink-0 items-center justify-center rounded-full border border-gold-bright/50 font-serif text-base font-semibold text-gold-bright"
+              >
+                {i + 1}
+              </span>
+              <span class="min-w-0 pt-1">
+                <span class="block font-semibold text-white">{step.title}</span>
+                <span class="mt-0.5 block text-sm leading-relaxed text-silver-300">
+                  {step.detail}
+                </span>
+              </span>
+            </li>
+          ))
+        }
+      </ol>
     </div>
   </div>
 </section>
