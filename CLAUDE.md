@@ -64,6 +64,11 @@ The browser pane is the source of truth, not the dev server's first paint.
 - `:focus` does not match when the pane lacks document focus — `activeElement`
   is set but `matches(':focus')` is false. Not a CSS bug.
 - `npm run build` does not refresh the dev server's CSS; reload the page.
+- A `loading="lazy"` image reporting `complete: false` is usually NOT broken. The
+  pane does not fire lazy loads reliably while it is hidden or the image is off
+  screen, and `img.decode()` then never settles. Before calling one broken, check
+  `performance.getEntriesByType('resource')`: no entry means never requested, not
+  failed. Count `complete && naturalWidth === 0` for actually-broken.
 - For a11y, run axe from the page across all 17 routes rather than trusting a
   visual pass. It caught nested landmarks on ten routes that looked fine.
 
