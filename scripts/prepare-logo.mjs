@@ -75,6 +75,15 @@ const mark = await sharp(squared).resize(512, 512).webp({ quality: 90 }).toBuffe
 
 await writeFile('src/assets/mc-logo-mark.webp', mark);
 
+// A small copy for the header/footer lockup. The 512px mark exists for the
+// favicon and the touch icon; the lockup paints it at 44-64px, and since it
+// is now referenced directly rather than resized by astro:assets (see
+// NavIcon/Logo), shipping the 512px file on every page would be wasteful.
+await writeFile(
+  'src/assets/mc-logo-lockup.webp',
+  await sharp(mark).resize(192, 192).webp({ quality: 90 }).toBuffer()
+);
+
 const full = await sharp(SOURCE)
   .trim({ threshold: 20 })
   .resize({ width: 1200, withoutEnlargement: true })

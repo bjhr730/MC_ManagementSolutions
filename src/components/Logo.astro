@@ -1,6 +1,5 @@
 ---
-import { Image } from 'astro:assets';
-import mark from '~/assets/mc-logo-mark.webp';
+import mark from '~/assets/mc-logo-lockup.webp';
 
 /**
  * The logo lockup: Antonio's badge, then "Management Solutions" in type.
@@ -20,6 +19,13 @@ import mark from '~/assets/mc-logo-mark.webp';
  * The badge itself stays decorative. Giving it alt="MC" instead would be
  * ignored in the header, where the link's own aria-label wins, and would
  * read as a stray letter wherever it was not.
+ *
+ * A plain <img> on the built asset, not astro:assets <Image>: on /contact,
+ * which is `prerender = false` for the form POST, <Image> emitted an
+ * `/_image?...` URL for an on-demand endpoint this build never deploys, and
+ * the logo rendered as a broken placeholder in all three places it appears.
+ * mc-logo-lockup.webp is a 192px derivative, enough for the 44-64px it is
+ * painted at; the 512px mark stays for the favicon and touch icon.
  *
  * Sizing: the badge and the wordmark scale together, so the lockup keeps its
  * proportions. The header bar is h-16 on mobile and md:h-20 from the medium
@@ -52,12 +58,13 @@ const gap = isSm ? 'gap-3 md:gap-3.5' : 'gap-3.5 sm:gap-4';
 ---
 
 <span class={`inline-flex items-center ${gap}`}>
-  <Image
-    src={mark}
+  <img
+    src={mark.src}
     alt=""
-    widths={[renderedPx, renderedPx * 2]}
-    sizes={`${renderedPx}px`}
+    width={renderedPx}
+    height={renderedPx}
     loading="eager"
+    decoding="async"
     class={`${badge} shrink-0 rounded-lg`}
   />
   <span

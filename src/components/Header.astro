@@ -52,7 +52,7 @@ const isCurrent = (href: string) => path === href;
               <a
                 href={item.href}
                 aria-current={isCurrent(item.href) ? 'page' : undefined}
-                class="nav-item group flex min-h-11 flex-col items-center gap-1 rounded px-2.5 py-1.5 hover:bg-surface-3"
+                class="nav-item group flex min-h-11 min-w-18 flex-col items-center gap-1 rounded px-2.5 py-1.5 hover:bg-surface-3"
               >
                 <NavIcon icon={item.icon} size={28} class="nav-item-icon size-7" />
                 <span class="text-[0.8125rem] font-medium leading-none text-ink-muted group-hover:text-ink group-aria-[current=page]:text-ink group-aria-[current=page]:underline group-aria-[current=page]:decoration-gold group-aria-[current=page]:decoration-2 group-aria-[current=page]:underline-offset-4">
@@ -68,7 +68,7 @@ const isCurrent = (href: string) => path === href;
     <div class="flex items-center gap-2">
       <a
         href={CONTACT.phoneHref}
-        class="hidden min-h-11 items-center rounded px-3 text-sm font-medium text-ink-muted hover:text-ink xl:inline-flex"
+        class="hidden min-h-11 items-center whitespace-nowrap rounded px-3 text-sm font-medium text-ink-muted hover:text-ink xl:inline-flex"
       >
         {CONTACT.phone}
       </a>
@@ -77,10 +77,26 @@ const isCurrent = (href: string) => path === href;
         The call to action in the header itself, as in the reference. It is
         the one thing every page is trying to get to, and until now it was
         only reachable by finding it in the body or opening the nav.
+
+        From xl, not lg. At 1024 the row cannot hold the logo, seven nav
+        items and a 195px button: with the button present no nav minimum
+        fits, not even 64px. It had been hiding that by wrapping onto two
+        lines, which read as a squashed button rather than as "too narrow".
+        whitespace-nowrap stops it wrapping again — if it ever does not fit,
+        that now shows up as an overflow a test can catch. The phone number
+        beside it gets the same treatment: with the button held to one line
+        the pressure simply moved next door and the number broke across
+        three lines instead.
+
+        With both held on one line, 72px is the largest nav minimum that
+        fits at 1280 — and the container caps at 1200px, so a wider screen
+        buys nothing. Equal widths are not reachable here: "Management
+        Plans" alone is 139px and seven of those is 973px, which will not
+        sit beside a 199px logo, the number and a 195px button.
       */}
       <a
         href="/contact"
-        class="btn btn-gold hidden !min-h-10 !px-5 !text-sm lg:inline-flex"
+        class="btn btn-gold hidden whitespace-nowrap !min-h-10 !px-5 !text-sm xl:inline-flex"
       >
         Request a consultation
       </a>
