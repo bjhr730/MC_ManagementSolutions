@@ -45,17 +45,17 @@ const isCurrent = (href: string) => path === href;
 
     {/* Desktop navigation */}
     <nav aria-label="Primary" class="hidden lg:block">
-      <ul class="flex items-end gap-0.5 whitespace-nowrap">
+      <ul class="flex items-start gap-0.5">
         {
           NAV.map((item) => (
             <li>
               <a
                 href={item.href}
                 aria-current={isCurrent(item.href) ? 'page' : undefined}
-                class="nav-item group flex min-h-11 min-w-18 flex-col items-center gap-1 rounded px-2.5 py-1.5 hover:bg-surface-3"
+                class="nav-item group flex min-h-11 w-[5.625rem] flex-col items-center gap-1 rounded px-0.5 py-1.5 hover:bg-surface-3"
               >
                 <NavIcon icon={item.icon} size={28} class="nav-item-icon size-7" />
-                <span class="text-[0.8125rem] font-medium leading-none text-ink-muted group-hover:text-ink group-aria-[current=page]:text-ink group-aria-[current=page]:underline group-aria-[current=page]:decoration-gold group-aria-[current=page]:decoration-2 group-aria-[current=page]:underline-offset-4">
+                <span class="text-balance text-center text-[0.8125rem] font-medium leading-tight text-ink-muted group-hover:text-ink group-aria-[current=page]:text-ink group-aria-[current=page]:underline group-aria-[current=page]:decoration-gold group-aria-[current=page]:decoration-2 group-aria-[current=page]:underline-offset-4">
                   {item.label}
                 </span>
               </a>
@@ -88,11 +88,21 @@ const isCurrent = (href: string) => path === href;
         the pressure simply moved next door and the number broke across
         three lines instead.
 
-        With both held on one line, 72px is the largest nav minimum that
-        fits at 1280 — and the container caps at 1200px, so a wider screen
-        buys nothing. Equal widths are not reachable here: "Management
-        Plans" alone is 139px and seven of those is 973px, which will not
-        sit beside a 199px logo, the number and a 195px button.
+        At 1280 the container caps at 1200px and splits 199 logo / 650 nav
+        / 335 for the number and button, leaving about 90px per item for
+        seven items. That is what sets w-[5.625rem]: every item is exactly
+        90px, so the icons sit on a real grid instead of drifting with the
+        length of each word. The two labels too long for 90px on one line
+        — "Management Plans" at 139px and "Why Choose Us" at 119px — wrap
+        to two lines, and text-balance splits them "Management / Plans"
+        and "Why / Choose Us" rather than orphaning a word. Measured at
+        1280: all seven 90px, no page overflow, button and number each
+        still on one line.
+
+        Equal width is only reachable *because* the labels may wrap.
+        Putting whitespace-nowrap back on the row forces 139px minimums
+        and 973px of nav, which will not sit beside a 199px logo, the
+        number and a 195px button.
       */}
       <a
         href="/contact"
