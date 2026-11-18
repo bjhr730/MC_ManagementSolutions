@@ -1,11 +1,14 @@
 ---
-import {
-  MAP_CONTEXT,
-  MAP_HEIGHT,
-  MAP_SERVED,
-  MAP_VIEWBOX,
-  MAP_WIDTH,
-} from '~/data/service-area-map';
+import { MAP_CONTEXT, MAP_SERVED, MAP_VIEWBOX } from '~/data/service-area-map';
+
+/*
+  Positions come from this generated stylesheet, keyed on data-area, not
+  from style attributes. The site's CSP has no 'unsafe-inline', so a style
+  attribute is dropped in production while working fine in dev - which put
+  every label in a heap in the corner of the deployed page once already.
+  The generator writes this file alongside the path data.
+*/
+import '~/styles/service-area-map.css';
 
 /**
  * The Northern Virginia service area, drawn from real county boundaries.
@@ -29,9 +32,6 @@ import {
 const title = 'service-area-map-title';
 const names = MAP_SERVED.map((area) => area.label).join(', ');
 
-const x = (value: number) => `${((value / MAP_WIDTH) * 100).toFixed(3)}%`;
-const y = (value: number) => `${((value / MAP_HEIGHT) * 100).toFixed(3)}%`;
-
 const labelled = [
   ...MAP_SERVED.map((area) => ({ ...area, kind: 'served' as const })),
   ...MAP_CONTEXT.map((area) => ({ ...area, kind: 'context' as const })),
@@ -39,10 +39,7 @@ const labelled = [
 ---
 
 <figure class="service-map">
-  <div
-    class="service-map-canvas"
-    style={`aspect-ratio: ${MAP_WIDTH} / ${MAP_HEIGHT}`}
-  >
+  <div class="service-map-canvas">
     <svg viewBox={MAP_VIEWBOX} role="img" aria-labelledby={title}>
       <title id={title}>
         Map of the Northern Virginia service area, covering {names}, with
@@ -84,12 +81,7 @@ const labelled = [
       {
         labelled
           .filter((area) => area.dotX !== null)
-          .map((area) => (
-            <span
-              class="service-map-dot"
-              style={`left: ${x(area.dotX!)}; top: ${y(area.dotY!)}`}
-            />
-          ))
+          .map((area) => <span class="service-map-dot" data-area={area.id} />)
       }
       {
         labelled.map((area) => (
@@ -99,7 +91,7 @@ const labelled = [
               `is-${area.kind}`,
               area.leader && 'is-callout',
             ]}
-            style={`left: ${x(area.labelX)}; top: ${y(area.labelY)}`}
+            data-area={area.id}
           >
             {area.label}
           </span>
