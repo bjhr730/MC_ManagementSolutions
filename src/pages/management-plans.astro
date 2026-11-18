@@ -33,15 +33,8 @@ import { breadcrumbs } from '~/lib/schema';
     photo="agreement"
     eyebrow="Management plans"
     title="Customized management, not a rate card"
-    lead="Tell us about the property and what you want from management, and we will put a written proposal in front of you."
+    lead={PLANS_INTRO}
   />
-
-  <Section labelledby="approach-heading">
-    <div class="max-w-3xl">
-      <h2 id="approach-heading" class="sr-only">Our pricing approach</h2>
-      <p class="text-lead text-ink-muted">{PLANS_INTRO}</p>
-    </div>
-  </Section>
 
   <Section tone="band" labelledby="coverage-heading">
     <div class="max-w-3xl">
@@ -91,7 +84,6 @@ import { breadcrumbs } from '~/lib/schema';
           }
         </ul>
 
-        <p class="mt-8 font-serif text-h3 text-ink">{FEES.closing}</p>
       </div>
     </div>
   </Section>
@@ -113,7 +105,8 @@ import { breadcrumbs } from '~/lib/schema';
 
   <Cta
     heading="Request a personalized management proposal"
-    body="Send us the property details and we will come back with a proposal built around it, every applicable fee disclosed."
+    {/* The fee-disclosure promise is made once, in the fees section. */}
+    body="Send us the property details and we will come back with a proposal built around it."
     showDisclosure={false}
   />
 </BaseLayout>

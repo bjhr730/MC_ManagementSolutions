@@ -15,20 +15,24 @@
  * Fee categories are named here; no numbers appear.
  */
 
+/*
+ * Said once, here: pricing is customized and there is no rate card. The
+ * disclosure promise lives once in FEES, and the invitation to request a
+ * proposal once in the closing call to action. Between them they satisfy
+ * the checklist rule without the page repeating itself five times, which
+ * is what Antonio asked us to fix.
+ */
 export const PLANS_INTRO =
   'There is no one-size-fits-all management fee here, and no rate card to ' +
   'squeeze your property into. A single condominium with an HOA, a ' +
   'townhouse that needs a turnover, and a small portfolio of rentals are ' +
-  'three different jobs. We look at your property and your goals, then put ' +
-  'a written proposal in front of you with every applicable fee disclosed.';
+  'three different jobs, and they are priced as three different jobs.';
 
 export const COVERAGE = {
   heading: 'What Our Management Services Cover',
   intro:
-    'Our services are tailored to your property and your preferences. ' +
     'Whether you prefer to stay closely involved or take a more hands-off ' +
-    'approach, we work with you to establish a management plan that fits ' +
-    'your needs.',
+    'approach, these are the parts we handle.',
   items: [
     'Rent collection and owner payments by ACH or check',
     'Monthly financial statements and annual tax reporting',
@@ -44,11 +48,10 @@ export const COVERAGE = {
 export const FEES = {
   heading: 'Straightforward Fees. No Surprises.',
   intro:
-    'We believe property management fees should be clear and easy to ' +
-    'understand. Our pricing is tailored to your property and the services ' +
-    'you need, with all applicable fees discussed upfront and clearly ' +
-    'outlined in writing before you commit.',
-  lead: 'Depending on your needs, services may include:',
+    'No rate card does not mean no clarity. Every fee that applies to your ' +
+    'property is named in writing, in your proposal, before you commit to ' +
+    'anything.',
+  lead: 'Which of these apply depends on the services you choose:',
   items: [
     { label: 'Monthly Property Management' },
     {
@@ -61,8 +64,6 @@ export const FEES = {
       note: 'only when mutually agreed upon in writing',
     },
   ],
-  closing:
-    'No termination fees. No surprises. Just Straightforward Management.',
 } as const;
 
 export const NO_TERMINATION_FEE = {

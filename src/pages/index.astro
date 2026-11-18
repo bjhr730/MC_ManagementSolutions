@@ -8,13 +8,17 @@ import JsonLd from '~/components/JsonLd.astro';
 import PathChooser from '~/components/PathChooser.astro';
 import Section from '~/components/Section.astro';
 
-import { HERO, HOME_FOUNDER_TEASER, TOOLS_TEASER } from '~/content/home';
+import {
+  HERO,
+  HOME_FOUNDER_TEASER,
+  OWNER_GAINS,
+  OWNER_GAINS_HEADING,
+  TOOLS_TEASER,
+} from '~/content/home';
 import { SERVICE_COUNTIES_SHORT } from '~/config/site';
 import { Image } from 'astro:assets';
 import heroPhoto from '~/assets/photos/hero.webp';
 import servicesPhoto from '~/assets/photos/neighborhood.webp';
-import founderPhoto from '~/assets/antonio-melendez.webp';
-import { FOUNDER_NAME } from '~/content/founder';
 import { FEATURED_FAQ } from '~/content/faq';
 import { SERVICES } from '~/content/services';
 import { founderPerson, localBusiness } from '~/lib/schema';
@@ -94,11 +98,23 @@ const exampleCost = money(example.lostRent + example.carryingCost);
         </p>
 
         <h1 class="hero-in hero-in-2 mt-5 text-hero text-balance text-white">
-          <span class="text-gold-300">{HERO.headlineLead}</span>{' '}
+          <span>{HERO.headlineLead}</span>{' '}
           {HERO.headlineRest}
         </h1>
 
-        <p class="hero-in hero-in-3 mt-6 max-w-xl text-lead text-silver-200">
+        {/*
+          The positioning line leads, the detail follows. Gold has come off
+          the headline: it was the largest block of colour on the site, and
+          the brief is gold as an accent. It is still on the rule above, the
+          separators and the one primary button, which is the sprinkle.
+        */}
+        <p
+          class="hero-in hero-in-3 mt-6 max-w-xl text-lead font-semibold text-white"
+        >
+          {HERO.positioning}
+        </p>
+
+        <p class="hero-in hero-in-3 mt-3 max-w-xl text-silver-200">
           {HERO.subhead}
         </p>
 
@@ -111,40 +127,6 @@ const exampleCost = money(example.lostRent + example.carryingCost);
           </a>
         </div>
       </div>
-
-      {/*
-        Antonio, in the hero. The reference puts a small card with the
-        founder's face over the photograph, and it is the one element that
-        turns the hero from a stock street into a person's business.
-
-        It carries its own near-opaque background rather than relying on the
-        scrim: it sits on the right, where the scrim has deliberately thinned
-        out to let the photograph show, so there is nothing there to make
-        white text safe on its own.
-
-        Hidden below the large breakpoint, where the hero text already fills
-        the width and this would land on top of it.
-      */}
-      <figure
-        class="hero-in hero-in-4 absolute bottom-28 right-6 hidden max-w-xs items-center gap-3 rounded-full border border-white/20 bg-[#081426]/85 py-2 pl-2 pr-5 backdrop-blur-sm lg:flex xl:right-[max(1.5rem,calc((100vw-75rem)/2))]"
-      >
-        <Image
-          src={founderPhoto}
-          alt=""
-          widths={[52, 104]}
-          sizes="52px"
-          loading="eager"
-          class="size-13 shrink-0 rounded-full object-cover"
-        />
-        <figcaption class="min-w-0">
-          <span class="block text-sm font-semibold text-white">
-            {FOUNDER_NAME}
-          </span>
-          <span class="block text-xs leading-snug text-silver-300">
-            Founder, broker and rental owner
-          </span>
-        </figcaption>
-      </figure>
 
     </div>
   </section>
@@ -173,11 +155,39 @@ const exampleCost = money(example.lostRent + example.carryingCost);
     </div>
   </section>
 
+  {/* ------------------------------------------------------- What you gain */}
+  {/*
+    The page listed what property management is and never said what the
+    owner gets out of it, which is the wrong way round when the only job
+    of the page is to earn a consultation.
+
+    Toned `default`, so the cards sit on the page silver and lift off it.
+    Before the tone ladder was fixed, `default` painted the card colour and
+    a card here would have been invisible.
+  */}
+  <Section tone="default" labelledby="gains-heading">
+    <div class="max-w-3xl">
+      <p class="eyebrow">Why owners choose MC</p>
+      <h2 id="gains-heading" class="mt-3 text-h2">{OWNER_GAINS_HEADING}</h2>
+    </div>
+
+    <ul class="reveal-group mt-12 grid gap-6 md:grid-cols-3">
+      {
+        OWNER_GAINS.map((gain) => (
+          <li class="card">
+            <h3 class="text-h3">{gain.title}</h3>
+            <p class="mt-3 leading-relaxed text-ink-muted">{gain.body}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
   {/* ------------------------------------------------------------ Services */}
   <Section tone="band" labelledby="services-heading">
     <div class="flex flex-wrap items-end justify-between gap-6">
       <h2 id="services-heading" class="max-w-2xl text-h2">
-        Everything the property needs, in one place
+        One person accountable for all of it
       </h2>
       <a
         href="/services"

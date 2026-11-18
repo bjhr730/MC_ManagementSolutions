@@ -38,9 +38,25 @@ import { PATHS } from '~/content/home';
         <div class="path-panel">
           <h3 class="text-h3">{path.heading}</h3>
           <p class="mt-3 max-w-2xl text-lead text-ink-muted">{path.body}</p>
-          <a href={path.href} class="btn btn-primary mt-6">
-            {path.cta}
-          </a>
+          {/*
+            One primary action on every path, pointing at the same place.
+            Each path used to send the owner somewhere different, so three
+            buttons competed for the same decision. The resource that suits
+            this situation is still here, demoted to a quiet link.
+          */}
+          <div class="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3">
+            <a href={path.href} class="btn btn-primary">
+              {path.cta}
+            </a>
+            {path.secondary && (
+              <a
+                href={path.secondary.href}
+                class="text-sm font-semibold text-ink underline decoration-accent decoration-2 underline-offset-4 hover:text-accent"
+              >
+                {path.secondary.label}
+              </a>
+            )}
+          </div>
         </div>
       ))
     }
