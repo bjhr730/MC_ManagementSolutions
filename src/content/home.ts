@@ -23,28 +23,42 @@
  * counties moved up into the eyebrow so the service area is visible without
  * scrolling.
  */
+/*
+ * The hero, to Antonio's November 2026 mock-up.
+ *
+ * The headline is his: a claim about how the work is done, not a
+ * description of the trade. The h1 no longer contains "Northern Virginia
+ * property management" - the eyebrow directly above it carries the region,
+ * and the page title and meta description still carry the full phrase, so
+ * the local search signal is not lost with the literal wording.
+ *
+ * The county list that used to sit here has gone with it. It answered a
+ * real question - am I covered? - which is now answered properly on the
+ * contact page, where the service-area map and the full list of places
+ * live.
+ */
 export const HERO = {
-  /** The first half of the h1. Split only so it can break cleanly. */
-  headlineLead: 'Northern Virginia property management',
-  /** The rest of the same sentence. */
-  headlineRest: 'with an owner’s attention.',
-  /*
-    The positioning line, in Antonio's words. It is the first thing said
-    after the headline because it is the whole proposition: the scale of a
-    large operation, the attention of a single owner.
-
-    It carries no figure on purpose. The master checklist bars the door
-    count and the transaction count from the site until they are verified,
-    and 'a large portfolio' says the same thing without making a claim.
-  */
-  positioning:
-    'Experienced enough to manage a large portfolio. Personal enough to ' +
-    'care about one home.',
+  eyebrow: 'MC Management Solutions · Northern Virginia',
+  headline: 'We Manage It Like It’s Ours.',
   subhead:
-    'You deal with the licensed broker who owns the company and rents out ' +
-    'property of his own — not a queue, and not whoever is free.',
-  primaryCta: { label: 'Request a consultation', href: '/contact' },
-  secondaryCta: { label: 'See what we handle', href: '/services' },
+    'Your property deserves the same attention we’d give our own. ' +
+    'Experience personalized management from a local real estate broker ' +
+    'and investor who understands what it means to be an owner.',
+  primaryCta: {
+    label: 'Let’s Talk About Your Property',
+    href: '/contact#inquiry',
+  },
+  secondaryCta: { label: 'Explore Our Services', href: '/services' },
+  /*
+    The strip under the buttons. It is the one place the hero says what
+    Antonio is rather than what he does, and it is deliberately two short
+    lines: anything longer competes with the call to action beside it.
+  */
+  trust: {
+    icon: 'home' as const,
+    title: 'Broker-Owned. Investor-Minded.',
+    body: 'Local experience. Personal attention.',
+  },
 } as const;
 
 /**
@@ -128,7 +142,9 @@ export const TOOLS_TEASER = {
  * Nothing here states a figure or a promise about fees: those belong in
  * the proposal, and the ones already on the site carry their own hedges.
  */
-export const OWNER_GAINS_HEADING = 'What that means for your property';
+export const OWNER_GAINS_HEADING =
+  'Experienced enough to manage a large portfolio. ' +
+  'Personal enough to care about one home.';
 
 export const OWNER_GAINS: readonly { title: string; body: string }[] = [
   {

@@ -15,7 +15,6 @@ import {
   OWNER_GAINS_HEADING,
   TOOLS_TEASER,
 } from '~/content/home';
-import { SERVICE_COUNTIES_SHORT } from '~/config/site';
 import { Image } from 'astro:assets';
 import heroPhoto from '~/assets/photos/hero.webp';
 import servicesPhoto from '~/assets/photos/neighborhood.webp';
@@ -76,45 +75,17 @@ const exampleCost = money(example.lostRent + example.carryingCost);
     */}
     <div class="container-page relative py-16 md:py-20 lg:py-24">
       <div class="max-w-2xl">
-        {/*
-          The counties, right at the top: the first question an owner has is
-          whether this company covers where their property is.
-        */}
         <p
-          class="hero-in hero-in-1 flex flex-wrap items-center gap-x-2 gap-y-1 font-sans text-xs font-semibold uppercase tracking-[0.14em] text-silver-200"
+          class="hero-in hero-in-1 font-sans text-xs font-semibold uppercase tracking-[0.14em] text-gold-300"
         >
-          {
-            SERVICE_COUNTIES_SHORT.map((county, i) => (
-              <>
-                {i > 0 && (
-                  <span aria-hidden="true" class="text-gold-300">
-                    &middot;
-                  </span>
-                )}
-                <span>{county}</span>
-              </>
-            ))
-          }
+          {HERO.eyebrow}
         </p>
 
         <h1 class="hero-in hero-in-2 mt-5 text-hero text-balance text-white">
-          <span>{HERO.headlineLead}</span>{' '}
-          {HERO.headlineRest}
+          {HERO.headline}
         </h1>
 
-        {/*
-          The positioning line leads, the detail follows. Gold has come off
-          the headline: it was the largest block of colour on the site, and
-          the brief is gold as an accent. It is still on the rule above, the
-          separators and the one primary button, which is the sprinkle.
-        */}
-        <p
-          class="hero-in hero-in-3 mt-6 max-w-xl text-lead font-semibold text-white"
-        >
-          {HERO.positioning}
-        </p>
-
-        <p class="hero-in hero-in-3 mt-3 max-w-xl text-silver-200">
+        <p class="hero-in hero-in-3 mt-6 max-w-xl text-lead text-silver-200">
           {HERO.subhead}
         </p>
 
@@ -125,6 +96,28 @@ const exampleCost = money(example.lostRent + example.carryingCost);
           <a href={HERO.secondaryCta.href} class="btn btn-on-photo">
             {HERO.secondaryCta.label}
           </a>
+        </div>
+
+        {/*
+          Who he is, under a rule, as in the mock-up. The rule is white at
+          low alpha rather than --color-line: it sits on a photograph, not
+          on a surface, so a token meant for surfaces would be wrong here
+          and would not survive a palette change meaningfully either way.
+        */}
+        <div
+          class="hero-in hero-in-5 mt-10 flex max-w-xl items-start gap-3 border-t border-white/25 pt-6"
+        >
+          <span class="mt-0.5 shrink-0 text-gold-300">
+            <Icon name={HERO.trust.icon} class="size-6" />
+          </span>
+          <div>
+            <p class="font-semibold leading-snug text-white">
+              {HERO.trust.title}
+            </p>
+            <p class="mt-0.5 text-sm leading-snug text-silver-200">
+              {HERO.trust.body}
+            </p>
+          </div>
         </div>
       </div>
 

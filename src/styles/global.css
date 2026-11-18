@@ -766,6 +766,9 @@
     .hero-in-4 {
       animation-delay: 380ms;
     }
+    .hero-in-5 {
+      animation-delay: 480ms;
+    }
   }
 
   @keyframes hero-rise {

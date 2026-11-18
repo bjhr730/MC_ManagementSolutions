@@ -1,15 +1,25 @@
 ---
 import type { IconName } from '~/content/services';
 
+/*
+  The glyph set is the seven service icons plus the few used elsewhere on
+  the site. `home` belongs to the hero's trust strip and is not a service,
+  so it is added here rather than to IconName - widening that union would
+  put something in the services list that is not a service, and every
+  `SERVICES.map` would have to start ignoring it.
+*/
+type GlyphName = IconName | 'home';
+
 interface Props {
-  name: IconName;
+  name: GlyphName;
   class?: string;
 }
 
 const { name, class: className = 'size-6' } = Astro.props;
 
 /** 24x24 stroke paths. Decorative: always aria-hidden, label the heading. */
-const paths: Record<IconName, string[]> = {
+const paths: Record<GlyphName, string[]> = {
+  home: ['M3 10.75 12 3.5l9 7.25', 'M5.5 9.6V20.5h13V9.6', 'M9.75 20.5v-5.6h4.5v5.6'],
   building: ['M4 21h16', 'M6 21V5a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v16', 'M10 8h4M10 12h4M10 16h4'],
   banknote: ['M2 7h20v10H2z', 'M12 12h.01', 'M6 10v4M18 10v4'],
   wrench: [
