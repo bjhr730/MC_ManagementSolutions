@@ -61,6 +61,13 @@ function ratio(a, b) {
  */
 const PAIRS = [
   ['color-ink', 'color-surface', 4.5, 'body text'],
+  // Headings carry their own colour now, so they need their own pairs:
+  // a navy that passes on a card can still fail on the deeper bands.
+  ['color-heading', 'color-page', 4.5, 'heading on the page silver'],
+  ['color-heading', 'color-surface', 4.5, 'heading on a card'],
+  ['color-heading', 'color-surface-2', 4.5, 'heading on muted band'],
+  ['color-heading', 'color-surface-3', 4.5, 'heading on inset surface'],
+  ['color-heading', 'color-surface-band', 4.5, 'heading on the band'],
   ['color-ink', 'color-page', 4.5, 'body text on the page colour'],
   ['color-ink-muted', 'color-page', 4.5, 'secondary text on the page colour'],
   ['color-accent', 'color-page', 4.5, 'accent on the page colour'],

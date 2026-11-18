@@ -15,8 +15,14 @@ const {
   class: className = '',
 } = Astro.props;
 
+/*
+  default is the page silver, NOT --color-surface. Cards are --color-surface,
+  so when default painted that too, a card on a default section was invisible
+  and the whole page read as one flat field. With default on the page colour
+  every card lifts off it, and the ladder below actually steps.
+*/
 const tones = {
-  default: 'bg-surface',
+  default: 'bg-page',
   muted: 'bg-surface-2',
   band: 'bg-surface-band',
   deep: 'bg-band-deep text-band-deep-soft',

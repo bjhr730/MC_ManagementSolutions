@@ -21,10 +21,18 @@ import { join } from 'node:path';
 const SOURCE =
   'https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json';
 
-/** Grouped to match SERVICE_AREAS in src/config/site.ts, in the same order. */
+/**
+ * Grouped to match SERVICE_AREAS in src/config/site.ts, in the same order.
+ *
+ * `callout: true` moves the label out into the right-hand gutter on a leader
+ * line. Arlington and Alexandria are the two smallest jurisdictions on the
+ * map - their largest inscribed circles are about 35 and 20 units across, so
+ * a name set inside them would spill over three borders and collide with
+ * each other. Everything else is labelled where it sits.
+ */
 const GROUPS = [
-  { id: 'arlington', label: 'Arlington', fips: ['51013'] },
-  { id: 'alexandria', label: 'Alexandria', fips: ['51510'] },
+  { id: 'arlington', label: 'Arlington', fips: ['51013'], callout: true },
+  { id: 'alexandria', label: 'Alexandria', fips: ['51510'], callout: true },
   // 51600 Fairfax City and 51610 Falls Church are enclaves inside the county.
   { id: 'fairfax', label: 'Fairfax', fips: ['51059', '51600', '51610'] },
   { id: 'loudoun', label: 'Loudoun', fips: ['51107'] },
@@ -33,12 +41,17 @@ const GROUPS = [
 ];
 
 /** Drawn muted, purely so the shape is recognisable as this region. */
-const CONTEXT = [{ id: 'dc', label: 'Washington, D.C.', fips: ['11001'] }];
+const CONTEXT = [{ id: 'dc', label: 'D.C.', fips: ['11001'] }];
 
-const WIDTH = 1000;
+/** Width given to the map itself. The gutter is added on top of this. */
+const MAP_W = 1000;
+/** Right-hand strip reserved for callout labels. */
+const GUTTER = 250;
 const PAD = 14;
 /** Douglas-Peucker tolerance, in viewBox units. ~0.6px of visible detail. */
 const TOLERANCE = 0.6;
+/** Minimum vertical gap between two stacked callout labels. */
+const CALLOUT_GAP = 54;
 
 function ringsOf(geometry) {
   if (geometry.type === 'Polygon') return geometry.coordinates;
@@ -86,6 +99,43 @@ function inRing(point, ring) {
     }
   }
   return inside;
+}
+
+/** Twice the signed area. Negative means the ring winds the other way. */
+function signedArea(ring) {
+  let sum = 0;
+  for (let i = 0, j = ring.length - 1; i < ring.length; j = i, i += 1) {
+    sum += (ring[j][0] - ring[i][0]) * (ring[j][1] + ring[i][1]);
+  }
+  return sum;
+}
+
+/**
+ * Every ring wound the same way, so a nonzero fill paints the group solid.
+ *
+ * The Census publishes Virginia's independent cities as separate entities cut
+ * out of the surrounding county, so Fairfax County arrives with holes where
+ * Fairfax City and Falls Church sit, and the city polygons arrive separately.
+ * Left alone, the hole and the city cancel under a nonzero fill and the map
+ * shows gaps in the middle of a county Antonio covers. Winding them all the
+ * same way fills the group as one shape.
+ */
+function normalise(ring) {
+  return signedArea(ring) < 0 ? [...ring].reverse() : ring;
+}
+
+/**
+ * The rings that form the group's silhouette - those not contained in
+ * another ring of the same group.
+ *
+ * Stroking every ring would outline each enclave city inside its county,
+ * which at map size reads as specks of noise rather than as information.
+ */
+function outerRings(rings) {
+  return rings.filter(
+    (ring, i) =>
+      !rings.some((other, j) => j !== i && inRing(ring[0], other))
+  );
 }
 
 function minEdgeDistance(point, rings) {
@@ -186,37 +236,84 @@ const maxX = Math.max(...flat.map((p) => p[0]));
 const minY = Math.min(...flat.map((p) => p[1]));
 const maxY = Math.max(...flat.map((p) => p[1]));
 
-const scale = (WIDTH - PAD * 2) / (maxX - minX);
+const scale = (MAP_W - PAD * 2) / (maxX - minX);
 const height = Math.round((maxY - minY) * scale + PAD * 2);
+const viewWidth = MAP_W + GUTTER;
 
 const toView = ([x, y]) => [
   (x - minX) * scale + PAD,
   (y - minY) * scale + PAD,
 ];
 
-const shaped = projected.map((g) => {
-  const rings = g.rings
-    .map((ring) => simplify(ring.map(toView), TOLERANCE))
-    .filter((ring) => ring.length > 2);
-  const d = rings
+const toPath = (rings) =>
+  rings
     .map(
       (ring) =>
         `M${ring.map(([x, y]) => `${round(x)},${round(y)}`).join('L')}Z`
     )
     .join('');
+
+const shaped = projected.map((g) => {
+  const rings = g.rings
+    .map((ring) => simplify(normalise(ring).map(toView), TOLERANCE))
+    .filter((ring) => ring.length > 2);
   const { point, clearance } = labelPoint(rings);
   return {
     id: g.id,
     label: g.label,
-    d,
-    label_x: point ? round(point[0]) : null,
-    label_y: point ? round(point[1]) : null,
+    callout: Boolean(g.callout),
+    d: toPath(rings),
+    outline: toPath(outerRings(rings)),
+    anchor: point,
     clearance: round(clearance),
   };
 });
 
-const served = shaped.filter((s) => GROUPS.some((g) => g.id === s.id));
-const context = shaped.filter((s) => CONTEXT.some((g) => g.id === s.id));
+/*
+  Callout labels are stacked down the gutter in the order they appear on the
+  map, pushed apart where two would otherwise sit on top of each other.
+  Arlington and Alexandria are about 60 units apart vertically, so without
+  this their labels overlap exactly as they did before the gutter existed.
+*/
+const callouts = shaped.filter((s) => s.callout).sort((a, b) => a.anchor[1] - b.anchor[1]);
+let lastY = -Infinity;
+for (const area of callouts) {
+  const y = Math.max(area.anchor[1], lastY + CALLOUT_GAP);
+  area.calloutY = Math.min(y, height - 12);
+  lastY = area.calloutY;
+}
+
+const LEADER_X = MAP_W + 16;
+
+const shape = (s) => {
+  const base = {
+    id: s.id,
+    label: s.label,
+    d: s.d,
+    outline: s.outline,
+  };
+  if (!s.callout) {
+    return {
+      ...base,
+      labelX: round(s.anchor[0]),
+      labelY: round(s.anchor[1]),
+      leader: null,
+      dotX: null,
+      dotY: null,
+    };
+  }
+  return {
+    ...base,
+    labelX: round(LEADER_X + 10),
+    labelY: round(s.calloutY),
+    leader: `M${round(s.anchor[0])},${round(s.anchor[1])}L${round(LEADER_X)},${round(s.calloutY)}`,
+    dotX: round(s.anchor[0]),
+    dotY: round(s.anchor[1]),
+  };
+};
+
+const served = shaped.filter((s) => GROUPS.some((g) => g.id === s.id)).map(shape);
+const context = shaped.filter((s) => CONTEXT.some((g) => g.id === s.id)).map(shape);
 
 const body = `// Generated by scripts/prepare-service-map.mjs. Do not edit by hand.
 // Source: US Census cartographic county boundaries (500k), FIPS-keyed.
@@ -227,51 +324,42 @@ const body = `// Generated by scripts/prepare-service-map.mjs. Do not edit by ha
 export interface MapArea {
   readonly id: string;
   readonly label: string;
-  /** SVG path data in the viewBox below. */
+  /** Every ring, wound the same way. Fill this with fill-rule: nonzero. */
   readonly d: string;
-  /** Furthest-from-any-edge point, for the label. */
+  /** Silhouette only, with enclave cities left out. Stroke this. */
+  readonly outline: string;
+  /** Where the label goes, in viewBox units. */
   readonly labelX: number;
   readonly labelY: number;
+  /** Set when the label sits in the gutter: the line joining it to the map. */
+  readonly leader: string | null;
+  /** The point on the map a leader line starts from. */
+  readonly dotX: number | null;
+  readonly dotY: number | null;
 }
 
-export const MAP_VIEWBOX = '0 0 ${WIDTH} ${height}';
-export const MAP_WIDTH = ${WIDTH};
+/** The whole canvas, map plus the callout gutter on the right. */
+export const MAP_VIEWBOX = '0 0 ${viewWidth} ${height}';
+export const MAP_WIDTH = ${viewWidth};
 export const MAP_HEIGHT = ${height};
+/** Where the map itself ends and the callout gutter begins. */
+export const MAP_GUTTER_X = ${MAP_W};
 
 /** The jurisdictions Antonio manages in, drawn as the filled shapes. */
-export const MAP_SERVED: readonly MapArea[] = ${JSON.stringify(
-  served.map(({ id, label, d, label_x, label_y }) => ({
-    id,
-    label,
-    d,
-    labelX: label_x,
-    labelY: label_y,
-  })),
-  null,
-  2
-)};
+export const MAP_SERVED: readonly MapArea[] = ${JSON.stringify(served, null, 2)};
 
 /** Drawn muted, only so the region is recognisable. Not a service area. */
-export const MAP_CONTEXT: readonly MapArea[] = ${JSON.stringify(
-  context.map(({ id, label, d, label_x, label_y }) => ({
-    id,
-    label,
-    d,
-    labelX: label_x,
-    labelY: label_y,
-  })),
-  null,
-  2
-)};
+export const MAP_CONTEXT: readonly MapArea[] = ${JSON.stringify(context, null, 2)};
 `;
 
 const out = new URL('../src/data/service-area-map.ts', import.meta.url);
 await writeFile(out, body);
 
-process.stdout.write(`viewBox 0 0 ${WIDTH} ${height}\n`);
+process.stdout.write(`viewBox 0 0 ${viewWidth} ${height}\n`);
 for (const s of shaped) {
+  const where = s.callout ? `gutter y=${round(s.calloutY)}` : 'inside';
   process.stdout.write(
-    `  ${s.id.padEnd(16)} ${String(s.d.length).padStart(6)} chars  label ${s.label_x},${s.label_y} clearance ${s.clearance}\n`
+    `  ${s.id.padEnd(16)} fill ${String(s.d.length).padStart(5)} outline ${String(s.outline.length).padStart(5)}  ${where.padEnd(14)} clearance ${s.clearance}\n`
   );
 }
 process.stdout.write(`Wrote ${out.pathname}\n`);

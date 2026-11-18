@@ -62,18 +62,19 @@
   /* The page behind every section. Nothing on this site is pure white:
      the lightest large surface is a tinted blue-grey, so the palette reads
      blue and grey with gold on top rather than white with blue on it. */
-  --color-page: #dde7f2;
-  --color-surface: #eef3f9;
-  --color-surface-2: #e2ebf5;
-  --color-surface-3: #d2dfed;
+  --color-page: #e7ebf0;
+  --color-surface: #f4f7fa;
+  --color-surface-2: #dde3eb;
+  --color-surface-3: #cfd7e1;
   --color-surface-inverse: #1a2736;
-  --color-ink: #10192a; /* 17.6:1 on surface */
-  --color-ink-muted: #4a5a70; /* 7.0:1 on surface */
+  --color-heading: #13274a; /* navy. Headlines only. */
+  --color-ink: #2a3542; /* slate, not navy, so headings lead */
+  --color-ink-muted: #515d6a;
   --color-ink-inverse: #ffffff;
-  --color-line: #c2d1e2;
-  --color-line-strong: #a7bbd1;
+  --color-line: #ccd5e0;
+  --color-line-strong: #adb9c8;
   --color-accent: #1a5fae; /* 6.4:1 on surface */
-  --color-ornament: #68788c; /* 4.3:1 on surface */
+  --color-ornament: #637081;
   --color-cta: #14477f;
   --color-cta-hover: #0e3464;
   --color-cta-ink: #ffffff; /* 9.4:1 on cta */
@@ -86,14 +87,14 @@
   --color-gold-bright: #d9a520;
 
   /* Coloured bands. */
-  --color-control-border: #68788c; /* 4.3:1 on surface; WCAG 2.2 1.4.11 */
-  --color-surface-band: #dbe8f7;
-  --color-band-deep: #0e3464;
+  --color-control-border: #637081; /* WCAG 2.2 1.4.11 */
+  --color-surface-band: #d2dbe6;
+  --color-band-deep: #121e2d;
   --color-on-band-deep: #ffffff;
   /* Body and small print on the deep band. Silver-blue, not gold: this is
      set on whole paragraphs, and a paragraph of gold is a wash rather than
      a sprinkle however well it measures. */
-  --color-band-deep-soft: #c9d8ea;
+  --color-band-deep-soft: #c3cfdd;
   /* The gold sprinkle on the deep band — eyebrows and rules only. */
   --color-band-deep-gold: #d9a520;
   --color-band-text: #14477f;
@@ -205,6 +206,7 @@
     --color-surface-2: #141d29;
     --color-surface-3: #1d2937;
     --color-surface-inverse: #e9eef5;
+    --color-heading: #f2f6fb;
     --color-ink: #e8edf4; /* 16.4:1 on surface */
     --color-ink-muted: #a3b1c2; /* 8.6:1 on surface */
     --color-ink-inverse: #0d131c;
@@ -220,7 +222,7 @@
     --color-gold: #d9a520; /* 8.3:1 on the dark surface */
     --color-gold-bright: #e0b84a;
     --color-surface-band: #111d2d;
-    --color-band-deep: #0b1f38;
+    --color-band-deep: #101a26;
     --color-on-band-deep: #e8edf4;
     --color-band-deep-soft: #b9cbe2;
     --color-band-deep-gold: #e0b84a;
@@ -270,13 +272,19 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  /*
+    Headings are navy; body text is slate. The colour does the hierarchy, so a
+    heading leads even at the same size. Headings that sit on a dark band
+    override this with text-on-band-deep at the call site - a utility beats
+    this base rule, which is why that still works.
+  */
   h1,
   h2,
   h3,
   h4 {
     font-family: var(--font-serif);
     font-weight: 600;
-    color: var(--color-ink);
+    color: var(--color-heading);
     text-wrap: balance;
   }
 

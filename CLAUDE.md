@@ -38,9 +38,15 @@ composite the image data with the scrim alpha and check the worst case. Do not
 eyeball it.
 
 **Cards use `.card` / `.panel`.** Don't hand-spell `rounded-* border bg-* p-*`;
-that drifted to eight spellings once. Cards are always `--color-surface` so they
-read as raised, which is why card-bearing sections are toned `muted` or `band`,
-never `default`.
+that drifted to eight spellings once. Cards are always `--color-surface`, the
+lightest surface, so they lift off every section tone.
+
+**The tone ladder has to step.** `default` is the page silver, `muted` and
+`band` go progressively deeper, `deep` and `inverse` are navy. Keep real
+lightness between the steps: three of them once sat within 4% of each other and
+of the card colour, and the whole site read as one flat field no matter how the
+sections were ordered. `default` used to paint `--color-surface` - the card
+colour - so a card on a default section was invisible.
 
 **Decorative images are `alt=""` on purpose.** Banners sit under a heading that
 already says what the page is.
