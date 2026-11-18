@@ -102,6 +102,25 @@ const formError = result?.status === 'error' ? result.message : undefined;
               >
             </dd>
           </div>
+          {/*
+            Antonio's own address, beside the inbox rather than instead of
+            it. Some owners would rather write to a person than to info@,
+            and on a one-person company that is the whole proposition - but
+            the general inbox stays first, because a personal address as the
+            only route in stops working the week he is away.
+          */}
+          <div>
+            <dt class="text-sm font-semibold text-ink-muted">
+              Antonio directly
+            </dt>
+            <dd class="mt-1">
+              <a
+                href={`mailto:${CONTACT.founderEmail}`}
+                class="break-words font-medium text-ink underline decoration-accent decoration-2 underline-offset-4"
+                >{CONTACT.founderEmail}</a
+              >
+            </dd>
+          </div>
           <div>
             <dt class="text-sm font-semibold text-ink-muted">Office</dt>
             <dd class="mt-1">

@@ -20,8 +20,21 @@ import {
 const org = `${SITE_URL}/#organization`;
 const person = `${SITE_URL}/#antonio-melendez`;
 
+/*
+  Case-insensitive, and example.* counts.
+
+  This used to test for an uppercase 'REPLACE' only, so the lowercase
+  placeholder address sailed straight past it and info@replace-me.example.com
+  was published as the business email in the LocalBusiness structured data
+  on every page of the deployed site. A guard that silently does nothing is
+  worse than no guard, because the rest of the code trusts it.
+
+  example.com, example.org and example.net are reserved by RFC 2606 and can
+  never be anyone's real address, so anything pointing at them is by
+  definition still a placeholder.
+*/
 const isPlaceholder = (value: string) =>
-  value.includes('REPLACE') || value.includes('000-0000');
+  /replace|000-0000|example\.(com|org|net)/i.test(value);
 
 export function localBusiness() {
   const address = CONTACT.address;

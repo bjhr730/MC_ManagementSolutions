@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs';
+
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import vercel from '@astrojs/vercel';
@@ -64,6 +66,41 @@ function launchPreflight() {
         if (!env.SITE_URL || env.SITE_URL.includes('replace-me')) {
           problems.push(
             'SITE_URL is missing or still the placeholder, so canonical tags and the sitemap would be wrong.'
+          );
+        }
+
+        /*
+          The contact addresses are published in the footer, on the contact
+          page and in all three legal pages. Going public with a domain
+          nobody owns means every one of those is a dead end, and the owner
+          who tries it does not write again. Read out of the file rather
+          than imported, because this config is .mjs and the constant is TS.
+
+          No regex escapes here on purpose: this file has to survive being
+          written by tools that eat backslashes, which is why the newline
+          below is built with fromCharCode.
+        */
+        let emailDomain = '';
+        try {
+          const configSource = readFileSync('src/config/site.ts', 'utf8');
+          const matched = configSource.match(/const EMAIL_DOMAIN = '([^']+)'/);
+          emailDomain = matched ? matched[1].toLowerCase() : '';
+        } catch {
+          emailDomain = '';
+        }
+
+        const domainIsPlaceholder =
+          !emailDomain ||
+          emailDomain.includes('replace') ||
+          emailDomain.includes('example.com') ||
+          emailDomain.includes('example.org') ||
+          emailDomain.includes('example.net');
+
+        if (domainIsPlaceholder) {
+          problems.push(
+            'EMAIL_DOMAIN in src/config/site.ts is still a placeholder, so the ' +
+              'contact addresses in the footer, on the contact page and in the ' +
+              'legal pages would reach nobody.'
           );
         }
 

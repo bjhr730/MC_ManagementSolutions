@@ -30,12 +30,36 @@ export const LEGAL_ENTITY = 'MC Management Solutions of Virginia, LLC';
 
 export const TAGLINE = 'Your Property. Our Responsibility.';
 
+/*
+  The mail domain, in one place, because launch day should be one line.
+
+  Still a placeholder. Antonio named antonio@ and info@ at
+  "nosetodavia.com", which is "no sé todavía" - "I don't know yet" - so the
+  mailbox names are his and settled while the domain is not. REPLACE_ME is
+  deliberately not a registrable name and example.com is reserved by RFC
+  2606, so neither can ever reach a stranger's inbox; a real-looking domain
+  nobody owns is the one placeholder that quietly does harm.
+
+  Set this to the real domain and both addresses below follow.
+*/
+const EMAIL_DOMAIN = 'REPLACE_ME.example.com';
+
 /** Name, address, phone — also feeds the LocalBusiness structured data. */
 export const CONTACT = {
   phone: '(703) 869-5034',
   phoneHref: 'tel:+17038695034',
-  /** REPLACE with the real business inbox. */
-  email: 'info@replace-me.example.com',
+  /**
+   * The business inbox. Everywhere a general enquiry belongs: the footer,
+   * the contact page, and the three legal pages.
+   */
+  email: `info@${EMAIL_DOMAIN}`,
+  /**
+   * Antonio directly, for an owner who would rather not go through the
+   * general inbox. Shown beside it on the contact page, never instead of
+   * it - a sole proprietor's personal address as the only route in is a
+   * single point of failure the moment he is away.
+   */
+  founderEmail: `antonio@${EMAIL_DOMAIN}`,
   address: {
     street: '801 N. Pitt St. 120',
     city: 'Alexandria',
