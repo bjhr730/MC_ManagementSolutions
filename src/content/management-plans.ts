@@ -16,17 +16,29 @@
  */
 
 /*
- * Said once, here: pricing is customized and there is no rate card. The
- * disclosure promise lives once in FEES, and the invitation to request a
- * proposal once in the closing call to action. Between them they satisfy
- * the checklist rule without the page repeating itself five times, which
- * is what Antonio asked us to fix.
+ * Antonio's wording, November 2026.
+ *
+ * This is where the checklist's "pricing is customized" point is made:
+ * "a management approach and pricing structure that makes sense for you".
+ * The other two parts of that rule are made once each elsewhere - the fee
+ * disclosure in FEES, the invitation to request a proposal in the closing
+ * call to action - so the page states each point once.
+ *
+ * The heading no longer says "not a rate card". It does not need to: the
+ * rule is that no fixed fee chart may be published, and none is anywhere
+ * on the site. Saying pricing is customized is what the rule asks for.
  */
 export const PLANS_INTRO =
-  'There is no one-size-fits-all management fee here, and no rate card to ' +
-  'squeeze your property into. A single condominium with an HOA, a ' +
-  'townhouse that needs a turnover, and a small portfolio of rentals are ' +
-  'three different jobs, and they are priced as three different jobs.';
+  'Every property is unique, and so are the needs of its owner. We take ' +
+  'the time to understand your property, expectations, and long-term ' +
+  'goals to find a management approach and pricing structure that makes ' +
+  'sense for you.';
+
+/** Sends the owner straight to the inquiry form, not just to the page. */
+export const PLANS_HEADER_CTA = {
+  label: 'Let’s Talk About Your Property.',
+  href: '/contact#inquiry',
+} as const;
 
 export const COVERAGE = {
   heading: 'What Our Management Services Cover',
