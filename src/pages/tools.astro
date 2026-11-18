@@ -10,18 +10,28 @@ import VacancyCalculator from '~/components/VacancyCalculator.astro';
 
 import { breadcrumbs } from '~/lib/schema';
 
+/*
+  Antonio put the pricing comparison first in November 2026: it answers the
+  decision an owner is actually weighing, where the vacancy calculator
+  explains a cost they may not have thought about yet.
+
+  The names and blurbs are his wording. They ask a question rather than
+  describing a mechanism, which is what he wanted.
+*/
 const tools = [
   {
-    id: 'vacancy-cost',
-    name: 'Vacancy Cost Calculator',
+    id: 'pricing-comparison',
+    name: 'Should You Wait for Higher Rent?',
     blurb:
-      'What an empty property costs in lost rent, carrying costs and turnover expenses.',
+      'Compare renting sooner at a lower price against waiting for a higher ' +
+      'offer, and see which could put more rental income in your pocket.',
   },
   {
-    id: 'pricing-comparison',
-    name: 'Rental Pricing Comparison',
+    id: 'vacancy-cost',
+    name: 'What Is Vacancy Really Costing You?',
     blurb:
-      'Renting sooner at a lower price, against waiting longer for a higher one.',
+      'See how lost rent, ongoing expenses and turnover costs affect your ' +
+      'rental property finances.',
   },
 ];
 ---
@@ -66,46 +76,17 @@ const tools = [
     </nav>
   </Section>
 
-  {/* --------------------------------------------- Tool 1: vacancy cost */}
-  <Section labelledby="vacancy-cost-heading">
-    <div id="vacancy-cost" class="scroll-mt-28">
-      <p class="eyebrow">Tool 1</p>
-      <h2 id="vacancy-cost-heading" class="mt-3 text-h2">
-        Vacancy Cost Calculator
-      </h2>
-      <p class="mt-4 max-w-2xl text-lead text-ink-muted">
-        An empty property costs money every day it sits. This works out how
-        much, and separates what the vacancy actually causes from the costs
-        that run regardless.
-      </p>
-
-      <div class="mt-10">
-        <VacancyCalculator />
-      </div>
-
-      <ToolCta
-        handoffId="send-vacancy-figures"
-        primary="conversation"
-        heading="What Could These Numbers Mean for Your Property?"
-        body={[
-          'Every rental property is different. Your ideal rental price depends on market conditions, property features, location, and tenant demand.',
-          'At MC Management Solutions, we believe informed decisions begin with understanding the numbers. Let’s discuss your property, your rental goals, and how we may be able to help you minimize vacancy and maximize your investment’s potential.',
-        ]}
-      />
-    </div>
-  </Section>
-
-  {/* ---------------------------------------- Tool 2: pricing comparison */}
-  <Section tone="band" labelledby="pricing-comparison-heading">
+  {/* -------------------------------------------- pricing comparison */}
+  <Section labelledby="pricing-comparison-heading">
     <div id="pricing-comparison" class="scroll-mt-28">
-      <p class="eyebrow">Tool 2</p>
+      <p class="eyebrow">Rental pricing</p>
       <h2 id="pricing-comparison-heading" class="mt-3 text-h2">
-        Is Waiting for Higher Rent Worth It?
+        Should You Wait for Higher Rent?
       </h2>
       <p class="mt-4 max-w-2xl text-lead text-ink-muted">
-        Sometimes accepting a slightly lower rent today can generate more
-        income than waiting weeks for a higher offer. Compare two scenarios to
-        see how vacancy impacts your bottom line.
+        Compare renting sooner at a lower price against waiting for a higher
+        offer, and see which could put more rental income in your pocket.
+        Sometimes waiting is the better call; this works out when.
       </p>
 
       <div class="mt-10">
@@ -119,6 +100,35 @@ const tools = [
         body={[
           'Setting the right rental price involves balancing market demand, property condition, competition, timing, and vacancy exposure.',
           'At MC Management Solutions, we help property owners evaluate their rental strategy with their long-term investment goals in mind.',
+        ]}
+      />
+    </div>
+  </Section>
+
+  {/* ------------------------------------------------- vacancy cost */}
+  <Section tone="band" labelledby="vacancy-cost-heading">
+    <div id="vacancy-cost" class="scroll-mt-28">
+      <p class="eyebrow">Vacancy</p>
+      <h2 id="vacancy-cost-heading" class="mt-3 text-h2">
+        What Is Vacancy Really Costing You?
+      </h2>
+      <p class="mt-4 max-w-2xl text-lead text-ink-muted">
+        See how lost rent, ongoing expenses and turnover costs affect your
+        rental property finances, with the costs that run regardless kept
+        separate from the ones the vacancy actually causes.
+      </p>
+
+      <div class="mt-10">
+        <VacancyCalculator />
+      </div>
+
+      <ToolCta
+        handoffId="send-vacancy-figures"
+        primary="conversation"
+        heading="What Could These Numbers Mean for Your Property?"
+        body={[
+          'Every rental property is different. Your ideal rental price depends on market conditions, property features, location, and tenant demand.',
+          'At MC Management Solutions, we believe informed decisions begin with understanding the numbers. Let’s discuss your property, your rental goals, and how we may be able to help you minimize vacancy and maximize your investment’s potential.',
         ]}
       />
     </div>

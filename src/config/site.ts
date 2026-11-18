@@ -241,7 +241,8 @@ export const FOOTER_NAV = {
   services: [
     { href: '/services', label: 'Our Services' },
     { href: '/management-plans', label: 'Management Plans' },
-    { href: '/tools', label: 'Vacancy Calculator' },
+    // Two tools live here now, and the pricing comparison leads.
+    { href: '/tools', label: 'Owner Tools' },
     { href: '/faq', label: 'Frequently Asked Questions' },
     { href: '/portals', label: 'Owner & Resident Portals' },
   ],

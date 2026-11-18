@@ -152,7 +152,17 @@ export const EXAMPLE_B: Scenario = { rent: 2550, vacancyDays: 25, leaseMonths: 1
 
 export const HORIZON_MONTHS = 12;
 
-export const LEASE_TERMS = [6, 12, 18, 24] as const;
+/*
+  The window both scenarios are measured over, in months.
+
+  These used to be offered as a lease length per scenario while the window
+  was pinned at twelve months. A lease of twelve months or more never binds
+  inside a twelve-month window, so 12, 18 and 24 all produced identical
+  results and only 6 changed anything. They now set the window itself, and
+  the caller passes the same figure as the lease length so the lease cap
+  never binds - which is the model the page discloses.
+*/
+export const COMPARISON_PERIODS = [6, 12, 18, 24] as const;
 
 export const SLIDER = { vacancyDays: { min: 0, max: 120, step: 1 } } as const;
 

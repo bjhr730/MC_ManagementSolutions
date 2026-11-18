@@ -128,24 +128,24 @@ const amounts = [
       <output for="vacancy-form" aria-live="polite" class="block">
         <section class="rounded-lg bg-surface-2 p-6 md:p-7" aria-labelledby="calc-a">
           <h3 id="calc-a" class="font-serif text-h3 font-semibold text-ink">
-            What the vacancy exposes you to
+            Illustrative results
           </h3>
 
           <dl class="mt-6 space-y-3">
             <div class="flex items-baseline justify-between gap-4">
-              <dt class="text-ink-muted">Lost rental income</dt>
+              <dt class="text-ink-muted">Rent not collected</dt>
               <dd class="font-medium tabular-nums text-ink" data-out="lostRent">
                 {money(r.lostRent)}
               </dd>
             </div>
             <div class="flex items-baseline justify-between gap-4">
-              <dt class="text-ink-muted">Carrying costs while empty</dt>
+              <dt class="text-ink-muted">Ongoing expenses</dt>
               <dd class="font-medium tabular-nums text-ink" data-out="carryingCost">
                 {money(r.carryingCost)}
               </dd>
             </div>
             <div class="flex items-baseline justify-between gap-4">
-              <dt class="text-ink-muted">One-time turnover expenses</dt>
+              <dt class="text-ink-muted">Turnover expenses</dt>
               <dd class="font-medium tabular-nums text-ink" data-out="turnoverCost">
                 {money(r.turnoverCost)}
               </dd>
@@ -168,27 +168,45 @@ const amounts = [
             <rect data-bar="turnoverCost" x={segX.turnoverCost} y="0" height="1" width={segW.turnoverCost} class="fill-blue-500"></rect>
           </svg>
 
+          {/*
+            The headline is the vacancy-related impact, not the sum of all
+            three rows.
+
+            computeVacancy has always returned both figures and the module
+            has always documented why they differ; it was this display that
+            led with the combined number. Ongoing expenses are owed whether
+            or not anyone is living there, so adding them to rent forgone
+            overstates what the vacancy itself costs. The combined figure is
+            still shown, below, because an owner does need to know what
+            leaves the account while the place is empty.
+          */}
           <div class="mt-6 border-t-2 border-gold pt-5">
             <p class="text-sm font-semibold uppercase tracking-[0.08em] text-ink-muted">
-              Total cash-flow exposure
+              Vacancy-related impact
             </p>
             <p
               class="mt-1 font-serif text-display font-semibold tabular-nums text-cost"
-              data-out="totalExposure"
+              data-out="vacancyCaused"
             >
-              {money(r.totalExposure)}
+              {money(r.vacancyCaused)}
+            </p>
+            <p class="mt-2 text-sm leading-relaxed text-ink-muted">
+              Rent not collected plus turnover expenses. Ongoing expenses are
+              listed above but left out of this figure, so nothing is counted
+              twice.
             </p>
           </div>
 
           <p class="mt-5 text-sm leading-relaxed text-ink-muted">
-            Of that, <strong class="font-semibold text-ink" data-out="vacancyCaused"
-              >{money(r.vacancyCaused)}</strong
-            > exists only because the property is empty. The carrying costs would
-            fall due anyway &mdash; while it is vacant there is simply no rent
-            coming in to meet them. Every further day empty adds
-            <strong class="font-semibold text-ink" data-out="costPerDay"
-              >{money(r.costPerDay)}</strong
-            >.
+            Across the same period <strong
+              class="font-semibold text-ink"
+              data-out="totalExposure">{money(r.totalExposure)}</strong
+            > leaves your account in total, because the ongoing expenses still
+            fall due with no rent coming in to meet them. Each further day
+            empty adds <strong
+              class="font-semibold text-ink"
+              data-out="lostRentPerDay">{money(r.lostRentPerDay)}</strong
+            > of rent not collected.
           </p>
         </section>
       </output>
@@ -245,7 +263,7 @@ const amounts = [
       set('turnoverCost', money(result.turnoverCost));
       set('totalExposure', money(result.totalExposure));
       set('vacancyCaused', money(result.vacancyCaused));
-      set('costPerDay', money(result.costPerDay));
+      set('lostRentPerDay', money(result.lostRentPerDay));
 
       // Presentation attributes, not styles: nothing here trips the CSP.
       let offset = 0;
@@ -279,9 +297,11 @@ const amounts = [
         `Monthly carrying costs: ${money(latest.carrying)}`,
         `One-time turnover expenses: ${money(latest.turnover)}`,
         '',
-        `Lost rental income: ${money(result.lostRent)}`,
-        `Carrying costs while empty: ${money(result.carryingCost)}`,
-        `Total cash-flow exposure: ${money(result.totalExposure)}`,
+        `Rent not collected: ${money(result.lostRent)}`,
+        `Ongoing expenses: ${money(result.carryingCost)}`,
+        `Turnover expenses: ${money(result.turnoverCost)}`,
+        `Vacancy-related impact: ${money(result.vacancyCaused)}`,
+        `Combined over the period: ${money(result.totalExposure)}`,
         '',
         'I would like a personalized rental evaluation.',
       ].join('\n');
