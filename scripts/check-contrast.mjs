@@ -104,6 +104,10 @@ const PAIRS = [
   // checking it would imply it may be used for something readable.
   ['color-gold', 'color-surface', 3.0, 'gold rule on white'],
   ['color-gold', 'color-surface-2', 3.0, 'gold rule on muted band'],
+  // The service-area map. Its leader lines and dots are gold on the muted
+  // band (covered above); the dashed D.C. outline is the only new pairing,
+  // and it is a mark that carries meaning, so it is held to 3:1.
+  ['color-ornament', 'color-surface-2', 3.0, 'map context outline'],
   ['color-gold', 'color-surface-band', 3.0, 'gold rule on blue band'],
   // Functional colour in the calculator.
   ['color-cost', 'color-surface', 4.5, 'cost figures'],

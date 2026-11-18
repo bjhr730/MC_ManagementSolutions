@@ -1,0 +1,215 @@
+---
+import {
+  MAP_CONTEXT,
+  MAP_HEIGHT,
+  MAP_SERVED,
+  MAP_VIEWBOX,
+  MAP_WIDTH,
+} from '~/data/service-area-map';
+
+/**
+ * The Northern Virginia service area, drawn from real county boundaries.
+ *
+ * The shapes come from scripts/prepare-service-map.mjs, which projects the
+ * US Census boundaries for the five jurisdictions in SERVICE_AREAS. Nothing
+ * is fetched at runtime and there is no map tile, no API key and no JS: it
+ * is one inline SVG, so it costs a few KB of HTML and works offline.
+ *
+ * The labels are HTML, not SVG <text>, on purpose. SVG text scales with the
+ * viewBox, so at 375px wide a label sized to look right on a desktop lands
+ * at about 7px. As HTML they are positioned as a percentage of the canvas
+ * and sized in rem, so they stay readable at every width. Every stroke uses
+ * vector-effect: non-scaling-stroke for the same reason.
+ *
+ * The map is decorative in the strict sense - the <dl> beside it names every
+ * county and the places inside it, and carries detail no map at this size
+ * could. So the SVG gets one accessible name and the label layer is hidden
+ * from assistive technology, which would otherwise read the names twice.
+ */
+const title = 'service-area-map-title';
+const names = MAP_SERVED.map((area) => area.label).join(', ');
+
+const x = (value: number) => `${((value / MAP_WIDTH) * 100).toFixed(3)}%`;
+const y = (value: number) => `${((value / MAP_HEIGHT) * 100).toFixed(3)}%`;
+
+const labelled = [
+  ...MAP_SERVED.map((area) => ({ ...area, kind: 'served' as const })),
+  ...MAP_CONTEXT.map((area) => ({ ...area, kind: 'context' as const })),
+];
+---
+
+<figure class="service-map">
+  <div
+    class="service-map-canvas"
+    style={`aspect-ratio: ${MAP_WIDTH} / ${MAP_HEIGHT}`}
+  >
+    <svg viewBox={MAP_VIEWBOX} role="img" aria-labelledby={title}>
+      <title id={title}>
+        Map of the Northern Virginia service area, covering {names}, with
+        Washington, D.C. shown only for orientation.
+      </title>
+
+      {/* Context first, so the served areas sit over it where they meet. */}
+      {
+        MAP_CONTEXT.map((area) => (
+          <path class="service-map-context" d={area.outline} />
+        ))
+      }
+
+      {/*
+        Fill uses the full path, which includes the enclave cities, so a
+        county reads as solid. The edge uses the silhouette only, so the
+        boundary of Fairfax City inside Fairfax County is not drawn.
+      */}
+      {MAP_SERVED.map((area) => <path class="service-map-fill" d={area.d} />)}
+      {
+        MAP_SERVED.map((area) => (
+          <path class="service-map-edge" d={area.outline} />
+        ))
+      }
+
+      {
+        labelled
+          .filter((area) => area.leader)
+          .map((area) => <path class="service-map-leader" d={area.leader!} />)
+      }
+    </svg>
+
+    {/*
+      Labels and the dots that anchor the two callouts. Hidden from assistive
+      technology: the SVG above already carries the accessible name and the
+      list beside the map carries the detail.
+    */}
+    <div class="service-map-labels" aria-hidden="true">
+      {
+        labelled
+          .filter((area) => area.dotX !== null)
+          .map((area) => (
+            <span
+              class="service-map-dot"
+              style={`left: ${x(area.dotX!)}; top: ${y(area.dotY!)}`}
+            />
+          ))
+      }
+      {
+        labelled.map((area) => (
+          <span
+            class:list={[
+              'service-map-label',
+              `is-${area.kind}`,
+              area.leader && 'is-callout',
+            ]}
+            style={`left: ${x(area.labelX)}; top: ${y(area.labelY)}`}
+          >
+            {area.label}
+          </span>
+        ))
+      }
+    </div>
+  </div>
+</figure>
+
+<style>
+  .service-map {
+    margin: 0;
+  }
+
+  .service-map-canvas {
+    position: relative;
+    width: 100%;
+  }
+
+  .service-map-canvas svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  /*
+    The served territory reads as raised off the band it sits on, the same
+    way a card does, which is why it takes --color-surface rather than a
+    tint. Section tone is `muted`, so that is surface over surface-2.
+  */
+  .service-map-fill {
+    fill: var(--color-surface);
+  }
+
+  .service-map-edge {
+    fill: none;
+    stroke: var(--color-accent);
+    stroke-width: 2;
+    stroke-linejoin: round;
+    /*
+      Keeps every line exactly 2px whatever the map is scaled to. Without it
+      the borders are hairlines at 375px and heavy on a wide desktop.
+    */
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* D.C. is orientation, not territory: outline only, and never filled. */
+  .service-map-context {
+    fill: none;
+    stroke: var(--color-ornament);
+    stroke-width: 1.5;
+    stroke-dasharray: 7 7;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* Gold, used only here and on the two dots: the sparing accent. */
+  .service-map-leader {
+    fill: none;
+    stroke: var(--color-gold);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .service-map-labels {
+    position: absolute;
+    inset: 0;
+  }
+
+  .service-map-dot {
+    position: absolute;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--color-gold);
+    transform: translate(-50%, -50%);
+  }
+
+  .service-map-label {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    /*
+      Labels sitting on a shape wrap rather than run over its border.
+      "Prince William" is the one that needs it: the county's largest
+      inscribed circle is about 49px across at desktop and 24px on a phone,
+      and the name on one line is 96px and 76px. Every other name on the map
+      is a single word, so this only ever splits that one.
+    */
+    max-width: 5.5em;
+    text-align: center;
+    text-wrap: balance;
+    font-size: clamp(0.6875rem, 1.45vw, 0.875rem);
+    font-weight: 600;
+    line-height: 1.15;
+    color: var(--color-ink);
+  }
+
+  /*
+    A callout label hangs off the end of its leader line, so it starts there
+    and stays on one line - it sits on the band, not on a shape, and there
+    is nothing for it to run over.
+  */
+  .service-map-label.is-callout {
+    transform: translate(0, -50%);
+    max-width: none;
+    white-space: nowrap;
+    text-align: left;
+  }
+
+  .service-map-label.is-context {
+    font-weight: 500;
+    color: var(--color-ink-muted);
+  }
+</style>

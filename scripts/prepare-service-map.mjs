@@ -266,6 +266,8 @@ const shaped = projected.map((g) => {
     outline: toPath(outerRings(rings)),
     anchor: point,
     clearance: round(clearance),
+    /** Filled in below, for the areas whose label goes in the gutter. */
+    calloutY: null,
   };
 });
 
