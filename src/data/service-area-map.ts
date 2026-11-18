@@ -101,3 +101,219 @@ export const MAP_CONTEXT: readonly MapArea[] = [
     "dotY": null
   }
 ];
+
+export interface MapPlace {
+  readonly id: string;
+  readonly name: string;
+  /** The id of the MAP_SERVED area this town sits in - checked at build. */
+  readonly area: string;
+  readonly x: number;
+  readonly y: number;
+  /** False when every candidate position collided; it keeps its dot only. */
+  readonly labelled: boolean;
+  readonly labelX: number | null;
+  readonly labelY: number | null;
+  readonly align: 'start' | 'middle' | 'end' | null;
+}
+
+/** Towns inside the service area, each verified to fall in its county. */
+export const MAP_PLACES: readonly MapPlace[] = [
+  {
+    "id": "leesburg",
+    "name": "Leesburg",
+    "area": "loudoun",
+    "x": 381.9,
+    "y": 257.8,
+    "labelled": true,
+    "labelX": 392.9,
+    "labelY": 257.8,
+    "align": "start"
+  },
+  {
+    "id": "ashburn",
+    "name": "Ashburn",
+    "area": "loudoun",
+    "x": 452.1,
+    "y": 343.3,
+    "labelled": true,
+    "labelX": 463.1,
+    "labelY": 343.3,
+    "align": "start"
+  },
+  {
+    "id": "sterling",
+    "name": "Sterling",
+    "area": "loudoun",
+    "x": 506.5,
+    "y": 387.8,
+    "labelled": true,
+    "labelX": 517.5,
+    "labelY": 387.8,
+    "align": "start"
+  },
+  {
+    "id": "herndon",
+    "name": "Herndon",
+    "area": "fairfax",
+    "x": 545.8,
+    "y": 431.2,
+    "labelled": true,
+    "labelX": 534.8,
+    "labelY": 431.2,
+    "align": "end"
+  },
+  {
+    "id": "reston",
+    "name": "Reston",
+    "area": "fairfax",
+    "x": 572.7,
+    "y": 444.2,
+    "labelled": true,
+    "labelX": 583.7,
+    "labelY": 444.2,
+    "align": "start"
+  },
+  {
+    "id": "chantilly",
+    "name": "Chantilly",
+    "area": "fairfax",
+    "x": 504.2,
+    "y": 520.6,
+    "labelled": true,
+    "labelX": 493.2,
+    "labelY": 520.6,
+    "align": "end"
+  },
+  {
+    "id": "centreville",
+    "name": "Centreville",
+    "area": "fairfax",
+    "x": 506.3,
+    "y": 584.6,
+    "labelled": true,
+    "labelX": 517.3,
+    "labelY": 584.6,
+    "align": "start"
+  },
+  {
+    "id": "fairfax",
+    "name": "Fairfax",
+    "area": "fairfax",
+    "x": 619.4,
+    "y": 577.6,
+    "labelled": false,
+    "labelX": null,
+    "labelY": null,
+    "align": null
+  },
+  {
+    "id": "vienna",
+    "name": "Vienna",
+    "area": "fairfax",
+    "x": 657.3,
+    "y": 512.4,
+    "labelled": true,
+    "labelX": 646.3,
+    "labelY": 512.4,
+    "align": "end"
+  },
+  {
+    "id": "tysons",
+    "name": "Tysons",
+    "area": "fairfax",
+    "x": 688.9,
+    "y": 491.6,
+    "labelled": true,
+    "labelX": 699.9,
+    "labelY": 491.6,
+    "align": "start"
+  },
+  {
+    "id": "mclean",
+    "name": "McLean",
+    "area": "fairfax",
+    "x": 738.4,
+    "y": 473.1,
+    "labelled": true,
+    "labelX": 738.4,
+    "labelY": 449.8,
+    "align": "middle"
+  },
+  {
+    "id": "falls-church",
+    "name": "Falls Church",
+    "area": "fairfax",
+    "x": 744.3,
+    "y": 534.8,
+    "labelled": true,
+    "labelX": 744.3,
+    "labelY": 558.1,
+    "align": "middle"
+  },
+  {
+    "id": "burke",
+    "name": "Burke",
+    "area": "fairfax",
+    "x": 651.4,
+    "y": 640.3,
+    "labelled": true,
+    "labelX": 640.4,
+    "labelY": 640.3,
+    "align": "end"
+  },
+  {
+    "id": "springfield",
+    "name": "Springfield",
+    "area": "fairfax",
+    "x": 729.5,
+    "y": 645.2,
+    "labelled": true,
+    "labelX": 729.5,
+    "labelY": 621.9,
+    "align": "middle"
+  },
+  {
+    "id": "manassas",
+    "name": "Manassas",
+    "area": "prince-william",
+    "x": 463.4,
+    "y": 690.8,
+    "labelled": true,
+    "labelX": 474.4,
+    "labelY": 690.8,
+    "align": "start"
+  },
+  {
+    "id": "gainesville",
+    "name": "Gainesville",
+    "area": "prince-william",
+    "x": 335.7,
+    "y": 637.2,
+    "labelled": true,
+    "labelX": 346.7,
+    "labelY": 637.2,
+    "align": "start"
+  },
+  {
+    "id": "haymarket",
+    "name": "Haymarket",
+    "area": "prince-william",
+    "x": 314.9,
+    "y": 618.1,
+    "labelled": true,
+    "labelX": 303.9,
+    "labelY": 618.1,
+    "align": "end"
+  },
+  {
+    "id": "woodbridge",
+    "name": "Woodbridge",
+    "area": "prince-william",
+    "x": 671.7,
+    "y": 821.3,
+    "labelled": true,
+    "labelX": 682.7,
+    "labelY": 821.3,
+    "align": "start"
+  }
+];

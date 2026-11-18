@@ -108,6 +108,11 @@ const PAIRS = [
   // band (covered above); the dashed D.C. outline is the only new pairing,
   // and it is a mark that carries meaning, so it is held to 3:1.
   ['color-ornament', 'color-surface-2', 3.0, 'map context outline'],
+  // Town names and markers sit on a county fill, which is --color-surface
+  // normally and --color-surface-3 while that county is hovered, so both
+  // states need checking - the hover state is the one easily forgotten.
+  ['color-ink-muted', 'color-surface-3', 4.5, 'town name on a lit county'],
+  ['color-accent', 'color-surface-3', 3.0, 'town marker on a lit county'],
   ['color-gold', 'color-surface-band', 3.0, 'gold rule on blue band'],
   // Functional colour in the calculator.
   ['color-cost', 'color-surface', 4.5, 'cost figures'],

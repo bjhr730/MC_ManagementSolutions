@@ -177,16 +177,30 @@ const formError = result?.status === 'error' ? result.message : undefined;
       The map shows the shape of the territory; the list below names every
       place inside it. The list is the text equivalent and stays whatever
       happens to the map.
-    */}
-    <div class="mx-auto mt-12 max-w-2xl">
-      <ServiceAreaMap />
-    </div>
 
-    <dl class="reveal-group mt-12 grid gap-x-10 gap-y-8 md:grid-cols-2 lg:grid-cols-3">
+      Both live inside one .service-map-group so CSS :has() can light a
+      county when its list entry is hovered and the other way about, with no
+      JavaScript. The id tying the two together is the county name slugged -
+      "Prince William County" to "prince-william" - and the map generator
+      fails the build if that ever stops matching the ids it emits.
+    */}
+    <div class="service-map-group">
+      <div class="mx-auto mt-12 max-w-2xl">
+        <ServiceAreaMap />
+      </div>
+
+      <dl class="reveal-group mt-12 grid gap-x-10 gap-y-8 md:grid-cols-2 lg:grid-cols-3">
       {
         SERVICE_AREAS.map((area) => (
-          <div class="border-t-2 border-gold pt-4">
-            <dt class="font-serif text-base font-semibold text-ink">
+          <div
+            class="service-area-item border-t-2 border-gold pt-4"
+            data-county={area.county
+              .replace(/^City of /, '')
+              .replace(/ County$/, '')
+              .toLowerCase()
+              .replace(/[^a-z0-9]+/g, '-')}
+          >
+            <dt class="service-area-county font-serif text-base font-semibold text-ink">
               {area.county}
             </dt>
             <dd class="mt-2 text-sm leading-relaxed text-ink-muted">
@@ -197,7 +211,8 @@ const formError = result?.status === 'error' ? result.message : undefined;
           </div>
         ))
       }
-    </dl>
+      </dl>
+    </div>
 
     <p class="mt-10 max-w-2xl text-lead text-ink-muted">
       Don&rsquo;t see your area listed?{' '}

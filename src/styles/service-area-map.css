@@ -18,3 +18,73 @@
 .service-map-label[data-area='loudoun'] { left: 22.584%; top: 30.772%; }
 .service-map-label[data-area='prince-william'] { left: 43.616%; top: 83.390%; }
 .service-map-label[data-area='dc'] { left: 72.728%; top: 52.327%; }
+
+/* Towns: the dot, and the name where one fitted without colliding. */
+.service-map-place[data-place='leesburg'] { left: 30.552%; top: 25.858%; }
+.service-map-place-label[data-place='leesburg'] { left: 31.432%; top: 25.858%; transform: translate(0, -50%); }
+.service-map-place[data-place='ashburn'] { left: 36.168%; top: 34.433%; }
+.service-map-place-label[data-place='ashburn'] { left: 37.048%; top: 34.433%; transform: translate(0, -50%); }
+.service-map-place[data-place='sterling'] { left: 40.520%; top: 38.897%; }
+.service-map-place-label[data-place='sterling'] { left: 41.400%; top: 38.897%; transform: translate(0, -50%); }
+.service-map-place[data-place='herndon'] { left: 43.664%; top: 43.250%; }
+.service-map-place-label[data-place='herndon'] { left: 42.784%; top: 43.250%; transform: translate(-100%, -50%); }
+.service-map-place[data-place='reston'] { left: 45.816%; top: 44.554%; }
+.service-map-place-label[data-place='reston'] { left: 46.696%; top: 44.554%; transform: translate(0, -50%); }
+.service-map-place[data-place='chantilly'] { left: 40.336%; top: 52.217%; }
+.service-map-place-label[data-place='chantilly'] { left: 39.456%; top: 52.217%; transform: translate(-100%, -50%); }
+.service-map-place[data-place='centreville'] { left: 40.504%; top: 58.636%; }
+.service-map-place-label[data-place='centreville'] { left: 41.384%; top: 58.636%; transform: translate(0, -50%); }
+.service-map-place[data-place='fairfax'] { left: 49.552%; top: 57.934%; }
+.service-map-place[data-place='vienna'] { left: 52.584%; top: 51.394%; }
+.service-map-place-label[data-place='vienna'] { left: 51.704%; top: 51.394%; transform: translate(-100%, -50%); }
+.service-map-place[data-place='tysons'] { left: 55.112%; top: 49.308%; }
+.service-map-place-label[data-place='tysons'] { left: 55.992%; top: 49.308%; transform: translate(0, -50%); }
+.service-map-place[data-place='mclean'] { left: 59.072%; top: 47.452%; }
+.service-map-place-label[data-place='mclean'] { left: 59.072%; top: 45.115%; transform: translate(-50%, -50%); }
+.service-map-place[data-place='falls-church'] { left: 59.544%; top: 53.641%; }
+.service-map-place-label[data-place='falls-church'] { left: 59.544%; top: 55.978%; transform: translate(-50%, -50%); }
+.service-map-place[data-place='burke'] { left: 52.112%; top: 64.223%; }
+.service-map-place-label[data-place='burke'] { left: 51.232%; top: 64.223%; transform: translate(-100%, -50%); }
+.service-map-place[data-place='springfield'] { left: 58.360%; top: 64.714%; }
+.service-map-place-label[data-place='springfield'] { left: 58.360%; top: 62.377%; transform: translate(-50%, -50%); }
+.service-map-place[data-place='manassas'] { left: 37.072%; top: 69.288%; }
+.service-map-place-label[data-place='manassas'] { left: 37.952%; top: 69.288%; transform: translate(0, -50%); }
+.service-map-place[data-place='gainesville'] { left: 26.856%; top: 63.912%; }
+.service-map-place-label[data-place='gainesville'] { left: 27.736%; top: 63.912%; transform: translate(0, -50%); }
+.service-map-place[data-place='haymarket'] { left: 25.192%; top: 61.996%; }
+.service-map-place-label[data-place='haymarket'] { left: 24.312%; top: 61.996%; transform: translate(-100%, -50%); }
+.service-map-place[data-place='woodbridge'] { left: 53.736%; top: 82.377%; }
+.service-map-place-label[data-place='woodbridge'] { left: 54.616%; top: 82.377%; transform: translate(0, -50%); }
+
+/* Map and list, pointing at each other. Decoration only - see the note in
+   the generator; nothing here is information the list does not print. */
+.service-map-group:has(.service-area-item[data-county='arlington']:hover) .service-map-fill[data-area='arlington'],
+.service-map-fill[data-area='arlington']:hover { fill: var(--color-surface-3); }
+.service-map-group:has(.service-map-fill[data-area='arlington']:hover) .service-map-place[data-area='arlington'],
+.service-map-group:has(.service-area-item[data-county='arlington']:hover) .service-map-place[data-area='arlington'] { transform: translate(-50%, -50%) scale(1.6); }
+.service-map-group:has(.service-map-fill[data-area='arlington']:hover) .service-area-item[data-county='arlington'] .service-area-county,
+.service-area-item[data-county='arlington']:hover .service-area-county { color: var(--color-accent); }
+.service-map-group:has(.service-area-item[data-county='alexandria']:hover) .service-map-fill[data-area='alexandria'],
+.service-map-fill[data-area='alexandria']:hover { fill: var(--color-surface-3); }
+.service-map-group:has(.service-map-fill[data-area='alexandria']:hover) .service-map-place[data-area='alexandria'],
+.service-map-group:has(.service-area-item[data-county='alexandria']:hover) .service-map-place[data-area='alexandria'] { transform: translate(-50%, -50%) scale(1.6); }
+.service-map-group:has(.service-map-fill[data-area='alexandria']:hover) .service-area-item[data-county='alexandria'] .service-area-county,
+.service-area-item[data-county='alexandria']:hover .service-area-county { color: var(--color-accent); }
+.service-map-group:has(.service-area-item[data-county='fairfax']:hover) .service-map-fill[data-area='fairfax'],
+.service-map-fill[data-area='fairfax']:hover { fill: var(--color-surface-3); }
+.service-map-group:has(.service-map-fill[data-area='fairfax']:hover) .service-map-place[data-area='fairfax'],
+.service-map-group:has(.service-area-item[data-county='fairfax']:hover) .service-map-place[data-area='fairfax'] { transform: translate(-50%, -50%) scale(1.6); }
+.service-map-group:has(.service-map-fill[data-area='fairfax']:hover) .service-area-item[data-county='fairfax'] .service-area-county,
+.service-area-item[data-county='fairfax']:hover .service-area-county { color: var(--color-accent); }
+.service-map-group:has(.service-area-item[data-county='loudoun']:hover) .service-map-fill[data-area='loudoun'],
+.service-map-fill[data-area='loudoun']:hover { fill: var(--color-surface-3); }
+.service-map-group:has(.service-map-fill[data-area='loudoun']:hover) .service-map-place[data-area='loudoun'],
+.service-map-group:has(.service-area-item[data-county='loudoun']:hover) .service-map-place[data-area='loudoun'] { transform: translate(-50%, -50%) scale(1.6); }
+.service-map-group:has(.service-map-fill[data-area='loudoun']:hover) .service-area-item[data-county='loudoun'] .service-area-county,
+.service-area-item[data-county='loudoun']:hover .service-area-county { color: var(--color-accent); }
+.service-map-group:has(.service-area-item[data-county='prince-william']:hover) .service-map-fill[data-area='prince-william'],
+.service-map-fill[data-area='prince-william']:hover { fill: var(--color-surface-3); }
+.service-map-group:has(.service-map-fill[data-area='prince-william']:hover) .service-map-place[data-area='prince-william'],
+.service-map-group:has(.service-area-item[data-county='prince-william']:hover) .service-map-place[data-area='prince-william'] { transform: translate(-50%, -50%) scale(1.6); }
+.service-map-group:has(.service-map-fill[data-area='prince-william']:hover) .service-area-item[data-county='prince-william'] .service-area-county,
+.service-area-item[data-county='prince-william']:hover .service-area-county { color: var(--color-accent); }

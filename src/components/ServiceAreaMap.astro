@@ -1,5 +1,10 @@
 ---
-import { MAP_CONTEXT, MAP_SERVED, MAP_VIEWBOX } from '~/data/service-area-map';
+import {
+  MAP_CONTEXT,
+  MAP_PLACES,
+  MAP_SERVED,
+  MAP_VIEWBOX,
+} from '~/data/service-area-map';
 
 /*
   Positions come from this generated stylesheet, keyed on data-area, not
@@ -65,7 +70,7 @@ const labelled = [
       */}
       {
         MAP_SERVED.map((area) => (
-          <path class="service-map-halo" d={area.outline} />
+          <path class="service-map-halo" d={area.outline} pathLength="1" />
         ))
       }
 
@@ -74,7 +79,11 @@ const labelled = [
         county reads as solid. The edge uses the silhouette only, so the
         boundary of Fairfax City inside Fairfax County is not drawn.
       */}
-      {MAP_SERVED.map((area) => <path class="service-map-fill" d={area.d} />)}
+      {
+        MAP_SERVED.map((area) => (
+          <path class="service-map-fill" d={area.d} data-area={area.id} />
+        ))
+      }
       {
         MAP_SERVED.map((area) => (
           <path class="service-map-edge" d={area.outline} />
@@ -94,6 +103,28 @@ const labelled = [
       list beside the map carries the detail.
     */}
     <div class="service-map-labels" aria-hidden="true">
+      {/*
+        Towns. Dots at every width, names only from 40rem up - at phone size
+        seventeen names over a 335px map is a thicket, and the list below
+        carries every one of them anyway.
+      */}
+      {
+        MAP_PLACES.map((place) => (
+          <span
+            class="service-map-place"
+            data-place={place.id}
+            data-area={place.area}
+          />
+        ))
+      }
+      {
+        MAP_PLACES.filter((place) => place.labelled).map((place) => (
+          <span class="service-map-place-label" data-place={place.id}>
+            {place.name}
+          </span>
+        ))
+      }
+
       {
         labelled
           .filter((area) => area.dotX !== null)
@@ -198,6 +229,44 @@ const labelled = [
   .service-map-labels {
     position: absolute;
     inset: 0;
+    /*
+      The layer sits over the whole SVG, so left alone it would swallow the
+      hover that lights a county - the pointer would never reach the shape
+      underneath. Nothing in here needs to be hovered itself.
+    */
+    pointer-events: none;
+  }
+
+  /* A town. Accent rather than gold: gold stays for the two callouts. */
+  .service-map-place {
+    position: absolute;
+    width: 0.3125rem;
+    height: 0.3125rem;
+    border-radius: 50%;
+    background: var(--color-accent);
+    transform: translate(-50%, -50%);
+    transition: transform var(--duration-base, 0.2s)
+      var(--ease-out-quiet, ease-out);
+  }
+
+  .service-map-place-label {
+    position: absolute;
+    white-space: nowrap;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    line-height: 1;
+    color: var(--color-ink-muted);
+  }
+
+  /*
+    Town names are laid out by the generator against the widths they take at
+    desktop size. Below that the map is too small to hold them, so the dots
+    carry the detail and the list carries the names.
+  */
+  @media (max-width: 40rem) {
+    .service-map-place-label {
+      display: none;
+    }
   }
 
   .service-map-dot {
@@ -243,5 +312,38 @@ const labelled = [
   .service-map-label.is-context {
     font-weight: 500;
     color: var(--color-ink-muted);
+  }
+
+  /*
+    The outer edge draws itself on as the map scrolls into view.
+
+    This obeys the standing rule that motion may move a thing but never
+    reveal it: the counties, their fills, their divisions, every town and
+    every label are all painted and legible before this starts and while it
+    runs. The only thing animating is the emphasis stroke around the
+    outside, and pathLength="1" normalises five paths of different lengths
+    so they draw together rather than finishing at five different moments.
+
+    If animation-timeline is not supported the declaration is dropped and
+    the edge is simply there from the start, which is the same end state.
+  */
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .service-map-halo {
+        stroke-dasharray: 1;
+        animation: service-map-draw linear both;
+        animation-timeline: view();
+        animation-range: entry 10% cover 38%;
+      }
+    }
+  }
+
+  @keyframes service-map-draw {
+    from {
+      stroke-dashoffset: 1;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
   }
 </style>
