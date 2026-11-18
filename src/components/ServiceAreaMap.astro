@@ -54,6 +54,22 @@ const labelled = [
       }
 
       {/*
+        A heavy stroke on every silhouette, painted *under* the fills.
+
+        The fills cover its inner half, and along a border between two
+        counties they cover it from both sides, so it survives only on the
+        outside of the territory as a whole. That gives the outer edge more
+        weight than the county divisions without anyone having to compute
+        the union of five polygons: the five areas read as one service area
+        with counties inside it, rather than as five separate shapes.
+      */}
+      {
+        MAP_SERVED.map((area) => (
+          <path class="service-map-halo" d={area.outline} />
+        ))
+      }
+
+      {/*
         Fill uses the full path, which includes the enclave cities, so a
         county reads as solid. The edge uses the silhouette only, so the
         boundary of Fairfax City inside Fairfax County is not drawn.
@@ -126,16 +142,40 @@ const labelled = [
     fill: var(--color-surface);
   }
 
+  /*
+    The territory's outer edge. Only the outer half of this is ever seen -
+    see the comment on the markup - so it reads at about half its width.
+  */
+  .service-map-halo {
+    fill: none;
+    stroke: var(--color-accent);
+    stroke-width: 6;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* The county divisions inside the territory, deliberately lighter. */
   .service-map-edge {
     fill: none;
     stroke: var(--color-accent);
-    stroke-width: 2;
+    stroke-width: 1.25;
     stroke-linejoin: round;
     /*
-      Keeps every line exactly 2px whatever the map is scaled to. Without it
-      the borders are hairlines at 375px and heavy on a wide desktop.
+      Keeps every line the same width whatever the map is scaled to. Without
+      it the borders are hairlines at 375px and heavy on a wide desktop.
     */
     vector-effect: non-scaling-stroke;
+  }
+
+  /* At phone size the same widths read as much heavier, so ease them off. */
+  @media (max-width: 40rem) {
+    .service-map-halo {
+      stroke-width: 4;
+    }
+
+    .service-map-edge {
+      stroke-width: 1;
+    }
   }
 
   /* D.C. is orientation, not territory: outline only, and never filled. */
