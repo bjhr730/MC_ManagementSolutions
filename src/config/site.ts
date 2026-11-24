@@ -181,7 +181,25 @@ export const PORTALS = {
   tenant: 'REPLACE — resident portal URL',
 } as const;
 
-/** Resolved portal destinations: the real thing, or the holding page. */
+/**
+ * After-hours maintenance emergencies, in the order a tenant should try
+ * them. These are the vendors' own lines, not the office number, and they
+ * are the one thing on this site someone may need at three in the morning.
+ */
+export const EMERGENCY_MAINTENANCE = [
+  { label: 'Emergency Contact 1', phone: '(571) 326-8080', href: 'tel:+15713268080' },
+  { label: 'Emergency Contact 2', phone: '(571) 490-4417', href: 'tel:+15714904417' },
+  { label: 'Emergency Contact 3', phone: '(703) 407-6812', href: 'tel:+17034076812' },
+] as const;
+
+/**
+ * Resolved portal destinations: the real thing, or the holding page.
+ *
+ * Tenant Portal goes to /tenant-portal whether or not the portal itself is
+ * live, because Antonio put the emergency maintenance numbers behind that
+ * link in November 2026 and those are useful now. The Buildium login lives
+ * on that page and is still gated on PORTALS_LIVE.
+ */
 export const PORTAL_LINKS = [
   {
     label: 'Owner Portal',
@@ -189,7 +207,7 @@ export const PORTAL_LINKS = [
   },
   {
     label: 'Tenant Portal',
-    href: PORTALS_LIVE ? PORTALS.tenant : '/portals',
+    href: '/tenant-portal',
   },
 ] as const;
 

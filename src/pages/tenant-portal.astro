@@ -1,0 +1,214 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import PageHeader from '~/components/PageHeader.astro';
+import Section from '~/components/Section.astro';
+import JsonLd from '~/components/JsonLd.astro';
+
+import {
+  CONTACT,
+  EMERGENCY_MAINTENANCE,
+  LEGAL_ENTITY,
+  PORTALS,
+  PORTALS_LIVE,
+} from '~/config/site';
+import { breadcrumbs } from '~/lib/schema';
+
+/*
+ * The tenant side of the portals, in Antonio's wording, November 2026.
+ *
+ * Emergency numbers lead. Everything else on this site is written for an
+ * owner deciding whether to hire us; this page is written for a tenant
+ * whose ceiling is leaking, and the thing they need is a phone number they
+ * can hit with a thumb. That is why the contacts come before the
+ * explanation of what counts as an emergency, and why they are buttons
+ * rather than a sentence with a link in it.
+ *
+ * The Buildium login is still gated on PORTALS_LIVE: PORTALS.tenant is a
+ * placeholder string, so until that flag flips there is no URL to send
+ * anyone to and the page says so instead of shipping a dead button.
+ */
+---
+
+<BaseLayout
+  title="Tenant Portal"
+  description="Emergency maintenance contacts for residents of MC Management Solutions, what counts as an emergency, and how to submit routine maintenance requests."
+>
+  <JsonLd
+    slot="head"
+    schema={breadcrumbs([{ name: 'Tenant Portal', path: '/tenant-portal' }])}
+  />
+
+  <PageHeader
+    eyebrow="Tenant portal"
+    title="Emergency Maintenance Assistance"
+    lead="If you are experiencing an urgent maintenance emergency requiring immediate attention, please contact one of our emergency maintenance providers directly."
+  />
+
+  <Section tone="muted" labelledby="emergency-heading">
+    <h2 id="emergency-heading" class="text-h2">Emergency Maintenance Contacts</h2>
+
+    <ul class="mt-8 grid gap-4 sm:grid-cols-3">
+      {
+        EMERGENCY_MAINTENANCE.map((contact) => (
+          <li>
+            <a href={contact.href} class="emergency-contact card">
+              <span class="text-sm font-medium text-ink-muted">
+                {contact.label}
+              </span>
+              <span class="mt-2 block font-serif text-h3 text-ink">
+                {contact.phone}
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <p class="mt-8 max-w-3xl leading-relaxed text-ink-muted">
+      When calling, please identify yourself as a tenant of {LEGAL_ENTITY} and
+      provide your name, property address, unit number (if applicable), and a
+      brief description of the emergency. If the first contact is unavailable,
+      please try another number listed above.
+    </p>
+  </Section>
+
+  <Section labelledby="qualifies-heading">
+    <div class="max-w-3xl space-y-10">
+      <div>
+        <h2 id="qualifies-heading" class="text-h2">
+          What Qualifies as a Maintenance Emergency?
+        </h2>
+        <p class="mt-4 leading-relaxed text-ink-muted">
+          Emergencies include active flooding or major water leaks, sewage
+          backups, electrical hazards, or loss of essential services that
+          creates an immediate safety or habitability concern.
+        </p>
+        <p class="mt-4 leading-relaxed text-ink-muted">
+          Please reserve emergency calls for genuine emergencies. Minor
+          repairs, routine appliance issues, and other non-urgent maintenance
+          requests should be submitted through the Tenant Portal.
+        </p>
+      </div>
+
+      {/*
+        Set apart from the rest. A tenant skimming this page in a hurry
+        should not be able to miss the line that says to call 911 first.
+      */}
+      <aside class="danger-note" aria-labelledby="danger-heading">
+        <h2 id="danger-heading" class="text-h3">Immediate Danger?</h2>
+        <p class="mt-3 leading-relaxed">
+          If there is a fire, medical emergency, or immediate threat to life or
+          safety, call <a href="tel:911">911</a> first.
+        </p>
+        <p class="mt-3 leading-relaxed">
+          For suspected gas leaks, leave the building immediately and contact
+          <a href="tel:911">911</a> or your gas utility&rsquo;s emergency line
+          from a safe location.
+        </p>
+      </aside>
+    </div>
+  </Section>
+
+  <Section tone="muted" labelledby="routine-heading">
+    <div class="max-w-3xl">
+      <h2 id="routine-heading" class="text-h2">
+        Routine &amp; After-Hours Maintenance
+      </h2>
+      <p class="mt-4 leading-relaxed text-ink-muted">
+        For all routine and non-emergency maintenance requests, including those
+        occurring outside regular business hours, please submit a request
+        through your Buildium Tenant Portal.
+      </p>
+      <p class="mt-4 leading-relaxed text-ink-muted">
+        Your request will be assigned to a maintenance vendor, who will contact
+        you directly to coordinate service.
+      </p>
+      <p class="mt-4 leading-relaxed text-ink-muted">
+        Submitting requests through Buildium allows us to properly document,
+        track, and coordinate maintenance efficiently.
+      </p>
+    </div>
+  </Section>
+
+  <Section labelledby="access-heading">
+    <div class="max-w-3xl">
+      <h2 id="access-heading" class="text-h2">Access Your Tenant Portal</h2>
+      <p class="mt-4 leading-relaxed text-ink-muted">
+        Use the link below to access your Buildium Tenant Portal, submit
+        maintenance requests, make rent payments, and view important account
+        information.
+      </p>
+
+      {
+        PORTALS_LIVE ? (
+          <p class="mt-8">
+            <a href={PORTALS.tenant} class="btn btn-primary">
+              Access Tenant Portal
+            </a>
+          </p>
+        ) : (
+          /*
+            No URL exists yet, so there is nothing to link to. Saying that
+            plainly beats a button that goes nowhere, and the phone number
+            is the working alternative in the meantime.
+          */
+          <div class="mt-8 card">
+            <p class="font-semibold text-ink">
+              The tenant portal is being set up now.
+            </p>
+            <p class="mt-3 leading-relaxed text-ink-muted">
+              Until it is live, send routine maintenance requests to <a
+                href={`mailto:${CONTACT.email}`}
+                class="font-semibold text-ink underline decoration-accent decoration-2 underline-offset-4"
+                >{CONTACT.email}</a
+              > or call <a
+                href={CONTACT.phoneHref}
+                class="font-semibold text-ink underline decoration-accent decoration-2 underline-offset-4"
+                >{CONTACT.phone}</a
+              > during office hours. Emergencies always go to the numbers above.
+            </p>
+          </div>
+        )
+      }
+    </div>
+  </Section>
+</BaseLayout>
+
+<style>
+  /* A phone number is the point of the card, so the whole card is the target. */
+  .emergency-contact {
+    display: block;
+    height: 100%;
+    text-decoration: none;
+    transition:
+      border-color var(--duration-fast, 0.15s) ease,
+      background-color var(--duration-fast, 0.15s) ease;
+  }
+
+  .emergency-contact:hover {
+    border-color: var(--color-accent);
+    background: var(--color-surface-2);
+  }
+
+  /*
+    The 911 note. --color-cost is the palette's functional "this one matters"
+    colour, already used for figures that need to stand out, and it is
+    checked against both surfaces it can land on.
+  */
+  .danger-note {
+    border-left: 4px solid var(--color-cost);
+    background: var(--color-surface-2);
+    padding: 1.5rem;
+    border-radius: var(--radius-md, 0.5rem);
+    color: var(--color-ink);
+  }
+
+  .danger-note a {
+    font-weight: 600;
+    color: var(--color-ink);
+    text-decoration: underline;
+    text-decoration-color: var(--color-cost);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+  }
+</style>
