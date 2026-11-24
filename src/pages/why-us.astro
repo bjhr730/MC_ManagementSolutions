@@ -74,5 +74,34 @@ import { breadcrumbs } from '~/lib/schema';
     </div>
   </Section>
 
+  {/* --------------------------------------------------- fair housing */}
+  {/*
+    The brief mention Antonio asked for, kept brief on purpose: the full
+    statement stays on its own page, reachable from the footer of every
+    page, rather than being restated here or folded into the privacy policy
+    or the terms.
+
+    It sits after the reasons because it is a standard the business holds
+    itself to, not a reason to choose it over anyone else - every manager
+    is bound by the same law, and presenting compliance as a selling point
+    would be the wrong note.
+  */}
+  <Section labelledby="fair-housing-heading">
+    <div class="max-w-2xl">
+      <h2 id="fair-housing-heading" class="text-h3">
+        Equal housing opportunity
+      </h2>
+      <p class="mt-4 text-ink-muted">
+        We conduct business in accordance with all applicable federal, state
+        and local fair housing laws, and every applicant is considered
+        against the same criteria. <a
+          href="/fair-housing"
+          class="font-semibold text-ink underline decoration-accent decoration-2 underline-offset-4 hover:text-accent"
+          >Read our full fair housing statement</a
+        >.
+      </p>
+    </div>
+  </Section>
+
   <Cta />
 </BaseLayout>
