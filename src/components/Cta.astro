@@ -12,12 +12,15 @@ import ctaPhoto from '~/assets/photos/keys.webp';
  * ask on the left, and what happens next as three numbered steps on the
  * right.
  *
- * The steps are not new copy. They are the same sentence this block always
- * carried — "tell us about your property and what you want from
- * management, we will come back with a written proposal, every applicable
- * fee disclosed" — set as three things in order instead of one sentence to
- * read. A promise about a process is easier to believe when you can see it
- * has steps.
+ * The steps began as a restatement of the paragraph on the left. In
+ * November 2026 Antonio replaced them with his own wording, which describes
+ * a conversation rather than a document: tell us about the property, explore
+ * the options together, see the terms before committing.
+ *
+ * The paragraph on the left still offers "a written proposal, every
+ * applicable fee disclosed". That is the older framing and now overlaps
+ * steps one and three; it is left alone deliberately, because it is copy
+ * Antonio has not asked to change.
  */
 interface Props {
   heading?: string;
@@ -41,18 +44,21 @@ const {
 
 const paragraphs = Array.isArray(body) ? body : [body];
 
+/** Antonio's wording, November 2026. Changed here changes every page. */
 const STEPS = [
   {
     title: 'Tell us about your property',
-    detail: 'and what you want from management',
+    detail: 'And what you’re looking for in a management partner.',
   },
   {
-    title: 'We come back with a written proposal',
-    detail: 'customized to each property and owner',
+    title: 'Let’s explore your options',
+    detail:
+      'We’ll discuss your property’s needs, our services, and the best approach for you.',
   },
   {
-    title: 'Every applicable fee disclosed',
-    detail: 'before you sign',
+    title: 'Clear expectations from the start',
+    detail:
+      'We’ll review services, applicable fees, and management terms before you commit.',
   },
 ];
 ---
