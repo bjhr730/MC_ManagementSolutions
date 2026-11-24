@@ -10,16 +10,34 @@ import {
   REVIEW_MODE,
 } from '~/config/compliance';
 import { CONTACT, LEGAL_ENTITY } from '~/config/site';
+
+/*
+  Antonio's privacy policy, November 2026, replacing the earlier draft.
+
+  His text carried two placeholders and neither is printed at the reader.
+
+  "Effective Date: [Insert Date]" uses the mechanism this page already had:
+  LEGAL_REVIEW_DATE is null until an attorney signs off, so the header says
+  "Draft - not yet reviewed" in plain words. Setting that one constant turns
+  every legal page's date on at once. A made-up date on a policy that has
+  not been reviewed would be worse than no date.
+
+  "[Insert Business Email]" is now known, so it reads from CONTACT.email
+  along with the phone number and the legal entity name. If the mail domain
+  changes, this page follows.
+*/
 ---
 
 <BaseLayout
   title="Privacy Policy"
-  description="What information this website collects, how it is used, and how to ask us to delete it."
+  description="What information MC Management Solutions collects through this website, how it is used, how long it is kept, and how to ask for a copy or its deletion."
 >
   <PageHeader
     eyebrow="Legal"
     title="Privacy Policy"
-    lead={LEGAL_REVIEW_DATE ? `Last reviewed: ${LEGAL_REVIEW_DATE}` : LEGAL_LAST_UPDATED}
+    lead={LEGAL_REVIEW_DATE
+      ? `Effective date: ${LEGAL_REVIEW_DATE}`
+      : LEGAL_LAST_UPDATED}
   />
 
   <Section>
@@ -28,96 +46,90 @@ import { CONTACT, LEGAL_ENTITY } from '~/config/site';
         REVIEW_MODE && (
           <Disclosure label="Draft" pending>
             <p>
-              This is a working draft describing what the website actually
-              does. It is not legal advice and has not been reviewed by an
-              attorney. Have a qualified Virginia professional review it, and
-              confirm whether any state privacy obligations apply, before
-              launch.
+              This policy has not been reviewed by an attorney and is not
+              legal advice. Have a qualified Virginia professional review it,
+              confirm whether any state privacy obligations apply, and set an
+              effective date before launch.
             </p>
           </Disclosure>
         )
       }
 
-      <h2>What we collect</h2>
       <p>
-        This website collects personal information in exactly one place: the
-        owner inquiry form. When you submit it, we receive your name, email
-        address, phone number if you give one, the property address, your
-        answers to the optional questions about the property, and anything you
-        type in the message field.
-      </p>
-      <p>
-        We also record the IP address the submission came from, which is used
-        to limit spam and abuse.
+        At {LEGAL_ENTITY}, we respect your privacy and are committed to
+        protecting the personal information you share with us.
       </p>
 
-      <h2>What we do not do</h2>
-      <ul>
-        <li>We do not run advertising or tracking cookies on this site.</li>
-        <li>We do not use analytics that profile you across websites.</li>
-        <li>We do not sell, rent or trade your information.</li>
-        <li>
-          We do not send marketing email to people who only submitted an
-          inquiry.
-        </li>
-      </ul>
-
-      <h2>Why we hold it</h2>
+      <h2>Information We Collect</h2>
       <p>
-        To reply to your inquiry, to prepare a management proposal, and to keep
-        a record of the conversation if you become a client. That is all.
+        When you contact us through our website, we may collect your name,
+        email address, phone number, property information, and any additional
+        details you voluntarily provide.
+      </p>
+      <p>
+        We may also collect limited technical information necessary for
+        website security and functionality.
       </p>
 
-      <h2>Who else sees it</h2>
+      <h2>How We Use Your Information</h2>
       <p>
-        Inquiry data is stored in our hosting provider&rsquo;s database and
-        delivered to us by an email delivery provider. Those providers process
-        the data on our behalf and are not permitted to use it for their own
-        purposes. We may share information where we are required to by law.
+        We use the information you provide to respond to inquiries, discuss
+        our services, communicate with prospective and existing clients, and
+        maintain appropriate business records.
+      </p>
+      <p>We do not sell your personal information.</p>
+
+      <h2>Information Sharing</h2>
+      <p>
+        We may use trusted third-party service providers to operate our
+        website and process inquiries. We may also disclose information when
+        required by law or as necessary to protect our legal rights.
       </p>
 
-      <h2>How long we keep it</h2>
+      <h2>Data Security</h2>
       <p>
-        Inquiries that do not lead to an engagement are kept while they may
-        still be relevant to a prospective client relationship, then deleted.
-        Records relating to an actual management engagement are kept for as
-        long as required by the management agreement and applicable
-        record-keeping rules.
+        We take reasonable measures to safeguard personal information.
+        However, no electronic transmission or storage system is completely
+        secure.
+      </p>
+      <p>
+        Please avoid submitting sensitive financial information, Social
+        Security numbers, or other confidential documents through our general
+        contact form.
       </p>
 
-      <h2>Your choices</h2>
+      <h2>Data Retention</h2>
       <p>
-        Ask us for a copy of what we hold about you, ask us to correct it, or
-        ask us to delete it. Email <a href={`mailto:${CONTACT.email}`}
-          >{CONTACT.email}</a
-        > or call <a href={CONTACT.phoneHref}>{CONTACT.phone}</a> and we will
-        action it.
+        We retain personal information only as long as reasonably necessary
+        for business purposes, legal obligations, and applicable
+        recordkeeping requirements.
       </p>
 
-      <h2>Security</h2>
+      <h2>Your Privacy Choices</h2>
       <p>
-        The site is served over HTTPS and inquiry data is transmitted
-        encrypted. No system is perfectly secure, so please do not send bank
-        details, government identification numbers or other sensitive
-        information through the website form.
+        You may contact us to request access to, correction of, or deletion
+        of your personal information, subject to applicable legal and
+        recordkeeping requirements.
       </p>
 
-      <h2>Children</h2>
+      <h2>Third-Party Services</h2>
       <p>
-        This site is intended for property owners and is not directed at
-        children.
+        Our website may contain links to third-party platforms, including our
+        property management portal. These services operate under their own
+        privacy policies.
       </p>
 
-      <h2>Changes</h2>
+      <h2>Updates to This Policy</h2>
       <p>
-        If this policy changes we will update the date at the top of this page.
+        We may update this Privacy Policy periodically. Any changes will be
+        reflected on this page with an updated effective date.
       </p>
 
-      <h2>Contact</h2>
+      <h2>Contact Us</h2>
       <p>
         {LEGAL_ENTITY}<br />
-        <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a><br />
-        <a href={CONTACT.phoneHref}>{CONTACT.phone}</a>
+        Phone: <a href={CONTACT.phoneHref}>{CONTACT.phone}</a><br />
+        Email: <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
       </p>
     </div>
   </Section>
