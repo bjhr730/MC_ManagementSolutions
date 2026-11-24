@@ -269,7 +269,7 @@ export const FOOTER_NAV = {
   ],
   legal: [
     { href: '/privacy', label: 'Privacy Policy' },
-    { href: '/terms', label: 'Website Terms' },
+    { href: '/terms', label: 'Terms of Use' },
     { href: '/fair-housing', label: 'Fair Housing' },
     { href: '/accessibility', label: 'Accessibility' },
   ],

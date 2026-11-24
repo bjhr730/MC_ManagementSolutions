@@ -5,23 +5,43 @@ import PageHeader from '~/components/PageHeader.astro';
 import Section from '~/components/Section.astro';
 
 import {
-  BROKERAGE_DISCLOSURE,
   LEGAL_LAST_UPDATED,
   LEGAL_REVIEW_DATE,
-  PRICING_DISCLOSURE,
   REVIEW_MODE,
 } from '~/config/compliance';
 import { CONTACT, LEGAL_ENTITY } from '~/config/site';
+
+/*
+  Antonio's terms of use, November 2026, replacing the earlier draft. His
+  sections map one to one onto the ten that were here; the wording is his.
+
+  "[Insert Business Email]" is not printed at the reader: it reads from
+  CONTACT.email, along with the phone and the entity name, so the page
+  follows the mail domain. There is no date placeholder in his text, and the
+  header keeps the shared mechanism - "Draft - not yet reviewed" until
+  LEGAL_REVIEW_DATE is set.
+
+  This page no longer renders PRICING_DISCLOSURE or BROKERAGE_DISCLOSURE.
+  Antonio's "Services & Information" and "Real Estate & Leasing Services"
+  sections make both points in his own words, and printing the constants as
+  well would say each thing twice on one page. Both constants are still live
+  elsewhere - pricing on /services and /management-plans, brokerage in the
+  footer of every page and on each brokerage service - so the site now
+  states each in two phrasings. An attorney should align them before launch;
+  picking one is not a copy decision.
+*/
 ---
 
 <BaseLayout
-  title="Website Terms"
-  description="Terms of use for this website, including the limits of the information published here."
+  title="Terms of Use"
+  description="Terms of use for this website, including the limits of the information published here and how it relates to a signed management agreement."
 >
   <PageHeader
     eyebrow="Legal"
-    title="Website Terms"
-    lead={LEGAL_REVIEW_DATE ? `Last reviewed: ${LEGAL_REVIEW_DATE}` : LEGAL_LAST_UPDATED}
+    title="Terms of Use"
+    lead={LEGAL_REVIEW_DATE
+      ? `Effective date: ${LEGAL_REVIEW_DATE}`
+      : LEGAL_LAST_UPDATED}
   />
 
   <Section>
@@ -30,80 +50,97 @@ import { CONTACT, LEGAL_ENTITY } from '~/config/site';
         REVIEW_MODE && (
           <Disclosure label="Draft" pending>
             <p>
-              Working draft, not reviewed by an attorney. Virginia DPOR
-              advertising rules and licensed firm identification requirements
-              must be confirmed before this site goes live.
+              These terms have not been reviewed by an attorney and are not
+              legal advice. Have a qualified Virginia professional review
+              them, and set an effective date, before launch.
             </p>
           </Disclosure>
         )
       }
 
-      <h2>Who operates this site</h2>
+      <h2>About This Website</h2>
       <p>
         This website is operated by {LEGAL_ENTITY}, a Virginia limited
-        liability company providing residential property management services in
-        Northern Virginia.
+        liability company providing residential property management services
+        throughout Northern Virginia.
       </p>
 
-      <h2>Information here is general</h2>
+      <h2>Services &amp; Information</h2>
       <p>
-        The descriptions of services, management approach and fees on this site
-        are general information for prospective clients. They are not an offer,
-        and they do not create a management agreement or any other contract.
+        The information provided on this website is intended for general
+        informational purposes. Descriptions of services, management
+        approaches, and pricing do not constitute a binding offer or
+        agreement.
       </p>
-      <p>{PRICING_DISCLOSURE}</p>
       <p>
-        Where this site and a signed management agreement differ, the signed
-        agreement governs.
+        Property management services and fees may vary based on each
+        property&rsquo;s needs and circumstances. All applicable services,
+        fees, and terms will be reviewed and outlined in a written agreement
+        before services begin.
       </p>
-
-      <h2>Brokerage services</h2>
-      <p>{BROKERAGE_DISCLOSURE}</p>
-
-      <h2>Not legal, tax or investment advice</h2>
       <p>
-        Nothing on this site is legal, tax, accounting or investment advice.
-        Property ownership decisions should be made with your own attorney, CPA
-        or financial professional.
+        In the event of any differences between information on this website
+        and an executed management agreement, the signed agreement will
+        govern.
       </p>
 
-      <h2>Accuracy</h2>
+      <h2>Real Estate &amp; Leasing Services</h2>
       <p>
-        We work to keep this site accurate and current, but we do not warrant
-        that every page is free of error or completely up to date. Market
-        conditions, regulations and our own procedures change.
+        Certain real estate services, including leasing and tenant placement,
+        are provided through a separately licensed Virginia real estate
+        brokerage.
       </p>
 
-      <h2>Links to other sites</h2>
+      <h2>Professional Advice</h2>
       <p>
-        Where we link to a third party, including any owner or resident portal,
-        that site has its own terms and privacy practices and we are not
-        responsible for its content.
+        Information provided on this website is not intended to constitute
+        legal, tax, accounting, or investment advice. Property owners should
+        consult qualified professionals regarding their individual
+        circumstances.
       </p>
 
-      <h2>Acceptable use</h2>
+      <h2>Accuracy of Information</h2>
       <p>
-        Please do not attempt to disrupt the site, submit automated or
-        fraudulent inquiries, or use anything published here to harass anyone or
-        to build a mailing list.
+        We strive to keep the information on this website accurate and up to
+        date. However, services, pricing, policies, and market conditions may
+        change without notice.
       </p>
 
-      <h2>Intellectual property</h2>
+      <h2>Third-Party Links</h2>
       <p>
-        The text, design and marks on this site belong to {LEGAL_ENTITY} unless
-        stated otherwise.
+        Our website may include links to third-party services, including our
+        property management portal. These websites operate independently and
+        are subject to their own terms and privacy policies.
       </p>
 
-      <h2>Governing law</h2>
+      <h2>Website Use</h2>
       <p>
-        These terms are governed by the laws of the Commonwealth of Virginia.
+        Visitors agree not to misuse the website, submit fraudulent
+        information, interfere with its operation, or use its content for
+        unauthorized purposes.
       </p>
 
-      <h2>Contact</h2>
+      <h2>Intellectual Property</h2>
       <p>
-        Questions about these terms: <a href={`mailto:${CONTACT.email}`}
-          >{CONTACT.email}</a
-        >.
+        Unless otherwise indicated, the website&rsquo;s original content,
+        design, branding, and materials are the property of {LEGAL_ENTITY} and
+        may not be reproduced or distributed without permission.
+      </p>
+
+      <h2>Governing Law</h2>
+      <p>
+        These Terms of Use are governed by the laws of the Commonwealth of
+        Virginia.
+      </p>
+
+      <h2>Contact Us</h2>
+      <p>
+        For questions regarding these terms, please contact:
+      </p>
+      <p>
+        {LEGAL_ENTITY}<br />
+        Phone: <a href={CONTACT.phoneHref}>{CONTACT.phone}</a><br />
+        Email: <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
       </p>
     </div>
   </Section>
