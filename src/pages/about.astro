@@ -23,22 +23,16 @@ import { breadcrumbs } from '~/lib/schema';
     lead="Experience, integrity and accountability, applied to residential property in Northern Virginia."
   />
 
-  <Section labelledby="story-heading">
-    <h2 id="story-heading" class="sr-only">Who we are</h2>
-    <div class="prose-site text-lead text-ink-muted">
-      {ABOUT_PARAGRAPHS.map((paragraph) => <p>{paragraph}</p>)}
-    </div>
+  {/*
+    Principles first, the story second. Antonio's call, November 2026: what
+    guides the company is what he wants an owner to meet first, before the
+    history.
 
-    <blockquote
-      class="mt-14 max-w-3xl border-l-4 border-gold bg-surface-2 px-6 py-6 md:px-8"
-    >
-      <p class="font-serif text-h3 text-ink">{ABOUT_MISSION}</p>
-      <footer class="mt-3 text-sm font-medium text-ink-muted">
-        Our mission
-      </footer>
-    </blockquote>
-  </Section>
-
+    The tone stays `muted` because the cards here are --color-surface and
+    only read as raised on a toned band. The story below it keeps the
+    default tone, so the two still alternate - the order changed, not the
+    rhythm.
+  */}
   <Section tone="muted" labelledby="principles-heading">
     <p class="eyebrow">What guides us</p>
     <h2 id="principles-heading" class="mt-3 max-w-2xl text-h2">
@@ -60,6 +54,22 @@ import { breadcrumbs } from '~/lib/schema';
       <a href="/philosophy" class="btn btn-secondary">Our philosophy in full</a>
       <a href="/founder" class="btn btn-secondary">Meet the founder</a>
     </div>
+  </Section>
+
+  <Section labelledby="story-heading">
+    <h2 id="story-heading" class="sr-only">Who we are</h2>
+    <div class="prose-site text-lead text-ink-muted">
+      {ABOUT_PARAGRAPHS.map((paragraph) => <p>{paragraph}</p>)}
+    </div>
+
+    <blockquote
+      class="mt-14 max-w-3xl border-l-4 border-gold bg-surface-2 px-6 py-6 md:px-8"
+    >
+      <p class="font-serif text-h3 text-ink">{ABOUT_MISSION}</p>
+      <footer class="mt-3 text-sm font-medium text-ink-muted">
+        Our mission
+      </footer>
+    </blockquote>
   </Section>
 
   <Cta />

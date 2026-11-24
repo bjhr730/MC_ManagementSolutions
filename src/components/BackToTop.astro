@@ -1,0 +1,98 @@
+---
+/**
+ * Back to top, on every page, with no JavaScript.
+ *
+ * It is a plain link to #main - the same target the skip link uses - so it
+ * works with scripting off and moves the reader to the top of the content
+ * rather than above the sticky header.
+ *
+ * It appears only once there is something to come back from. The reveal is
+ * driven by `animation-timeline: scroll(root block)`, so the browser does
+ * it off the main thread and we ship no script. On a page too short to
+ * scroll the timeline is inactive, the animation never applies, and the
+ * button stays hidden - which is what "where it is needed" means here.
+ *
+ * Nothing moves. The keyframes change opacity and visibility only, with no
+ * transform: the standing rule is that motion may move a thing but never
+ * reveal it, and the cleanest way to honour that for a control which by
+ * definition starts hidden is to have no motion in it at all. visibility
+ * is animated alongside opacity so the link leaves the tab order while it
+ * is invisible, instead of being a focus trap a keyboard user lands on
+ * with nothing to see.
+ *
+ * Where scroll-driven animation is unsupported the button is simply always
+ * there. A small persistent control is a fair trade against a control that
+ * silently never appears.
+ */
+---
+
+<a href="#main" class="back-to-top">
+  <svg
+    aria-hidden="true"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.75"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    class="size-5"
+  >
+    <path d="M12 19V5M5 12l7-7 7 7"></path>
+  </svg>
+  <span class="sr-only">Back to top</span>
+</a>
+
+<style>
+  .back-to-top {
+    position: fixed;
+    /* Clear of the home indicator on a phone, and of nothing on a desktop. */
+    right: max(1rem, env(safe-area-inset-right));
+    bottom: max(1rem, env(safe-area-inset-bottom));
+    z-index: 30;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    /* 2.75rem is 44px: the comfortable target size, not the 24px minimum. */
+    width: 2.75rem;
+    height: 2.75rem;
+
+    border: 1px solid var(--color-control-border);
+    border-radius: 50%;
+    background: var(--color-surface);
+    color: var(--color-ink);
+    box-shadow: var(--shadow-floating);
+
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .back-to-top:hover {
+    background: var(--color-surface-2);
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+
+  @supports (animation-timeline: scroll()) {
+    .back-to-top {
+      animation: back-to-top-in linear both;
+      animation-timeline: scroll(root block);
+      /*
+        Half a viewport of scrolling before it starts to show, a full one
+        before it is solid. Short pages never reach it.
+      */
+      animation-range: 50vh 100vh;
+    }
+  }
+
+  @keyframes back-to-top-in {
+    from {
+      opacity: 0;
+      visibility: hidden;
+    }
+    to {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+</style>
