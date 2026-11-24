@@ -31,7 +31,17 @@ export interface Service {
   readonly slug: string;
   readonly title: string;
   readonly summary: string;
-  readonly points: readonly string[];
+  /**
+   * What the service includes, as a checklist.
+   *
+   * A service carries either this or `body`, never both. Antonio rewrote
+   * two of them as prose in November 2026 and prose does not survive being
+   * chopped into ticks - "we evaluate market conditions, performance and
+   * your objectives" is one thought, not three bullets.
+   */
+  readonly points?: readonly string[];
+  /** The same slot as `points`, written as paragraphs instead. */
+  readonly body?: readonly string[];
   readonly icon: IconName;
   readonly brokerage?: boolean;
 }
@@ -104,12 +114,14 @@ export const SERVICES: readonly Service[] = [
   {
     slug: 'renewals',
     title: 'Lease Renewals & Rental Pricing',
+    // Antonio's wording, November 2026.
     summary:
-      'A strategic, market-driven approach to renewals that balances rental income, occupancy and your goals.',
-    points: [
-      'Renewal recommendations grounded in current market data',
-      'Rental income weighed against the cost of a vacancy',
-      'Your individual investment goals factored into the decision',
+      'A thoughtful, market-driven approach to lease renewals that balances ' +
+      'rental income, tenant retention, and your long-term investment goals.',
+    body: [
+      'We evaluate current market conditions, property performance, and your ' +
+        'individual objectives to help you make informed renewal and pricing ' +
+        'decisions.',
     ],
     icon: 'refresh',
     brokerage: true,
@@ -117,14 +129,21 @@ export const SERVICES: readonly Service[] = [
   {
     slug: 'leasing-coordination',
     title: 'Leasing & Tenant Placement',
+    // Antonio's wording, November 2026.
     summary:
-      'Professional marketing, showings, tenant screening, lease ' +
-      'preparation and move-in coordination.',
-    points: [
-      'Rental pricing recommendations and property marketing',
-      'Showings and applicant screening against consistent, compliant criteria',
-      'Income and employment verification, credit, rental history and references',
-      'Lease preparation and move-in coordination',
+      'We help property owners navigate the leasing process, from preparing ' +
+      'their property for the market to securing qualified tenants.',
+    body: [
+      'Our leasing assistance includes rental pricing recommendations, ' +
+        'property marketing, showings, applicant screening, lease ' +
+        'preparation, and move-in coordination.',
+      /*
+       * His own plain-words version of the brokerage note. It stays visible
+       * in the section; the formal BROKERAGE_DISCLOSURE still renders under
+       * it, because that one is the compliance text and this one is not.
+       */
+      'Licensed leasing services are arranged through a separate ' +
+        'Virginia-licensed real estate brokerage.',
     ],
     icon: 'key',
     brokerage: true,

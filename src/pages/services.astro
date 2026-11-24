@@ -97,8 +97,20 @@ import { breadcrumbs } from '~/lib/schema';
 
               <div>
                 <h3 class="sr-only">What this includes</h3>
+                {/*
+                  A service describes itself as a checklist or as prose,
+                  never both. Two of them are prose in Antonio's own words
+                  and do not break into ticks without losing the thread.
+                */}
+                {service.body && (
+                  <div class="space-y-4 text-ink">
+                    {service.body.map((paragraph) => (
+                      <p class="leading-relaxed">{paragraph}</p>
+                    ))}
+                  </div>
+                )}
                 <ul class="space-y-3">
-                  {service.points.map((point) => (
+                  {(service.points ?? []).map((point) => (
                     <li class="flex gap-3 text-ink">
                       <svg
                         aria-hidden="true"
