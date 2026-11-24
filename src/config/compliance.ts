@@ -79,11 +79,20 @@ export const BROKERAGE_DISCLOSURE =
   'the property management services of ' +
   'MC Management Solutions of Virginia, LLC.';
 
-/** Shown wherever the site discusses fees or management plans. */
+/**
+ * Shown wherever the site discusses fees or management plans.
+ *
+ * Reworded in November 2026 to drop the phrase "written proposal", which
+ * Antonio replaced elsewhere. "In writing" is deliberately kept: the
+ * commitment is that fees are disclosed in writing before signing, and
+ * dropping that would weaken a disclosure rather than restyle it. The
+ * substance is unchanged and still wants an attorney's eye, like the rest
+ * of this file.
+ */
 export const PRICING_DISCLOSURE =
   'Management services and pricing are customized to each property and owner. ' +
-  'All applicable fees are disclosed in your written proposal and management ' +
-  'agreement before you sign.';
+  'All applicable fees are disclosed to you in writing, in your proposal and ' +
+  'management agreement, before you sign.';
 
 /**
  * The FAQ advertises $0 management termination fees with this qualifier

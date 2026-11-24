@@ -17,10 +17,9 @@ import ctaPhoto from '~/assets/photos/keys.webp';
  * a conversation rather than a document: tell us about the property, explore
  * the options together, see the terms before committing.
  *
- * The paragraph on the left still offers "a written proposal, every
- * applicable fee disclosed". That is the older framing and now overlaps
- * steps one and three; it is left alone deliberately, because it is copy
- * Antonio has not asked to change.
+ * The paragraph beside them was rewritten in the same pass, for the reason
+ * noted on `body` below. Four pages pass their own `body` and are not
+ * affected; the default here is what the other five show.
  */
 interface Props {
   heading?: string;
@@ -36,7 +35,14 @@ interface Props {
 
 const {
   heading = 'Request a consultation',
-  body = 'Tell us about your property and what you want from management. We will come back to you with a written proposal, every applicable fee disclosed.',
+  /*
+    This paragraph used to be the sentence the steps were made from, so
+    once Antonio rewrote the steps it said "tell us about your property"
+    immediately to the left of a step saying the same thing, and still
+    promised the written proposal his new step two replaces. It now sets
+    the steps up instead of repeating them. My wording, not his.
+  */
+  body = 'Every property is different, and so is every owner. Here is how we get to a proposal built around yours.',
   ctaLabel = 'Start with a consultation',
   note,
   showDisclosure = true,
