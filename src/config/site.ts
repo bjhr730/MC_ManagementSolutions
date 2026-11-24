@@ -31,18 +31,21 @@ export const LEGAL_ENTITY = 'MC Management Solutions of Virginia, LLC';
 export const TAGLINE = 'Your Property. Our Responsibility.';
 
 /*
-  The mail domain, in one place, because launch day should be one line.
+  The mail domain, in one place. Real as of November 2026: Antonio settled
+  on mcmanagementsolutions.com, so info@ and antonio@ below are now live
+  addresses rather than placeholders.
 
-  Still a placeholder. Antonio named antonio@ and info@ at
-  "nosetodavia.com", which is "no sé todavía" - "I don't know yet" - so the
-  mailbox names are his and settled while the domain is not. REPLACE_ME is
-  deliberately not a registrable name and example.com is reserved by RFC
-  2606, so neither can ever reach a stranger's inbox; a real-looking domain
-  nobody owns is the one placeholder that quietly does harm.
+  Two consequences worth knowing. The launch preflight in astro.config.mjs
+  no longer blocks on this, so it is SITE_URL that now stands between the
+  site and SITE_INDEXABLE="true". And isPlaceholder() in src/lib/schema.ts
+  stops suppressing the address, so the business email is published in the
+  LocalBusiness structured data - which is correct, and is the first time
+  that has been true.
 
-  Set this to the real domain and both addresses below follow.
+  The mailbox has to exist before launch. A published address that bounces
+  loses the enquiry and the owner does not write twice.
 */
-const EMAIL_DOMAIN = 'REPLACE_ME.example.com';
+const EMAIL_DOMAIN = 'mcmanagementsolutions.com';
 
 /** Name, address, phone — also feeds the LocalBusiness structured data. */
 export const CONTACT = {
