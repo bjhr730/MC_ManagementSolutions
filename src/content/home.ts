@@ -116,11 +116,18 @@ export const PATHS: readonly {
   },
 ];
 
+/*
+  Antonio's wording, November 2026. It still carries no door count or
+  transaction count: "extensive hands-on experience" and "overseeing
+  property management operations" say the same thing qualitatively, which
+  is what the master checklist requires until those figures are verified.
+*/
 export const HOME_FOUNDER_TEASER =
-  'Antonio Melendez Cabrera is a Northern Virginia real estate broker who has ' +
-  'personally managed rental homes and led an entire property management ' +
-  'operation. He is also a rental property owner himself, which is the ' +
-  'part most owners care about.';
+  'Antonio Melendez Cabrera is a Northern Virginia real estate broker with ' +
+  'extensive hands-on experience managing rental properties and overseeing ' +
+  'property management operations. As a rental property owner and investor ' +
+  'himself, he understands firsthand the responsibilities, challenges, and ' +
+  'decisions that come with protecting a real estate investment.';
 
 export const TOOLS_TEASER = {
   eyebrow: 'Owner tools',
