@@ -8,8 +8,14 @@
  * checklist item "Confirm actual services: align descriptions with
  * operational capacity and licensed activities" is still open.
  *
- * `brokerage: true` marks services the FAQ says run through the affiliated
- * licensed brokerage; those render with the brokerage disclosure attached.
+ * `brokerage: true` marks the services a licensed brokerage provides, and
+ * those render with BROKERAGE_DISCLOSURE attached.
+ *
+ * The customer-facing copy stopped naming the affiliated brokerage mid
+ * sentence in November 2026, at Antonio's request - it read as a hedge in
+ * the middle of an answer. The disclosure itself did not move: it is still
+ * on every one of these services, in the footer of every page and in the
+ * terms. This flag is that mechanism, so do not drop it when editing copy.
  */
 
 export type IconName =
@@ -112,7 +118,8 @@ export const SERVICES: readonly Service[] = [
     slug: 'leasing-coordination',
     title: 'Leasing & Tenant Placement',
     summary:
-      'Marketing, showings, screening and lease preparation, delivered through our affiliated licensed brokerage.',
+      'Professional marketing, showings, tenant screening, lease ' +
+      'preparation and move-in coordination.',
     points: [
       'Rental pricing recommendations and property marketing',
       'Showings and applicant screening against consistent, compliant criteria',

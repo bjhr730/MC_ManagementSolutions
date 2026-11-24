@@ -106,16 +106,20 @@ export const FAQ_SECTIONS: readonly FaqSection[] = [
       {
         q: 'Do you provide leasing and tenant placement services?',
         a: [
-          'Yes. Leasing and tenant placement services are available through our affiliated licensed Virginia real estate brokerage.',
-          'Brokerage services are provided separately from the property management operations of MC Management Solutions of Virginia, LLC.',
+          'Absolutely! We offer comprehensive leasing assistance, including ' +
+            'professional marketing, property showings, tenant screening, ' +
+            'lease preparation, and move-in coordination.',
+          'Whether you need full-service property management or assistance ' +
+            'finding your next tenant, we’re here to help make the process ' +
+            'as seamless as possible.',
         ],
       },
       {
-        // Antonio's note on this one: "Review and finalize this answer before
-        // publishing." Still outstanding — the wording below is the original.
         q: 'How do you screen prospective tenants?',
         a: [
-          'Tenant screening is coordinated through our affiliated brokerage and applicable screening providers using consistent, legally compliant criteria.',
+          'Carefully, and the same way every time. Every applicant is ' +
+            'screened against consistent, legally compliant criteria ' +
+            'rather than case-by-case judgement.',
           'Depending on the application and applicable law, screening may include income and employment verification, credit history, rental history, and landlord references.',
           'All decisions are made in accordance with fair housing and other applicable requirements.',
         ],

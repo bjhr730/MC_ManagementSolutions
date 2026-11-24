@@ -66,10 +66,7 @@ export const FEES = {
   lead: 'Which of these apply depends on the services you choose:',
   items: [
     { label: 'Monthly Property Management' },
-    {
-      label: 'Leasing & Tenant Placement',
-      note: 'through our affiliated brokerage',
-    },
+    { label: 'Leasing & Tenant Placement' },
     { label: 'Lease Renewals' },
     {
       label: 'Additional Services',
