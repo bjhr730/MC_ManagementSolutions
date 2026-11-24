@@ -58,33 +58,124 @@
 
 /* Map and list, pointing at each other. Decoration only - see the note in
    the generator; nothing here is information the list does not print. */
-.service-map-group:has(.service-area-item[data-county='arlington']:hover) .service-map-fill[data-area='arlington'],
-.service-map-fill[data-area='arlington']:hover { fill: var(--color-surface-3); }
+@media (hover: hover) {
+.service-map-group:has(.service-map-fill[data-area='arlington']:hover) .service-map-fill[data-area='arlington'],
+.service-map-group:has(.service-map-label[data-area='arlington']:hover) .service-map-fill[data-area='arlington'],
+.service-map-group:has(.service-area-item[data-county='arlington']:hover) .service-map-fill[data-area='arlington'] { fill: var(--color-surface-3); }
 .service-map-group:has(.service-map-fill[data-area='arlington']:hover) .service-map-place[data-area='arlington'],
+.service-map-group:has(.service-map-label[data-area='arlington']:hover) .service-map-place[data-area='arlington'],
 .service-map-group:has(.service-area-item[data-county='arlington']:hover) .service-map-place[data-area='arlington'] { transform: translate(-50%, -50%) scale(1.6); }
 .service-map-group:has(.service-map-fill[data-area='arlington']:hover) .service-area-item[data-county='arlington'] .service-area-county,
-.service-area-item[data-county='arlington']:hover .service-area-county { color: var(--color-accent); }
-.service-map-group:has(.service-area-item[data-county='alexandria']:hover) .service-map-fill[data-area='alexandria'],
-.service-map-fill[data-area='alexandria']:hover { fill: var(--color-surface-3); }
+.service-map-group:has(.service-map-label[data-area='arlington']:hover) .service-area-item[data-county='arlington'] .service-area-county,
+.service-map-group:has(.service-area-item[data-county='arlington']:hover) .service-area-item[data-county='arlington'] .service-area-county { color: var(--color-accent); }
+.service-map-group:has(.service-map-fill[data-area='arlington']:hover) .service-area-item[data-county='arlington'],
+.service-map-group:has(.service-map-label[data-area='arlington']:hover) .service-area-item[data-county='arlington'],
+.service-map-group:has(.service-area-item[data-county='arlington']:hover) .service-area-item[data-county='arlington'] { border-top-color: var(--color-accent); }
+}
+.service-map-group:has(#map-area-arlington:checked) .service-map-fill[data-area='arlington'],
+.service-map-group:has(#map-area-arlington:focus-visible) .service-map-fill[data-area='arlington'] { fill: var(--color-surface-3); }
+.service-map-group:has(#map-area-arlington:checked) .service-map-place[data-area='arlington'],
+.service-map-group:has(#map-area-arlington:focus-visible) .service-map-place[data-area='arlington'] { transform: translate(-50%, -50%) scale(1.6); }
+.service-map-group:has(#map-area-arlington:checked) .service-area-item[data-county='arlington'] .service-area-county,
+.service-map-group:has(#map-area-arlington:focus-visible) .service-area-item[data-county='arlington'] .service-area-county { color: var(--color-accent); }
+.service-map-group:has(#map-area-arlington:checked) .service-area-item[data-county='arlington'],
+.service-map-group:has(#map-area-arlington:focus-visible) .service-area-item[data-county='arlington'] { border-top-color: var(--color-accent); }
+.service-map-group:has(#map-area-arlington:focus-visible) .service-area-item[data-county='arlington'] .service-area-toggle { outline: 2px solid var(--color-focus); outline-offset: 3px; }
+.service-map-group:has(#map-area-arlington:checked) .service-map-readout[data-area='arlington'] { display: block; }
+@media (hover: hover) {
+.service-map-group:has(.service-map-fill[data-area='alexandria']:hover) .service-map-fill[data-area='alexandria'],
+.service-map-group:has(.service-map-label[data-area='alexandria']:hover) .service-map-fill[data-area='alexandria'],
+.service-map-group:has(.service-area-item[data-county='alexandria']:hover) .service-map-fill[data-area='alexandria'] { fill: var(--color-surface-3); }
 .service-map-group:has(.service-map-fill[data-area='alexandria']:hover) .service-map-place[data-area='alexandria'],
+.service-map-group:has(.service-map-label[data-area='alexandria']:hover) .service-map-place[data-area='alexandria'],
 .service-map-group:has(.service-area-item[data-county='alexandria']:hover) .service-map-place[data-area='alexandria'] { transform: translate(-50%, -50%) scale(1.6); }
 .service-map-group:has(.service-map-fill[data-area='alexandria']:hover) .service-area-item[data-county='alexandria'] .service-area-county,
-.service-area-item[data-county='alexandria']:hover .service-area-county { color: var(--color-accent); }
-.service-map-group:has(.service-area-item[data-county='fairfax']:hover) .service-map-fill[data-area='fairfax'],
-.service-map-fill[data-area='fairfax']:hover { fill: var(--color-surface-3); }
+.service-map-group:has(.service-map-label[data-area='alexandria']:hover) .service-area-item[data-county='alexandria'] .service-area-county,
+.service-map-group:has(.service-area-item[data-county='alexandria']:hover) .service-area-item[data-county='alexandria'] .service-area-county { color: var(--color-accent); }
+.service-map-group:has(.service-map-fill[data-area='alexandria']:hover) .service-area-item[data-county='alexandria'],
+.service-map-group:has(.service-map-label[data-area='alexandria']:hover) .service-area-item[data-county='alexandria'],
+.service-map-group:has(.service-area-item[data-county='alexandria']:hover) .service-area-item[data-county='alexandria'] { border-top-color: var(--color-accent); }
+}
+.service-map-group:has(#map-area-alexandria:checked) .service-map-fill[data-area='alexandria'],
+.service-map-group:has(#map-area-alexandria:focus-visible) .service-map-fill[data-area='alexandria'] { fill: var(--color-surface-3); }
+.service-map-group:has(#map-area-alexandria:checked) .service-map-place[data-area='alexandria'],
+.service-map-group:has(#map-area-alexandria:focus-visible) .service-map-place[data-area='alexandria'] { transform: translate(-50%, -50%) scale(1.6); }
+.service-map-group:has(#map-area-alexandria:checked) .service-area-item[data-county='alexandria'] .service-area-county,
+.service-map-group:has(#map-area-alexandria:focus-visible) .service-area-item[data-county='alexandria'] .service-area-county { color: var(--color-accent); }
+.service-map-group:has(#map-area-alexandria:checked) .service-area-item[data-county='alexandria'],
+.service-map-group:has(#map-area-alexandria:focus-visible) .service-area-item[data-county='alexandria'] { border-top-color: var(--color-accent); }
+.service-map-group:has(#map-area-alexandria:focus-visible) .service-area-item[data-county='alexandria'] .service-area-toggle { outline: 2px solid var(--color-focus); outline-offset: 3px; }
+.service-map-group:has(#map-area-alexandria:checked) .service-map-readout[data-area='alexandria'] { display: block; }
+@media (hover: hover) {
+.service-map-group:has(.service-map-fill[data-area='fairfax']:hover) .service-map-fill[data-area='fairfax'],
+.service-map-group:has(.service-map-label[data-area='fairfax']:hover) .service-map-fill[data-area='fairfax'],
+.service-map-group:has(.service-area-item[data-county='fairfax']:hover) .service-map-fill[data-area='fairfax'] { fill: var(--color-surface-3); }
 .service-map-group:has(.service-map-fill[data-area='fairfax']:hover) .service-map-place[data-area='fairfax'],
+.service-map-group:has(.service-map-label[data-area='fairfax']:hover) .service-map-place[data-area='fairfax'],
 .service-map-group:has(.service-area-item[data-county='fairfax']:hover) .service-map-place[data-area='fairfax'] { transform: translate(-50%, -50%) scale(1.6); }
 .service-map-group:has(.service-map-fill[data-area='fairfax']:hover) .service-area-item[data-county='fairfax'] .service-area-county,
-.service-area-item[data-county='fairfax']:hover .service-area-county { color: var(--color-accent); }
-.service-map-group:has(.service-area-item[data-county='loudoun']:hover) .service-map-fill[data-area='loudoun'],
-.service-map-fill[data-area='loudoun']:hover { fill: var(--color-surface-3); }
+.service-map-group:has(.service-map-label[data-area='fairfax']:hover) .service-area-item[data-county='fairfax'] .service-area-county,
+.service-map-group:has(.service-area-item[data-county='fairfax']:hover) .service-area-item[data-county='fairfax'] .service-area-county { color: var(--color-accent); }
+.service-map-group:has(.service-map-fill[data-area='fairfax']:hover) .service-area-item[data-county='fairfax'],
+.service-map-group:has(.service-map-label[data-area='fairfax']:hover) .service-area-item[data-county='fairfax'],
+.service-map-group:has(.service-area-item[data-county='fairfax']:hover) .service-area-item[data-county='fairfax'] { border-top-color: var(--color-accent); }
+}
+.service-map-group:has(#map-area-fairfax:checked) .service-map-fill[data-area='fairfax'],
+.service-map-group:has(#map-area-fairfax:focus-visible) .service-map-fill[data-area='fairfax'] { fill: var(--color-surface-3); }
+.service-map-group:has(#map-area-fairfax:checked) .service-map-place[data-area='fairfax'],
+.service-map-group:has(#map-area-fairfax:focus-visible) .service-map-place[data-area='fairfax'] { transform: translate(-50%, -50%) scale(1.6); }
+.service-map-group:has(#map-area-fairfax:checked) .service-area-item[data-county='fairfax'] .service-area-county,
+.service-map-group:has(#map-area-fairfax:focus-visible) .service-area-item[data-county='fairfax'] .service-area-county { color: var(--color-accent); }
+.service-map-group:has(#map-area-fairfax:checked) .service-area-item[data-county='fairfax'],
+.service-map-group:has(#map-area-fairfax:focus-visible) .service-area-item[data-county='fairfax'] { border-top-color: var(--color-accent); }
+.service-map-group:has(#map-area-fairfax:focus-visible) .service-area-item[data-county='fairfax'] .service-area-toggle { outline: 2px solid var(--color-focus); outline-offset: 3px; }
+.service-map-group:has(#map-area-fairfax:checked) .service-map-readout[data-area='fairfax'] { display: block; }
+@media (hover: hover) {
+.service-map-group:has(.service-map-fill[data-area='loudoun']:hover) .service-map-fill[data-area='loudoun'],
+.service-map-group:has(.service-map-label[data-area='loudoun']:hover) .service-map-fill[data-area='loudoun'],
+.service-map-group:has(.service-area-item[data-county='loudoun']:hover) .service-map-fill[data-area='loudoun'] { fill: var(--color-surface-3); }
 .service-map-group:has(.service-map-fill[data-area='loudoun']:hover) .service-map-place[data-area='loudoun'],
+.service-map-group:has(.service-map-label[data-area='loudoun']:hover) .service-map-place[data-area='loudoun'],
 .service-map-group:has(.service-area-item[data-county='loudoun']:hover) .service-map-place[data-area='loudoun'] { transform: translate(-50%, -50%) scale(1.6); }
 .service-map-group:has(.service-map-fill[data-area='loudoun']:hover) .service-area-item[data-county='loudoun'] .service-area-county,
-.service-area-item[data-county='loudoun']:hover .service-area-county { color: var(--color-accent); }
-.service-map-group:has(.service-area-item[data-county='prince-william']:hover) .service-map-fill[data-area='prince-william'],
-.service-map-fill[data-area='prince-william']:hover { fill: var(--color-surface-3); }
+.service-map-group:has(.service-map-label[data-area='loudoun']:hover) .service-area-item[data-county='loudoun'] .service-area-county,
+.service-map-group:has(.service-area-item[data-county='loudoun']:hover) .service-area-item[data-county='loudoun'] .service-area-county { color: var(--color-accent); }
+.service-map-group:has(.service-map-fill[data-area='loudoun']:hover) .service-area-item[data-county='loudoun'],
+.service-map-group:has(.service-map-label[data-area='loudoun']:hover) .service-area-item[data-county='loudoun'],
+.service-map-group:has(.service-area-item[data-county='loudoun']:hover) .service-area-item[data-county='loudoun'] { border-top-color: var(--color-accent); }
+}
+.service-map-group:has(#map-area-loudoun:checked) .service-map-fill[data-area='loudoun'],
+.service-map-group:has(#map-area-loudoun:focus-visible) .service-map-fill[data-area='loudoun'] { fill: var(--color-surface-3); }
+.service-map-group:has(#map-area-loudoun:checked) .service-map-place[data-area='loudoun'],
+.service-map-group:has(#map-area-loudoun:focus-visible) .service-map-place[data-area='loudoun'] { transform: translate(-50%, -50%) scale(1.6); }
+.service-map-group:has(#map-area-loudoun:checked) .service-area-item[data-county='loudoun'] .service-area-county,
+.service-map-group:has(#map-area-loudoun:focus-visible) .service-area-item[data-county='loudoun'] .service-area-county { color: var(--color-accent); }
+.service-map-group:has(#map-area-loudoun:checked) .service-area-item[data-county='loudoun'],
+.service-map-group:has(#map-area-loudoun:focus-visible) .service-area-item[data-county='loudoun'] { border-top-color: var(--color-accent); }
+.service-map-group:has(#map-area-loudoun:focus-visible) .service-area-item[data-county='loudoun'] .service-area-toggle { outline: 2px solid var(--color-focus); outline-offset: 3px; }
+.service-map-group:has(#map-area-loudoun:checked) .service-map-readout[data-area='loudoun'] { display: block; }
+@media (hover: hover) {
+.service-map-group:has(.service-map-fill[data-area='prince-william']:hover) .service-map-fill[data-area='prince-william'],
+.service-map-group:has(.service-map-label[data-area='prince-william']:hover) .service-map-fill[data-area='prince-william'],
+.service-map-group:has(.service-area-item[data-county='prince-william']:hover) .service-map-fill[data-area='prince-william'] { fill: var(--color-surface-3); }
 .service-map-group:has(.service-map-fill[data-area='prince-william']:hover) .service-map-place[data-area='prince-william'],
+.service-map-group:has(.service-map-label[data-area='prince-william']:hover) .service-map-place[data-area='prince-william'],
 .service-map-group:has(.service-area-item[data-county='prince-william']:hover) .service-map-place[data-area='prince-william'] { transform: translate(-50%, -50%) scale(1.6); }
 .service-map-group:has(.service-map-fill[data-area='prince-william']:hover) .service-area-item[data-county='prince-william'] .service-area-county,
-.service-area-item[data-county='prince-william']:hover .service-area-county { color: var(--color-accent); }
+.service-map-group:has(.service-map-label[data-area='prince-william']:hover) .service-area-item[data-county='prince-william'] .service-area-county,
+.service-map-group:has(.service-area-item[data-county='prince-william']:hover) .service-area-item[data-county='prince-william'] .service-area-county { color: var(--color-accent); }
+.service-map-group:has(.service-map-fill[data-area='prince-william']:hover) .service-area-item[data-county='prince-william'],
+.service-map-group:has(.service-map-label[data-area='prince-william']:hover) .service-area-item[data-county='prince-william'],
+.service-map-group:has(.service-area-item[data-county='prince-william']:hover) .service-area-item[data-county='prince-william'] { border-top-color: var(--color-accent); }
+}
+.service-map-group:has(#map-area-prince-william:checked) .service-map-fill[data-area='prince-william'],
+.service-map-group:has(#map-area-prince-william:focus-visible) .service-map-fill[data-area='prince-william'] { fill: var(--color-surface-3); }
+.service-map-group:has(#map-area-prince-william:checked) .service-map-place[data-area='prince-william'],
+.service-map-group:has(#map-area-prince-william:focus-visible) .service-map-place[data-area='prince-william'] { transform: translate(-50%, -50%) scale(1.6); }
+.service-map-group:has(#map-area-prince-william:checked) .service-area-item[data-county='prince-william'] .service-area-county,
+.service-map-group:has(#map-area-prince-william:focus-visible) .service-area-item[data-county='prince-william'] .service-area-county { color: var(--color-accent); }
+.service-map-group:has(#map-area-prince-william:checked) .service-area-item[data-county='prince-william'],
+.service-map-group:has(#map-area-prince-william:focus-visible) .service-area-item[data-county='prince-william'] { border-top-color: var(--color-accent); }
+.service-map-group:has(#map-area-prince-william:focus-visible) .service-area-item[data-county='prince-william'] .service-area-toggle { outline: 2px solid var(--color-focus); outline-offset: 3px; }
+.service-map-group:has(#map-area-prince-william:checked) .service-map-readout[data-area='prince-william'] { display: block; }
+.service-map-group:has(input[name='service-area']:checked) .service-map-hint { display: none; }

@@ -191,17 +191,39 @@ const formError = result?.status === 'error' ? result.message : undefined;
 
       <dl class="reveal-group mt-12 grid gap-x-10 gap-y-8 md:grid-cols-2 lg:grid-cols-3">
       {
-        SERVICE_AREAS.map((area) => (
+        SERVICE_AREAS.map((area) => {
+          const id = area.county
+            .replace(/^City of /, '')
+            .replace(/ County$/, '')
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-');
+          return (
           <div
             class="service-area-item border-t-2 border-gold pt-4"
-            data-county={area.county
-              .replace(/^City of /, '')
-              .replace(/ County$/, '')
-              .toLowerCase()
-              .replace(/[^a-z0-9]+/g, '-')}
+            data-county={id}
           >
             <dt class="service-area-county font-serif text-base font-semibold text-ink">
-              {area.county}
+              {/*
+                The radio that selects this county on the map. One group, so
+                a selection replaces the last rather than piling up, and one
+                tab stop for all five with the arrow keys moving between
+                them. It is a real control doing a real thing - it lights
+                the county and its towns - which is what earns it the stop.
+
+                The county name on the map is a second <label> for the same
+                input, so either half works. Hidden rather than display:none
+                so it stays focusable.
+              */}
+              <label class="service-area-toggle cursor-pointer">
+                <input
+                  type="radio"
+                  name="service-area"
+                  id={`map-area-${id}`}
+                  value={id}
+                  class="sr-only"
+                />
+                {area.county}
+              </label>
             </dt>
             <dd class="mt-2 text-sm leading-relaxed text-ink-muted">
               {area.places.length > 0 && area.places.join(', ')}
@@ -209,7 +231,8 @@ const formError = result?.status === 'error' ? result.message : undefined;
               {area.suffix}
             </dd>
           </div>
-        ))
+          );
+        })
       }
       </dl>
     </div>

@@ -113,6 +113,8 @@ const PAIRS = [
   // states need checking - the hover state is the one easily forgotten.
   ['color-ink-muted', 'color-surface-3', 4.5, 'town name on a lit county'],
   ['color-accent', 'color-surface-3', 3.0, 'town marker on a lit county'],
+  // The county selector's focus ring sits on the muted band, not a card.
+  ['color-focus', 'color-surface-2', 3.0, 'focus ring on the muted band'],
   ['color-gold', 'color-surface-band', 3.0, 'gold rule on blue band'],
   // Functional colour in the calculator.
   ['color-cost', 'color-surface', 4.5, 'cost figures'],

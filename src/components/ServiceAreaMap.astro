@@ -5,6 +5,7 @@ import {
   MAP_SERVED,
   MAP_VIEWBOX,
 } from '~/data/service-area-map';
+import { SERVICE_AREAS } from '~/config/site';
 
 /*
   Positions come from this generated stylesheet, keyed on data-area, not
@@ -36,6 +37,31 @@ import '~/styles/service-area-map.css';
  */
 const title = 'service-area-map-title';
 const names = MAP_SERVED.map((area) => area.label).join(', ');
+
+/**
+ * What each county reads out when it is the selected one.
+ *
+ * The map answers "is my property in the area" at a glance, but on a phone
+ * the town names are too small to draw and the list that names them can be
+ * a screen away - so tapping a county would change a colour somewhere and
+ * tell the person nothing. This puts the answer directly under the map.
+ *
+ * Built from SERVICE_AREAS, the same source the list renders from, so the
+ * two cannot say different things. Matching by slug, the same contract the
+ * generator checks.
+ */
+const slug = (county: string) =>
+  county
+    .replace(/^City of /, '')
+    .replace(/ County$/, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-');
+
+const readouts = SERVICE_AREAS.map((area) => ({
+  id: slug(area.county),
+  county: area.county,
+  detail: [area.places.join(', '), area.suffix].filter(Boolean).join(', '),
+}));
 
 const labelled = [
   ...MAP_SERVED.map((area) => ({ ...area, kind: 'served' as const })),
@@ -130,22 +156,69 @@ const labelled = [
           .filter((area) => area.dotX !== null)
           .map((area) => <span class="service-map-dot" data-area={area.id} />)
       }
+      {/*
+        A served county's name is a <label> for the radio that lives beside
+        its entry in the list, so tapping the name on the map selects the
+        county - the same control, reachable from either half. D.C. is not
+        a service area and gets a plain span with nothing to select.
+
+        pointer-events come back on here: the layer above turns them off so
+        the pointer can reach the shapes, but these have to be tappable.
+      */}
       {
-        labelled.map((area) => (
-          <span
-            class:list={[
-              'service-map-label',
-              `is-${area.kind}`,
-              area.leader && 'is-callout',
-            ]}
-            data-area={area.id}
-          >
-            {area.label}
-          </span>
-        ))
+        labelled.map((area) =>
+          area.kind === 'served' ? (
+            <label
+              class:list={[
+                'service-map-label',
+                'is-served',
+                area.leader && 'is-callout',
+              ]}
+              data-area={area.id}
+              for={`map-area-${area.id}`}
+            >
+              {area.label}
+            </label>
+          ) : (
+            <span
+              class:list={[
+                'service-map-label',
+                'is-context',
+                area.leader && 'is-callout',
+              ]}
+              data-area={area.id}
+            >
+              {area.label}
+            </span>
+          )
+        )
       }
     </div>
   </div>
+
+  {/*
+    The readout. One line of prose per county, revealed when that county is
+    the selected one, with a prompt in its place until then - which is also
+    the only thing telling a touch user the map can be tapped at all.
+
+    aria-live so a screen-reader user who changes the selection with the
+    arrow keys hears what changed. The region keeps a minimum height so
+    swapping between a short county and a long one does not shift the page
+    under the reader's finger.
+  */}
+  <figcaption class="service-map-readouts" aria-live="polite">
+    <p class="service-map-hint">
+      Select a county to see the towns we manage in.
+    </p>
+    {
+      readouts.map((area) => (
+        <p class="service-map-readout" data-area={area.id}>
+          <span class="service-map-readout-county">{area.county}</span>
+          {area.detail && <span class="service-map-readout-detail">{area.detail}</span>}
+        </p>
+      ))
+    }
+  </figcaption>
 </figure>
 
 <style>
@@ -312,6 +385,69 @@ const labelled = [
   .service-map-label.is-context {
     font-weight: 500;
     color: var(--color-ink-muted);
+  }
+
+  /*
+    A served county's name is a control, so it takes the pointer back from
+    the layer (which switches them off so hover can reach the shapes) and
+    carries enough padding to clear the 24px minimum target of WCAG 2.5.8.
+    The padding grows the box around the same centre, so the collision
+    layout the generator computed still holds.
+  */
+  .service-map-label.is-served {
+    pointer-events: auto;
+    cursor: pointer;
+    /*
+      0.375rem, not 0.3125rem: at 11px/1.15 the text box is 13px, and the
+      smaller padding left the target 23px tall - one pixel under the 24px
+      WCAG 2.5.8 minimum. Measured, not guessed.
+    */
+    padding: 0.375rem 0.5rem;
+    margin: -0.375rem -0.5rem;
+    border-radius: 0.1875rem;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /*
+    The readout under the map. Which one shows is decided by the generated
+    stylesheet, which knows the county ids; everything here is appearance.
+    min-height holds four lines so the longest county - Fairfax, with
+    eleven towns - does not push the page down when it is picked.
+  */
+  .service-map-readouts {
+    margin-top: 0.875rem;
+    /*
+      Reserved for the longest county. Measured, not guessed: Fairfax with
+      its eleven towns takes 75px at 375px wide and 48px once the line has
+      room to run, so the narrow case holds more. Without this the block
+      grows under the finger that just tapped it.
+    */
+    min-height: 4.75rem;
+    text-align: center;
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    color: var(--color-ink-muted);
+  }
+
+  @media (min-width: 40rem) {
+    .service-map-readouts {
+      min-height: 3.25rem;
+    }
+  }
+
+  .service-map-readout {
+    display: none;
+    margin: 0;
+  }
+
+  .service-map-hint {
+    margin: 0;
+  }
+
+  .service-map-readout-county {
+    display: block;
+    font-weight: 600;
+    color: var(--color-ink);
   }
 
   /*
