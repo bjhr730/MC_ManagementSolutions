@@ -2,75 +2,44 @@
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import PageHeader from '~/components/PageHeader.astro';
 import Section from '~/components/Section.astro';
-import { CONTACT } from '~/config/site';
+import { CONTACT, LEGAL_ENTITY } from '~/config/site';
+
+/*
+ * Antonio's wording, November 2026. This replaced a longer statement that
+ * listed the specific conformance work - keyboard operation, contrast
+ * ratios, native disclosure elements, reduced motion, tap target sizes -
+ * and named what had not been tested yet.
+ *
+ * The site still does all of those things; only the page saying so is
+ * shorter. Worth knowing if a conformance claim is ever needed in writing,
+ * because this version does not make one.
+ *
+ * The phone number comes from CONTACT rather than being typed out, so it
+ * cannot drift from the number in the footer and the structured data.
+ */
 ---
 
 <BaseLayout
   title="Accessibility"
-  description="How this website is built to be usable with a keyboard, a screen reader, magnification or reduced motion, and how to tell us about a barrier."
+  description="MC Management Solutions is committed to an accessible, user-friendly website. Contact us if you have difficulty accessing any part of it."
 >
   <PageHeader
     eyebrow="Accessibility"
     title="Accessibility statement"
-    lead="This site is built to WCAG 2.2 Level AA. If something here does not work for you, we want to hear about it."
+    lead={`${LEGAL_ENTITY} is committed to providing an accessible and user-friendly website for all visitors.`}
   />
 
   <Section>
     <div class="prose-site">
-      <h2>What we have done</h2>
-      <ul>
-        <li>
-          Every page works with a keyboard alone, with a visible focus
-          indicator that is never removed.
-        </li>
-        <li>
-          Text meets or exceeds a 4.5:1 contrast ratio against its background,
-          in both the light and dark colour schemes.
-        </li>
-        <li>
-          Headings, landmarks and lists are real HTML elements, so screen
-          readers can navigate the structure.
-        </li>
-        <li>
-          The FAQ uses native disclosure elements rather than scripted
-          accordions.
-        </li>
-        <li>
-          Form fields have permanent visible labels, errors are described in
-          text next to the field they belong to, and the form works with
-          JavaScript turned off.
-        </li>
-        <li>
-          Spam protection is invisible rather than a visual puzzle, so it does
-          not become a barrier.
-        </li>
-        <li>
-          Animation is minimal and honours the reduced-motion preference.
-        </li>
-        <li>
-          Tap targets are at least 44 by 44 pixels, and text reflows to 320
-          pixels wide without horizontal scrolling.
-        </li>
-        <li>
-          The site follows your system light or dark preference, and text can
-          be zoomed to 200 percent without loss of content.
-        </li>
-      </ul>
-
-      <h2>Where we know we fall short</h2>
       <p>
-        We test with a keyboard, with automated checks and at mobile widths,
-        but we have not yet completed testing with every assistive technology.
-        If you hit a barrier, that is a defect and we will fix it.
+        We strive to make our website easy to navigate and accessible to
+        individuals with disabilities.
       </p>
-
-      <h2>Tell us</h2>
       <p>
-        Email <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a> or call
-        <a href={CONTACT.phoneHref}>{CONTACT.phone}</a>. Tell us the page and
-        what went wrong, and we will respond and let you know what we have
-        done. If you cannot use the inquiry form, call or email us and we will
-        take your details that way instead.
+        If you experience difficulty accessing any part of our website or need
+        assistance obtaining information, please contact us at <a
+          href={CONTACT.phoneHref}>{CONTACT.phone}</a
+        >. We will be happy to assist you.
       </p>
     </div>
   </Section>
