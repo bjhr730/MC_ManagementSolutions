@@ -60,8 +60,8 @@ export const VA_PROTECTED_CLASSES = [
 
 /**
  * Brokerage identification. Virginia requires licensed firm identification in
- * real estate advertising, and the FAQ states leasing and tenant placement run
- * through an affiliated licensed brokerage.
+ * real estate advertising, and the site states leasing and tenant placement
+ * run through a separately licensed Virginia brokerage.
  *
  * REPLACE every field, or remove the leasing claims from the site.
  */
@@ -72,12 +72,25 @@ export const BROKERAGE = {
   brokerLicenseNumber: 'REPLACE — Virginia DPOR broker licence number',
 } as const;
 
-/** Shown wherever the site mentions leasing or tenant placement. */
+/*
+  Shown wherever the site mentions leasing or tenant placement: the footer
+  of every page, and each brokerage service on /services.
+
+  Antonio's wording, November 2026, taken from his terms of use. It used to
+  say "our affiliated licensed Virginia real estate brokerage, separately
+  from the property management services of MC Management Solutions of
+  Virginia, LLC", and for a few hours the terms page carried both phrasings
+  at once - his in the body, this one in the footer beneath it.
+
+  Affiliated and separately licensed are not the same claim about the
+  relationship between the two businesses, and which is accurate is a
+  licensing question. He chose this one, so the site now says it one way
+  everywhere rather than hedging in two.
+*/
 export const BROKERAGE_DISCLOSURE =
-  'Leasing, tenant placement and brokerage services are provided through ' +
-  'our affiliated licensed Virginia real estate brokerage, separately from ' +
-  'the property management services of ' +
-  'MC Management Solutions of Virginia, LLC.';
+  'Certain real estate services, including leasing and tenant placement, ' +
+  'are provided through a separately licensed Virginia real estate ' +
+  'brokerage.';
 
 /**
  * Shown wherever the site discusses fees or management plans.
