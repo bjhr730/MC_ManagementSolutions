@@ -4,22 +4,41 @@ import Disclosure from '~/components/Disclosure.astro';
 import PageHeader from '~/components/PageHeader.astro';
 import Section from '~/components/Section.astro';
 
-import {
-  EQUAL_HOUSING,
-  EQUAL_HOUSING_FULL,
-  REVIEW_MODE,
-  VA_PROTECTED_CLASSES,
-} from '~/config/compliance';
+import { REVIEW_MODE } from '~/config/compliance';
 import { LEGAL_ENTITY } from '~/config/site';
+
+/*
+  Antonio's shorter fair housing statement, November 2026. His four sections
+  replace the six that were here, and the page keeps its own URL and footer
+  link rather than being folded into the privacy policy or the terms, which
+  is what he asked for.
+
+  Two things his version leaves out, recorded here because they went on
+  purpose and not by accident:
+
+  1. The named list of protected classes is now prose rather than the
+     VA_PROTECTED_CLASSES array, and "pregnancy, childbirth or related
+     medical conditions" is the one entry that does not appear by name. His
+     sentence closes with "or any other characteristic protected by
+     applicable law", which covers it, but every other class is named.
+
+  2. The reporting route is gone - the old page named the Virginia Fair
+     Housing Office and HUD and linked to both. A reader who believes they
+     were treated unfairly now has no onward route from this page.
+
+  Both are flagged for him. VA_PROTECTED_CLASSES and EQUAL_HOUSING_FULL stay
+  in compliance.ts: nothing else renders them today, but they are the
+  verified source if either comes back.
+*/
 ---
 
 <BaseLayout
-  title="Fair Housing"
-  description="Our equal housing opportunity commitment and the protected classes under federal and Virginia fair housing law."
+  title="Fair Housing & Equal Opportunity"
+  description="Our commitment to equal housing opportunity, and to fair and consistent practices in marketing, screening, leasing and management."
 >
   <PageHeader
     eyebrow="Fair housing"
-    title="Equal Housing Opportunity"
+    title="Fair Housing &amp; Equal Opportunity"
     lead="We do business in accordance with federal and Virginia fair housing law."
   />
 
@@ -30,59 +49,53 @@ import { LEGAL_ENTITY } from '~/config/site';
           <Disclosure label="Pre-launch notice" pending>
             <p>
               This statement has not yet been reviewed by a Virginia attorney
-              or the supervising broker, and the list of protected classes
-              below has not been verified against the current statute. Confirm
+              or the supervising broker, and the characteristics listed below
+              have not been verified against the current statute. Confirm
               both before launch.
             </p>
           </Disclosure>
         )
       }
 
-      <h2>Our commitment</h2>
-      <p>{EQUAL_HOUSING}</p>
-      <p>{EQUAL_HOUSING_FULL}</p>
-
-      <h2>Protected classes</h2>
+      <h2>Our Commitment</h2>
       <p>
-        {LEGAL_ENTITY} does not discriminate in the rental, leasing, management
-        or advertising of housing on the basis of:
+        {LEGAL_ENTITY} is committed to providing equal housing opportunities
+        and conducting business in accordance with all applicable federal,
+        state, and local fair housing laws.
       </p>
-      <ul class="mt-4 grid gap-2 sm:grid-cols-2">
-        {
-          VA_PROTECTED_CLASSES.map((item) => (
-            <li class="flex gap-2.5">
-              <span aria-hidden="true" class="mt-2 size-1.5 shrink-0 rounded-full bg-gold"></span>
-              <span class="capitalize">{item}</span>
-            </li>
-          ))
-        }
-      </ul>
-      <p class="mt-6">
-        Federal fair housing law protects race, color, religion, sex, handicap,
-        familial status and national origin. Virginia fair housing law protects
-        additional classes, and some localities protect more still.
+      <p>
+        We believe everyone deserves to be treated with fairness, dignity, and
+        respect throughout the housing process.
       </p>
 
-      <h2>How this shows up in practice</h2>
+      <h2>Equal Housing Opportunity</h2>
       <p>
-        Applicant screening is run against consistent, written criteria applied
-        the same way to every applicant, and all decisions are made in
-        accordance with fair housing and other applicable requirements. We
-        accommodate reasonable requests relating to disability in line with
-        applicable law.
+        We support the principles of equal housing opportunity and do not
+        discriminate on the basis of race, color, religion, national origin,
+        sex, disability, familial status, elderliness, source of funds, sexual
+        orientation, gender identity, military status, or any other
+        characteristic protected by applicable law.
       </p>
 
-      <h2>Reporting a concern</h2>
+      <h2>Fair &amp; Consistent Practices</h2>
       <p>
-        If you believe you have been treated unfairly, tell us and we will look
-        into it. You may also file a complaint with the
-        <a
-          href="https://www.dpor.virginia.gov/Boards/Fair-Housing"
-          rel="noopener">Virginia Fair Housing Office</a
-        > or the
-        <a href="https://www.hud.gov/fair_housing" rel="noopener"
-          >U.S. Department of Housing and Urban Development</a
-        >.
+        We are committed to fair and consistent practices in property
+        marketing, applicant screening, leasing, and property management.
+      </p>
+      <p>
+        Rental applications are evaluated using objective, consistently
+        applied screening criteria in accordance with applicable fair housing
+        requirements.
+      </p>
+      <p>
+        We also recognize the importance of reasonable accommodations and
+        modifications for individuals with disabilities, as required by law.
+      </p>
+
+      <h2>Our Philosophy</h2>
+      <p>
+        Fairness, professionalism, and respect are fundamental to how we serve
+        property owners, residents, and prospective tenants.
       </p>
     </div>
   </Section>
