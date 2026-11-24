@@ -13,8 +13,11 @@ import {
 /**
  * Tool 2: rent sooner at a lower price, or wait for a higher one.
  *
- * Computed at build time so the comparison shows a real answer before any
- * JavaScript runs; the browser script recomputes from the same module.
+ * The fields start empty. EXAMPLE_A and EXAMPLE_B now serve as placeholders
+ * rather than values: the shape of each answer stays visible without the
+ * visitor editing someone else's figures. Nothing is entered, so there is
+ * nothing to compute at build time and the results carry an empty state
+ * until both rents and both vacancy lengths are in.
  */
 const c = compare(EXAMPLE_A, EXAMPLE_B, HORIZON_MONTHS);
 
@@ -38,7 +41,7 @@ const panels = [
 ] as const;
 ---
 
-<div class="panel" id="rental-comparison">
+<div class="panel" id="rental-comparison" data-ready="false">
   <form id="comparison-form" novalidate onsubmit="return false">
     {/* ------------------------------------------------ the two scenarios */}
     <div class="grid gap-6 md:grid-cols-2">
@@ -76,7 +79,7 @@ const panels = [
                     inputmode="numeric"
                     min="0"
                     step="25"
-                    value={panel.scenario.rent}
+                    placeholder={String(panel.scenario.rent)}
                     class="field-input tabular-nums pl-7"
                   />
                 </div>
@@ -92,7 +95,7 @@ const panels = [
                     data-out={`${panel.key}VacancyLabel`}
                     class="font-serif text-base font-semibold tabular-nums text-ink"
                   >
-                    {days(panel.scenario.vacancyDays)}
+                    {days(0)}
                   </output>
                 </div>
                 <input
@@ -102,14 +105,14 @@ const panels = [
                   min={SLIDER.vacancyDays.min}
                   max={SLIDER.vacancyDays.max}
                   step={SLIDER.vacancyDays.step}
-                  value={panel.scenario.vacancyDays}
+                  value="0"
                   class="range-input mt-3"
                 />
               </div>
 
             </div>
 
-            <dl class="mt-6 space-y-2 border-t border-line pt-4 text-sm">
+            <dl class="cmp-results mt-6 space-y-2 border-t border-line pt-4 text-sm">
               <div class="flex items-baseline justify-between gap-3">
                 <dt class="text-ink-muted">Rent lost while empty</dt>
                 <dd class="font-medium tabular-nums text-cost" data-out={`${panel.key}Lost`}>
@@ -167,7 +170,15 @@ const panels = [
 
     {/* ------------------------------------------------------- the answer */}
     <output for="comparison-form" aria-live="polite" class="mt-10 block space-y-8">
-      <section aria-labelledby="cmp-verdict" class="rounded-lg bg-surface-2 p-6 md:p-7">
+      <p class="cmp-empty rounded-lg bg-surface-2 p-6 text-ink-muted md:p-7">
+        Enter a monthly rent and the days until leased for both options, and
+        the comparison will appear here.
+      </p>
+
+      <section
+        aria-labelledby="cmp-verdict"
+        class="cmp-results rounded-lg bg-surface-2 p-6 md:p-7"
+      >
         {/*
           Figures, and no verdict.
 
@@ -221,7 +232,10 @@ const panels = [
 
       </section>
 
-      <section aria-labelledby="cmp-breakeven" class="rounded-lg border border-line p-6 md:p-7">
+      <section
+        aria-labelledby="cmp-breakeven"
+        class="cmp-results rounded-lg border border-line p-6 md:p-7"
+      >
         <h3 id="cmp-breakeven" class="font-serif text-h3 font-semibold text-ink">
           How Long Can You Afford to Wait?
         </h3>
@@ -262,13 +276,25 @@ const panels = [
 
   <noscript>
     <p class="mt-6 rounded-md bg-surface-3 px-4 py-3 text-sm text-ink">
-      The comparison above is a worked example. Adjusting the scenarios needs
-      JavaScript &mdash; or
+      This comparison is worked out in your browser, which needs JavaScript.
+      With it switched off, nothing is calculated &mdash; or
       <a href="/contact" class="underline underline-offset-2">tell us about your property</a>
       and we will work it through with you.
     </p>
   </noscript>
 </div>
+
+<style>
+  /*
+    One attribute on the root swaps the empty state for the answer, the same
+    way the vacancy calculator does it. CSS rather than inline display,
+    because the production Content-Security-Policy drops style attributes.
+  */
+  #rental-comparison[data-ready='false'] .cmp-results,
+  #rental-comparison[data-ready='true'] .cmp-empty {
+    display: none;
+  }
+</style>
 
 <script>
   import {
@@ -325,6 +351,24 @@ const panels = [
       const months = period();
       const result = compare(a, b, months);
       setAll('periodMonths', String(result.horizonMonths));
+
+      /*
+        Both sides have to be filled in before a comparison means anything.
+        With one rent missing the tool would cheerfully report the other
+        option winning by its entire income, which is not a finding.
+
+        A vacancy of zero days is a legitimate answer on its own - a tenant
+        lined up for the day the last one leaves - but zero on BOTH sides
+        with the sliders untouched is the untouched state, not a scenario,
+        so the comparison waits for at least one of them to move.
+      */
+      if (root) {
+        const ready =
+          a.rent > 0 &&
+          b.rent > 0 &&
+          (a.vacancyDays > 0 || b.vacancyDays > 0);
+        root.dataset.ready = ready ? 'true' : 'false';
+      }
 
       for (const [key, scenario, side] of [
         ['a', a, result.a],
