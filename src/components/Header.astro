@@ -66,43 +66,38 @@ const isCurrent = (href: string) => path === href;
     </nav>
 
     <div class="flex items-center gap-2">
-      <a
-        href={CONTACT.phoneHref}
-        class="hidden min-h-11 items-center whitespace-nowrap rounded px-3 text-sm font-medium text-ink-muted hover:text-ink xl:inline-flex"
-      >
-        {CONTACT.phone}
-      </a>
-
       {/*
-        The call to action in the header itself, as in the reference. It is
-        the one thing every page is trying to get to, and until now it was
-        only reachable by finding it in the body or opening the nav.
+        The call to action in the header itself. It is the one thing every
+        page is trying to get to.
 
-        From xl, not lg. At 1024 the row cannot hold the logo, seven nav
-        items and a 195px button: with the button present no nav minimum
-        fits, not even 64px. It had been hiding that by wrapping onto two
-        lines, which read as a squashed button rather than as "too narrow".
-        whitespace-nowrap stops it wrapping again — if it ever does not fit,
-        that now shows up as an overflow a test can catch. The phone number
-        beside it gets the same treatment: with the button held to one line
-        the pressure simply moved next door and the number broke across
-        three lines instead.
+        The phone number used to sit beside it and came out in November
+        2026: Contact Us is in the nav and this button is right here, so the
+        number was a third route to the same place competing with both. It
+        is still on the contact page, in the footer, and as a full-width
+        Call button inside the mobile menu, which is the one place a tap on
+        a number is worth more than a tap on a form.
 
-        At 1280 the container caps at 1200px and splits 199 logo / 650 nav
-        / 335 for the number and button, leaving about 90px per item for
-        seven items. That is what sets w-[5.625rem]: every item is exactly
+        From xl, not lg. At 1024 the row still cannot hold the logo, seven
+        nav items and a 195px button - 199 + 195 + 32 of gaps leaves 558 for
+        a nav that wants 642 - so removing the number did not buy enough to
+        bring it down a breakpoint. whitespace-nowrap keeps it on one line,
+        so if it ever does not fit that shows up as an overflow a test can
+        catch rather than as a squashed two-line button.
+
+        At 1280 the container caps at 1200 and splits 199 logo / 642 nav /
+        195 button, which is what sets w-[5.625rem]: every item is exactly
         90px, so the icons sit on a real grid instead of drifting with the
-        length of each word. The two labels too long for 90px on one line
-        — "Management Plans" at 139px and "Why Choose Us" at 119px — wrap
-        to two lines, and text-balance splits them "Management / Plans"
-        and "Why / Choose Us" rather than orphaning a word. Measured at
-        1280: all seven 90px, no page overflow, button and number each
-        still on one line.
+        length of each word. Losing the number freed 132px, and it is
+        deliberately left as slack: seven items at 119px would need 845 and
+        there is 774, so no width reachable here puts "Why Choose Us" on one
+        line, and widening would only add air. The two labels too long for
+        90px — "Management Plans" at 139 and "Why Choose Us" at 119 —
+        wrap to two lines, and text-balance splits them "Management /
+        Plans" and "Why / Choose Us" rather than orphaning a word.
 
         Equal width is only reachable *because* the labels may wrap.
-        Putting whitespace-nowrap back on the row forces 139px minimums
-        and 973px of nav, which will not sit beside a 199px logo, the
-        number and a 195px button.
+        Putting whitespace-nowrap back on the row forces 139px minimums and
+        973px of nav, which will not sit beside the logo and the button.
       */}
       <a
         href="/contact"

@@ -168,27 +168,26 @@ const panels = [
     {/* ------------------------------------------------------- the answer */}
     <output for="comparison-form" aria-live="polite" class="mt-10 block space-y-8">
       <section aria-labelledby="cmp-verdict" class="rounded-lg bg-surface-2 p-6 md:p-7">
-        <h3 id="cmp-verdict" class="font-serif text-h3 font-semibold text-ink" data-out="verdictHeading">
-          Waiting earns about {money(Math.abs(c.difference))} more
-        </h3>
-        <p class="mt-3 text-lead text-ink-muted" data-out="verdictBody">
-          Over {c.horizonMonths} months, on the figures above.
-        </p>
-
         {/*
-          Two figures, not a bar chart.
+          Figures, and no verdict.
 
-          The chart that was here plotted the two incomes against each other,
-          and on any realistic pair of scenarios they differ by well under a
-          percent - $28,405 against $28,504 on the defaults, which is 0.35%.
-          Two bars of visibly identical height, taking more room than anything
-          else in the result, to show a difference they cannot resolve. The
-          sentence above already states the gap in dollars, which is the thing
-          an owner actually needs.
+          Antonio's instruction was to put the number in front of the owner
+          and let them decide. The heading used to read "Waiting earns about
+          $99 more", which is true but draws the conclusion for them, and a
+          tool that keeps concluding for people reads as one that wants a
+          particular answer. The heading is a label now; the three rows are
+          the whole result; the box below invites the conversation where
+          judgement actually belongs.
         */}
-        <dl class="mt-6 grid gap-4 border-t border-line pt-5 sm:grid-cols-2">
-          <div>
-            <dt class="text-sm text-ink-muted">Rent sooner</dt>
+        <h3 id="cmp-verdict" class="font-serif text-h3 font-semibold text-ink">
+          Projected rental income over <span data-out="periodMonths"
+            >{c.horizonMonths}</span
+          > months
+        </h3>
+
+        <dl class="mt-6 space-y-4">
+          <div class="flex items-baseline justify-between gap-4">
+            <dt class="text-ink-muted">Rent sooner</dt>
             <dd
               class="font-serif text-h3 font-semibold tabular-nums text-ink"
               data-out="totalA"
@@ -196,13 +195,26 @@ const panels = [
               {money(c.a.income)}
             </dd>
           </div>
-          <div>
-            <dt class="text-sm text-ink-muted">Wait for more</dt>
+          <div class="flex items-baseline justify-between gap-4">
+            <dt class="text-ink-muted">Wait for more</dt>
             <dd
               class="font-serif text-h3 font-semibold tabular-nums text-ink"
               data-out="totalB"
             >
               {money(c.b.income)}
+            </dd>
+          </div>
+          <div
+            class="flex items-baseline justify-between gap-4 border-t border-line pt-4"
+          >
+            <dt class="font-medium text-ink" data-out="differenceLabel">
+              Difference, in favour of waiting
+            </dt>
+            <dd
+              class="font-serif text-h3 font-semibold tabular-nums text-band-text"
+              data-out="difference"
+            >
+              {money(Math.abs(c.difference))}
             </dd>
           </div>
         </dl>
@@ -327,21 +339,19 @@ const panels = [
       set('totalA', money(result.a.income));
       set('totalB', money(result.b.income));
 
-      // Verdict. Never claims either option is guaranteed or always better.
-      const gap = money(Math.abs(result.difference));
-      if (result.winner === 'tie') {
-        set('verdictHeading', 'The two are close to even');
-        set(
-          'verdictBody',
-          `Neither is clearly ahead over ${months} months, so the decision rests on things the numbers do not cover.`
-        );
-      } else if (result.winner === 'a') {
-        set('verdictHeading', `Renting sooner earns about ${gap} more`);
-        set('verdictBody', `Over ${months} months, on the figures above.`);
-      } else {
-        set('verdictHeading', `Waiting earns about ${gap} more`);
-        set('verdictBody', `Over ${months} months, on the figures above.`);
-      }
+      /*
+        The difference, named but not judged. "In favour of" states which
+        way the gap runs; it does not tell the owner what to do about it.
+      */
+      set('difference', money(Math.abs(result.difference)));
+      set(
+        'differenceLabel',
+        result.winner === 'tie'
+          ? 'Difference'
+          : result.winner === 'a'
+            ? 'Difference, in favour of renting sooner'
+            : 'Difference, in favour of waiting'
+      );
 
       set('breakEven', days(result.breakEvenExtraDays));
       set(
