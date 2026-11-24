@@ -1,6 +1,5 @@
 ---
 import {
-  barShare,
   compare,
   days,
   EXAMPLE_A,
@@ -18,21 +17,20 @@ import {
  * JavaScript runs; the browser script recomputes from the same module.
  */
 const c = compare(EXAMPLE_A, EXAMPLE_B, HORIZON_MONTHS);
-const maxIncome = Math.max(c.a.income, c.b.income);
 
 const panels = [
   {
     key: 'a',
-    name: 'Scenario A',
-    tagline: 'Rent sooner',
+    name: 'Rent sooner',
+    tagline: 'Lower rent, leased quickly',
     scenario: EXAMPLE_A,
     result: c.a,
     accent: 'border-blue-500',
   },
   {
     key: 'b',
-    name: 'Scenario B',
-    tagline: 'Wait for higher rent',
+    name: 'Wait for more',
+    tagline: 'Higher rent, longer empty',
     scenario: EXAMPLE_B,
     result: c.b,
     accent: 'border-gold',
@@ -171,59 +169,44 @@ const panels = [
     <output for="comparison-form" aria-live="polite" class="mt-10 block space-y-8">
       <section aria-labelledby="cmp-verdict" class="rounded-lg bg-surface-2 p-6 md:p-7">
         <h3 id="cmp-verdict" class="font-serif text-h3 font-semibold text-ink" data-out="verdictHeading">
-          Based on Your Estimates, Scenario B Generates More Rental Income
+          Waiting earns about {money(Math.abs(c.difference))} more
         </h3>
         <p class="mt-3 text-lead text-ink-muted" data-out="verdictBody">
-          Waiting for the higher rental rate could generate approximately
-          {money(Math.abs(c.difference))} more rental income over {c.horizonMonths}
-          {' '}months.
+          Over {c.horizonMonths} months, on the figures above.
         </p>
 
         {/*
-          Income comparison. SVG with presentation attributes, so it is both
-          CSP-safe and scales cleanly on a phone. The figures themselves are
-          in the panels above, so the chart is decorative.
-        */}
-        <svg
-          aria-hidden="true"
-          viewBox="0 0 100 46"
-          preserveAspectRatio="none"
-          class="mt-7 block h-36 w-full"
-        >
-          <rect x="6" y="0" width="34" height="46" rx="1" class="fill-surface-3"></rect>
-          <rect x="60" y="0" width="34" height="46" rx="1" class="fill-surface-3"></rect>
-          <rect
-            data-chart="a"
-            x="6"
-            y={46 - (barShare(c.a.income, maxIncome) * 46) / 100}
-            width="34"
-            height={(barShare(c.a.income, maxIncome) * 46) / 100}
-            rx="1"
-            class="fill-blue-500"></rect>
-          <rect
-            data-chart="b"
-            x="60"
-            y={46 - (barShare(c.b.income, maxIncome) * 46) / 100}
-            width="34"
-            height={(barShare(c.b.income, maxIncome) * 46) / 100}
-            rx="1"
-            class="fill-gold-600"></rect>
-        </svg>
+          Two figures, not a bar chart.
 
-        <div class="mt-3 grid grid-cols-2 gap-4 text-center text-sm">
+          The chart that was here plotted the two incomes against each other,
+          and on any realistic pair of scenarios they differ by well under a
+          percent - $28,405 against $28,504 on the defaults, which is 0.35%.
+          Two bars of visibly identical height, taking more room than anything
+          else in the result, to show a difference they cannot resolve. The
+          sentence above already states the gap in dollars, which is the thing
+          an owner actually needs.
+        */}
+        <dl class="mt-6 grid gap-4 border-t border-line pt-5 sm:grid-cols-2">
           <div>
-            <p class="font-medium text-ink">Scenario A</p>
-            <p class="tabular-nums text-ink-muted" data-out="chartALabel">
+            <dt class="text-sm text-ink-muted">Rent sooner</dt>
+            <dd
+              class="font-serif text-h3 font-semibold tabular-nums text-ink"
+              data-out="totalA"
+            >
               {money(c.a.income)}
-            </p>
+            </dd>
           </div>
           <div>
-            <p class="font-medium text-ink">Scenario B</p>
-            <p class="tabular-nums text-ink-muted" data-out="chartBLabel">
+            <dt class="text-sm text-ink-muted">Wait for more</dt>
+            <dd
+              class="font-serif text-h3 font-semibold tabular-nums text-ink"
+              data-out="totalB"
+            >
               {money(c.b.income)}
-            </p>
+            </dd>
           </div>
-        </div>
+        </dl>
+
       </section>
 
       <section aria-labelledby="cmp-breakeven" class="rounded-lg border border-line p-6 md:p-7">
@@ -237,8 +220,17 @@ const panels = [
           "Break-even additional vacancy", did not say what it was additional
           to, which is what made Antonio read it as a total.
         */}
+        {/*
+          One sentence with the number inside it, rather than a label, a
+          figure and an explanation of what the label meant.
+
+          The paragraph of assumptions that used to close this box repeated,
+          nearly word for word, the "What these tools assume" section further
+          down the same page. Saying it twice did not make it truer and it
+          buried the one number the box exists to give.
+        */}
         <p class="mt-4 text-sm font-semibold uppercase tracking-[0.08em] text-ink-muted">
-          Additional days you could wait, beyond your estimate
+          You could wait about
         </p>
         <p
           class="mt-1 font-serif text-h2 font-semibold tabular-nums text-band-text"
@@ -247,19 +239,10 @@ const panels = [
           {days(c.breakEvenExtraDays)}
         </p>
         <p class="mt-3 text-sm leading-relaxed text-ink" data-out="breakEvenNote">
-          This is roughly how much longer you could wait, on top of the days
-          already entered for the higher rent, before its advantage
-          disappears.
-        </p>
-
-        <p class="mt-5 text-xs leading-relaxed text-ink-muted">
-          Both scenarios are measured over the same comparison period starting
-          today, using an average month of 30.4 days. Rent is assumed constant
-          and the property earns nothing while empty. The lease is assumed to
-          run for at least the comparison period: no second vacancy, renewal,
-          rent increase or further turnover expense is modelled. Mortgage, HOA
-          and insurance costs are excluded because they are identical under
-          both scenarios, so including them would be double counting.
+          longer than the {days(c.b.vacancyDays)} you entered, before the
+          higher rent stops being worth it — about {days(
+            c.b.vacancyDays + c.breakEvenExtraDays
+          )} empty in total.
         </p>
       </section>
     </output>
@@ -277,7 +260,6 @@ const panels = [
 
 <script>
   import {
-    barShare,
     compare,
     days,
     HORIZON_MONTHS,
@@ -290,7 +272,6 @@ const panels = [
   if (form) {
     const root = document.getElementById('rental-comparison');
     const out = (key: string) => root?.querySelector<HTMLElement>(`[data-out="${key}"]`);
-    const chart = (key: string) => root?.querySelector<SVGRectElement>(`[data-chart="${key}"]`);
 
     const num = (name: string) =>
       Number((form.elements.namedItem(name) as HTMLInputElement | null)?.value);
@@ -323,7 +304,6 @@ const panels = [
         });
     };
 
-    const CHART_HEIGHT = 46;
     let latest = { a: readScenario('a'), b: readScenario('b') };
 
     const render = () => {
@@ -344,50 +324,31 @@ const panels = [
         set(`${key}Income`, money(side.income));
       }
 
-      // Chart. Presentation attributes only, so the CSP never blocks it.
-      const max = Math.max(result.a.income, result.b.income);
-      for (const [key, side] of [
-        ['a', result.a],
-        ['b', result.b],
-      ] as const) {
-        const height = (barShare(side.income, max) * CHART_HEIGHT) / 100;
-        const rect = chart(key);
-        if (rect) {
-          rect.setAttribute('height', String(height));
-          rect.setAttribute('y', String(CHART_HEIGHT - height));
-        }
-      }
-      set('chartALabel', money(result.a.income));
-      set('chartBLabel', money(result.b.income));
+      set('totalA', money(result.a.income));
+      set('totalB', money(result.b.income));
 
       // Verdict. Never claims either option is guaranteed or always better.
       const gap = money(Math.abs(result.difference));
       if (result.winner === 'tie') {
-        set('verdictHeading', 'Based on Your Estimates, the Two Scenarios Are Close to Even');
+        set('verdictHeading', 'The two are close to even');
         set(
           'verdictBody',
-          `Neither option is clearly ahead over ${months} months, so the decision likely rests on factors beyond the numbers.`
+          `Neither is clearly ahead over ${months} months, so the decision rests on things the numbers do not cover.`
         );
       } else if (result.winner === 'a') {
-        set('verdictHeading', 'Based on Your Estimates, Scenario A Generates More Rental Income');
-        set(
-          'verdictBody',
-          `Renting sooner at a slightly lower price could produce approximately ${gap} more rental income over ${months} months.`
-        );
+        set('verdictHeading', `Renting sooner earns about ${gap} more`);
+        set('verdictBody', `Over ${months} months, on the figures above.`);
       } else {
-        set('verdictHeading', 'Based on Your Estimates, Scenario B Generates More Rental Income');
-        set(
-          'verdictBody',
-          `Waiting for the higher rental rate could generate approximately ${gap} more rental income over ${months} months.`
-        );
+        set('verdictHeading', `Waiting earns about ${gap} more`);
+        set('verdictBody', `Over ${months} months, on the figures above.`);
       }
 
       set('breakEven', days(result.breakEvenExtraDays));
       set(
         'breakEvenNote',
         result.bAlreadyBehind
-          ? 'At these figures Scenario B is already behind, so there is no additional waiting it can absorb.'
-          : `This is roughly how much longer you could wait, on top of the ${days(result.b.vacancyDays)} already entered for the higher rent, before its advantage disappears. That is about ${days(result.b.vacancyDays + result.breakEvenExtraDays)} empty in total.`
+          ? 'Waiting is already behind at these figures, so there is no extra time to absorb.'
+          : `longer than the ${days(result.b.vacancyDays)} you entered, before the higher rent stops being worth it ${'—'} about ${days(result.b.vacancyDays + result.breakEvenExtraDays)} empty in total.`
       );
     };
 
@@ -403,13 +364,13 @@ const panels = [
           'My figures from the rental pricing comparison:',
           '',
           `Comparison period: ${months} months`,
-          `Scenario A: ${money(latest.a.rent)} per month, leased in ${days(latest.a.vacancyDays)}`,
-          `Scenario B: ${money(latest.b.rent)} per month, leased in ${days(latest.b.vacancyDays)}`,
+          `Rent sooner: ${money(latest.a.rent)} per month, leased in ${days(latest.a.vacancyDays)}`,
+          `Wait for more: ${money(latest.b.rent)} per month, leased in ${days(latest.b.vacancyDays)}`,
           '',
-          `Scenario A income: ${money(result.a.income)}`,
-          `Scenario B income: ${money(result.b.income)}`,
-          `Difference: ${money(Math.abs(result.difference))} in favour of Scenario ${result.winner === 'a' ? 'A' : 'B'}`,
-          `Additional days Scenario B could wait beyond its estimate: ${days(result.breakEvenExtraDays)}`,
+          `Renting sooner earns: ${money(result.a.income)}`,
+          `Waiting earns: ${money(result.b.income)}`,
+          `Difference: ${money(Math.abs(result.difference))} in favour of ${result.winner === 'a' ? 'renting sooner' : 'waiting'}`,
+          `Additional days you could wait beyond the estimate: ${days(result.breakEvenExtraDays)}`,
           '',
           'I would like a personalized rental evaluation.',
         ].join('\n');
