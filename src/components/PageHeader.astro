@@ -1,14 +1,14 @@
 ---
 import { Image } from 'astro:assets';
 
-import agreement from '~/assets/photos/agreement.webp';
+import conversation from '~/assets/photos/conversation.webp';
 import homesStreet from '~/assets/photos/homes-street.webp';
 import housesTrees from '~/assets/photos/houses-trees.webp';
 import keys from '~/assets/photos/keys.webp';
 import livingRoom from '~/assets/photos/living-room.webp';
 import numbers from '~/assets/photos/numbers.webp';
-import reporting from '~/assets/photos/reporting.webp';
-import streetRow from '~/assets/photos/street-row.webp';
+import desk from '~/assets/photos/desk.webp';
+import frontDoor from '~/assets/photos/front-door.webp';
 
 /**
  * The band at the top of every inner page.
@@ -27,12 +27,12 @@ import streetRow from '~/assets/photos/street-row.webp';
 const PHOTOS = {
   'homes-street': homesStreet,
   'living-room': livingRoom,
-  reporting,
-  agreement,
+  conversation,
+  desk,
   keys,
   numbers,
   'houses-trees': housesTrees,
-  'street-row': streetRow,
+  'front-door': frontDoor,
 } as const;
 
 interface Props {

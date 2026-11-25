@@ -34,12 +34,12 @@ const PHOTOS = [
   ['neighborhood', 'photo-1781264896328-c7ce738762fc', 'Three residential houses with driveways and green trees', 4 / 3],
   ['homes-street', 'photo-1782116987589-046f4908e130', 'Row of traditional brick houses along a sidewalk', 16 / 7],
   ['living-room', 'photo-1649083048770-82e8ffd80431', 'A living room with a couch, a chair and a fireplace', 16 / 7],
-  ['reporting', 'photo-1518455027359-f3f8164ba6bd', 'A bright home office with a desk and chair', 16 / 7],
-  ['agreement', 'photo-1714836982299-7a3b6930e2f5', 'A house with a porch and steps leading to the front door', 16 / 7],
+  ['conversation', 'photo-1573496546038-82f9c39f6365', 'Two people talking and laughing beside a window', 16 / 7],
+  ['desk', 'photo-1715670108090-1f7d371f31d6', 'A desk with a laptop, keyboard, glasses and a potted plant', 16 / 7],
   ['keys', 'photo-1741156386380-0236c72eb6f9', 'Holding house keys in front of an entrance', 16 / 7],
   ['numbers', 'photo-1742318592061-15c5f19e1e47', 'A hand holding keys with a house-shaped keychain over coins', 16 / 7],
   ['houses-trees', 'photo-1576375801517-45814f908aa4', 'Brown houses behind trees', 16 / 7],
-  ['street-row', 'photo-1672626881472-b96d3eb5445e', 'A row of houses on a residential street', 16 / 7],
+  ['front-door', 'photo-1601041597271-71988152f98b', 'A brick house with a white wooden front door', 16 / 7],
 ];
 
 /** Master width. astro:assets derives everything smaller from this. */
