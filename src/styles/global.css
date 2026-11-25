@@ -1296,6 +1296,15 @@
     width: 100%;
     accent-color: var(--color-accent);
     cursor: pointer;
+    /*
+      The native control is 16px tall. That is under the 24px WCAG 2.5.8
+      asks for and well under what a thumb can actually catch: on a phone
+      the drag was landing on the page instead of the slider, so the tool
+      looked broken. Giving the input a 44px box keeps the track painted
+      exactly as it was - the browser centres it - while making the whole
+      band draggable and tappable.
+    */
+    height: 2.75rem;
   }
 
   .skip-link {

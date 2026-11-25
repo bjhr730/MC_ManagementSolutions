@@ -1,14 +1,18 @@
 ---
-import { computeVacancy, days, EXAMPLE, LIMITS, money, share } from '~/lib/vacancy';
+import { computeVacancy, days, LIMITS, money, share } from '~/lib/vacancy';
 
 /**
  * Tool 1: what an empty property costs.
  *
  * The fields start empty. They used to open on a worked example, which made
  * the tool explain itself at a glance but meant every visitor was editing
- * someone else's numbers rather than entering their own; EXAMPLE now
- * supplies placeholders instead, so the shape of each answer is still
- * visible without any figure being pre-filled.
+ * someone else's numbers rather than entering their own.
+ *
+ * EXAMPLE then supplied the placeholders, so each box showed a grey figure
+ * like 2500. Antonio read that as a value already entered and the tool as
+ * ignoring it, which is a fair reading: a number in a number field looks
+ * entered whatever its colour. The placeholders now say what to do instead,
+ * and the label above each field already says which amount it wants.
  *
  * Because nothing is entered, there is nothing to compute at build time.
  * The results area carries an empty state until a rent is entered, which is
@@ -32,26 +36,26 @@ const amounts = [
   {
     id: 'rent',
     label: 'Monthly asking rent',
-    placeholder: EXAMPLE.rent,
+    placeholder: 'Enter an amount',
     hint: 'What you plan to ask per month.',
   },
   {
     id: 'carrying',
     label: 'Monthly carrying costs',
-    placeholder: EXAMPLE.carrying,
+    placeholder: 'Enter an amount',
     hint: 'Mortgage, HOA fees, insurance and utilities. These continue whether or not the property is occupied.',
   },
   {
     id: 'turnover',
     label: 'One-time turnover expenses',
-    placeholder: EXAMPLE.turnover,
+    placeholder: 'Enter an amount',
     hint: 'Cleaning, repairs, make-ready and leasing charges between tenants.',
   },
 ] as const;
 ---
 
 <div class="panel" id="vacancy-calculator" data-ready="false">
-  <form id="vacancy-form" novalidate onsubmit="return false">
+  <form id="vacancy-form" novalidate>
     <div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:gap-12">
       <div>
         <fieldset>
@@ -325,6 +329,14 @@ const amounts = [
 
     form.addEventListener('input', render);
     form.addEventListener('reset', () => window.setTimeout(render, 0));
+
+    /*
+      This used to be onsubmit="return false" on the form. The site's CSP
+      has no 'unsafe-hashes', so an inline event handler is refused in
+      production and the console logged the refusal on every page load.
+      Here it is a real listener, which the CSP allows.
+    */
+    form.addEventListener('submit', (event) => event.preventDefault());
 
     /**
      * Carry the figures to the contact form, but only when the visitor asks

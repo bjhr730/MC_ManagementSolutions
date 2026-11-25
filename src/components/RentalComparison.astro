@@ -13,9 +13,11 @@ import {
 /**
  * Tool 2: rent sooner at a lower price, or wait for a higher one.
  *
- * The fields start empty. EXAMPLE_A and EXAMPLE_B now serve as placeholders
- * rather than values: the shape of each answer stays visible without the
- * visitor editing someone else's figures. Nothing is entered, so there is
+ * The fields start empty. The rent boxes used to show EXAMPLE_A and
+ * EXAMPLE_B as placeholders, but a grey number in a number field reads as a
+ * value already entered, so they now say what to do instead.
+ *
+ * EXAMPLE_A and EXAMPLE_B stay: they still feed the build-time panels. Nothing is entered, so there is
  * nothing to compute at build time and the results carry an empty state
  * until both rents and both vacancy lengths are in.
  */
@@ -25,7 +27,7 @@ const panels = [
   {
     key: 'a',
     name: 'Rent sooner',
-    tagline: 'Lower rent, leased quickly',
+    tagline: 'Lower rent, potentially leased quicker',
     scenario: EXAMPLE_A,
     result: c.a,
     accent: 'border-blue-500',
@@ -33,7 +35,7 @@ const panels = [
   {
     key: 'b',
     name: 'Wait for more',
-    tagline: 'Higher rent, longer empty',
+    tagline: 'Higher rent, potentially longer empty',
     scenario: EXAMPLE_B,
     result: c.b,
     accent: 'border-gold',
@@ -42,7 +44,7 @@ const panels = [
 ---
 
 <div class="panel" id="rental-comparison" data-ready="false">
-  <form id="comparison-form" novalidate onsubmit="return false">
+  <form id="comparison-form" novalidate>
     {/* ------------------------------------------------ the two scenarios */}
     <div class="grid gap-6 md:grid-cols-2">
       {
@@ -79,7 +81,7 @@ const panels = [
                     inputmode="numeric"
                     min="0"
                     step="25"
-                    placeholder={String(panel.scenario.rent)}
+                    placeholder="Enter an amount"
                     class="field-input tabular-nums pl-7"
                   />
                 </div>
@@ -219,7 +221,7 @@ const panels = [
             class="flex items-baseline justify-between gap-4 border-t border-line pt-4"
           >
             <dt class="font-medium text-ink" data-out="differenceLabel">
-              Difference, in favour of waiting
+              Difference, in favor of waiting
             </dt>
             <dd
               class="font-serif text-h3 font-semibold tabular-nums text-band-text"
@@ -384,7 +386,7 @@ const panels = [
       set('totalB', money(result.b.income));
 
       /*
-        The difference, named but not judged. "In favour of" states which
+        The difference, named but not judged. "In favor of" states which
         way the gap runs; it does not tell the owner what to do about it.
       */
       set('difference', money(Math.abs(result.difference)));
@@ -393,8 +395,8 @@ const panels = [
         result.winner === 'tie'
           ? 'Difference'
           : result.winner === 'a'
-            ? 'Difference, in favour of renting sooner'
-            : 'Difference, in favour of waiting'
+            ? 'Difference, in favor of renting sooner'
+            : 'Difference, in favor of waiting'
       );
 
       set('breakEven', days(result.breakEvenExtraDays));
@@ -408,6 +410,12 @@ const panels = [
 
     form.addEventListener('input', render);
     form.addEventListener('reset', () => window.setTimeout(render, 0));
+
+    /*
+      Was onsubmit="return false". The CSP has no 'unsafe-hashes', so an
+      inline handler is refused in production; a real listener is not.
+    */
+    form.addEventListener('submit', (event) => event.preventDefault());
 
     document
       .getElementById('send-comparison-figures')
@@ -423,7 +431,7 @@ const panels = [
           '',
           `Renting sooner earns: ${money(result.a.income)}`,
           `Waiting earns: ${money(result.b.income)}`,
-          `Difference: ${money(Math.abs(result.difference))} in favour of ${result.winner === 'a' ? 'renting sooner' : 'waiting'}`,
+          `Difference: ${money(Math.abs(result.difference))} in favor of ${result.winner === 'a' ? 'renting sooner' : 'waiting'}`,
           `Additional days you could wait beyond the estimate: ${days(result.breakEvenExtraDays)}`,
           '',
           'I would like a personalized rental evaluation.',
