@@ -170,10 +170,11 @@ export const OWNER_GAINS: readonly { title: string; body: string }[] = [
       'being told after the fact.',
   },
   {
-    title: 'Your home is run by someone who owns one',
+    title: 'Your home is run by someone who knows this market',
     body:
-      'Antonio rents out property of his own in the same market. The ' +
-      'standard applied to yours is the one he applies to his, which is ' +
-      'the part most owners care about.',
+      'Antonio works this market every day as a licensed broker. He ' +
+      'knows what homes like yours rent for, how long they sit and ' +
+      'what a renewal is worth here, so your asking rent is set against ' +
+      'what is happening nearby rather than a guess.',
   },
 ];
