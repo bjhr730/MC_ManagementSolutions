@@ -711,6 +711,55 @@
     }
   }
 
+  /* ------------------------------------------------------------------
+     Page header scrim.
+
+     The inner pages put their photograph behind the heading rather than
+     in a strip below it, which saves about 400px before the first line of
+     content on every one of them.
+
+     It cannot reuse .cta-scrim: that composites to roughly 0.96 over the
+     photo, which is right for a band whose job is to carry text and wrong
+     for one whose job is to show a picture. At 0.96 the photograph is a
+     texture, not an image.
+
+     Measured against the worst case - a pure white pixel in the photo -
+     with the three colours this band uses:
+
+       alpha   white   silver-200   gold-300
+       0.70     7.2       5.5         3.8
+       0.75     8.7       6.7         4.6
+       0.84    11.9       9.2         6.3
+
+     Text runs to 64% of the container at most (max-w-3xl in a 1200px
+     container), so the gradient holds 0.84 to 70% and only thins past
+     where any text reaches. Gold-300 carries the eyebrow rather than
+     --color-band-deep-gold, which measured 4.31 here and fails.
+  ------------------------------------------------------------------ */
+  .page-scrim {
+    background-image: linear-gradient(
+      100deg,
+      rgba(6, 16, 32, 0.9) 0%,
+      rgba(6, 16, 32, 0.86) 45%,
+      rgba(6, 16, 32, 0.84) 70%,
+      rgba(6, 16, 32, 0.6) 88%,
+      rgba(6, 16, 32, 0.45) 100%
+    );
+  }
+
+  /* Same reason as the hero: below the large breakpoint the text spans the
+     width, so the horizontal thinning would run underneath it. */
+  @media (max-width: 63.999rem) {
+    .page-scrim {
+      background-image: linear-gradient(
+        180deg,
+        rgba(6, 16, 32, 0.88) 0%,
+        rgba(6, 16, 32, 0.86) 60%,
+        rgba(6, 16, 32, 0.9) 100%
+      );
+    }
+  }
+
   /*
     A slow push on the photograph as the hero scrolls away. The movement is
     on the picture only — the text is in a separate layer and stays put, so

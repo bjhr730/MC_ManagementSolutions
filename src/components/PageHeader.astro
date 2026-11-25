@@ -47,11 +47,78 @@ interface Props {
 const { eyebrow, title, lead, cta, photo } = Astro.props;
 ---
 
-<div class="border-b border-line bg-surface-2">
-  <div class="container-page py-12 md:py-16">
-    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
-    <h1 class="mt-3 max-w-3xl text-h2 md:text-display">{title}</h1>
-    {lead && <p class="mt-5 max-w-2xl text-lead text-ink-muted">{lead}</p>}
+{/*
+  Two modes. Without a photo the band is a light surface, as it always was.
+  With one, the photograph becomes the background of the band itself rather
+  than a strip underneath it.
+
+  That is Antonio's note and it is the right call on space. The strip was
+  3:1 across a 1200px container, so roughly 400px plus its top margin, on
+  every inner page, before the first sentence of content. As a background
+  it costs nothing extra: the band has to be some height anyway.
+
+  The scrim is .cta-scrim, reused rather than invented. It is already
+  measured against photographs elsewhere on the site, and the light text
+  pairings below are the ones proven on the closing call-to-action band.
+*/}
+<div
+  class:list={[
+    'border-b',
+    photo ? 'relative isolate border-white/10' : 'border-line bg-surface-2',
+  ]}
+>
+  {
+    photo && (
+      <>
+        <Image
+          src={PHOTOS[photo]}
+          alt=""
+          widths={[640, 960, 1400, 1800]}
+          sizes="100vw"
+          loading="eager"
+          fetchpriority="high"
+          class="absolute inset-0 -z-20 size-full object-cover"
+        />
+        <div aria-hidden="true" class="page-scrim absolute inset-0 -z-10" />
+      </>
+    )
+  }
+
+  <div
+    class:list={[
+      'container-page',
+      photo ? 'py-16 md:py-24' : 'py-12 md:py-16',
+    ]}
+  >
+    {
+      eyebrow && (
+        <p class:list={['eyebrow', photo && '!text-gold-300']}>
+          {eyebrow}
+        </p>
+      )
+    }
+
+    <h1
+      class:list={[
+        'mt-3 max-w-3xl text-h2 md:text-display',
+        photo && 'text-white',
+      ]}
+    >
+      {title}
+    </h1>
+
+    {
+      lead && (
+        <p
+          class:list={[
+            'mt-5 max-w-2xl text-lead',
+            photo ? 'text-silver-200' : 'text-ink-muted',
+          ]}
+        >
+          {lead}
+        </p>
+      )
+    }
 
     {/*
       A link rather than a button. The page closes on the full call to
@@ -62,35 +129,16 @@ const { eyebrow, title, lead, cta, photo } = Astro.props;
       <p class="mt-6">
         <a
           href={cta.href}
-          class="text-lead font-semibold text-ink underline decoration-accent decoration-2 underline-offset-4 hover:text-accent"
+          class:list={[
+            'text-lead font-semibold underline decoration-2 underline-offset-4',
+            photo
+              ? 'text-white decoration-gold-300 hover:text-gold-300'
+              : 'text-ink decoration-accent hover:text-accent',
+          ]}
         >
           {cta.label}
         </a>
       </p>
     )}
-
-    {
-      /*
-        A band, not a block. At 16:7 across the full container the
-        photograph pushed the page's first real paragraph off the bottom of
-        a 900px screen, which is a decorative image winning an argument
-        against the content. It gets shorter as the viewport widens, since
-        a 3:1 strip is a band on a desktop and an unreadable sliver on a
-        phone.
-      */
-      photo && (
-        <div class="mt-10 overflow-hidden rounded-xl border border-line">
-          <Image
-            src={PHOTOS[photo]}
-            alt=""
-            widths={[640, 960, 1400, 1800]}
-            sizes="(min-width: 1280px) 1200px, (min-width: 768px) 92vw, 100vw"
-            loading="lazy"
-            decoding="async"
-            class="parallax-img aspect-[16/9] w-full object-cover sm:aspect-[21/9] lg:aspect-[3/1]"
-          />
-        </div>
-      )
-    }
   </div>
 </div>
