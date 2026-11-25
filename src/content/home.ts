@@ -170,11 +170,11 @@ export const OWNER_GAINS: readonly { title: string; body: string }[] = [
       'being told after the fact.',
   },
   {
-    title: 'Your home is run by someone who knows this market',
+    title: 'You get someone who knows this market',
     body:
-      'Antonio works this market every day as a licensed broker. He ' +
-      'knows what homes like yours rent for, how long they sit and ' +
-      'what a renewal is worth here, so your asking rent is set against ' +
-      'what is happening nearby rather than a guess.',
+      'Antonio is a licensed broker working here every day. He knows ' +
+      'what homes like yours rent for, how long they sit and what a ' +
+      'renewal is worth, so your asking rent is set against what is ' +
+      'happening nearby rather than a guess.',
   },
 ];
