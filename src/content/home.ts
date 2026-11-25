@@ -155,11 +155,12 @@ export const OWNER_GAINS_HEADING =
 
 export const OWNER_GAINS: readonly { title: string; body: string }[] = [
   {
-    title: 'You talk to the decision maker',
+    title: 'You talk to a real person, locally',
     body:
-      'The person who answers you is the licensed broker who runs the ' +
-      'company. Nothing waits on being escalated to someone who can ' +
-      'actually say yes.',
+      'Call and you reach someone here in Northern Virginia, not a call ' +
+      'center and not a queue. You are not passed between people to get ' +
+      'an answer: the person who picks up runs the company and can give ' +
+      'you one.',
   },
   {
     title: 'You see the numbers before you decide',
