@@ -13,7 +13,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
           cache: npm
 
       - run: npm ci
@@ -21,8 +21,15 @@ jobs:
       # Types and Astro template diagnostics.
       - run: npm run check
 
-      # A build failure is the only other way this site can break at deploy
-      # time, so it is the whole test suite.
+      # The owner-facing arithmetic and the lead form's validation. Owners
+      # make real pricing decisions on these numbers.
+      - run: npm run test
+
+      # The contrast invariant. This used to live only in `npm run verify`,
+      # which CI never called, so a colour change could reach main with
+      # failing contrast and nothing would stop it.
+      - run: npm run contrast
+
       - run: npm run build
         env:
           SITE_URL: https://example.com

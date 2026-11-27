@@ -11,7 +11,9 @@
     "preview": "astro preview",
     "check": "astro check",
     "astro": "astro",
-    "verify": "astro check 2>&1 | tail -4 && node scripts/check-contrast.mjs | tail -2 && astro build 2>&1 | tail -2"
+    "test": "node --experimental-strip-types --test \"tests/**/*.test.ts\"",
+    "contrast": "node scripts/check-contrast.mjs",
+    "verify": "npm run check && npm run test && npm run contrast && npm run build"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.2.1",
@@ -31,7 +33,7 @@
     "typescript": "^5.7.2"
   },
   "engines": {
-    "node": ">=20.3.0"
+    "node": ">=22.6.0"
   },
   "overrides": {
     "rollup": "npm:@rollup/wasm-node@4.65.1"

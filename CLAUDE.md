@@ -8,11 +8,20 @@ Staging: https://mc-management-solutions.vercel.app (noindex until launch)
 ## Commands
 
 ```
-npm run verify     # types + contrast + build. Run this before saying anything works.
-npm run build
+npm run verify     # check + test + contrast + build. The gate. Run before saying anything works.
+npm test           # node:test over tests/*.test.ts. Needs Node >= 22.6 (TypeScript stripping).
+npm run contrast
 npm run check
-node scripts/check-contrast.mjs
+npm run build
 ```
+
+`verify` used to pipe every stage to `tail`, which meant it returned *tail's*
+exit code and could never fail: `false | tail -1` exits 0. It reported real
+results, so reading its output was fine, but as a gate it was decorative. Do
+not reintroduce a pipe into a chain whose exit code matters.
+
+CI runs check, test, contrast and build as separate steps, so a failure says
+which one. Contrast used to live only inside `verify`, which CI never called.
 
 Asset generators, re-run only when source art changes:
 `scripts/prepare-photos.mjs` · `prepare-nav-icons.mjs` · `prepare-logo.mjs`
@@ -22,6 +31,11 @@ Asset generators, re-run only when source art changes:
 **Gold never carries text.** The logo's gold is 2.25:1 on white. `--color-accent`
 (blue) takes every text accent; `--color-gold` is ornament and reaches 3:1 for
 marks that carry meaning; `--color-gold-bright` is decoration only.
+
+**The money math has tests; keep it that way.** `tests/` covers `lib/vacancy.ts`,
+`lib/pricing.ts` and the inquiry schema with `node:test` and no new dependency.
+Owners make real pricing decisions on those numbers. `astro check` type-checks
+the test files too, so a broken test is a build failure.
 
 **Run the contrast checker after touching any colour.** It reads tokens straight
 out of `global.css`. It only knows the pairs it has been told about — if you move
