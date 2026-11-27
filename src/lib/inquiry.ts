@@ -57,18 +57,23 @@ export const inquirySchema = z.object({
     .min(1, 'Please enter an email address so we can reply.')
     .email('That does not look like a valid email address.')
     .max(200),
-  /*
-    Optional since November 2026. Still validated when it is given: a
-    half-typed number is worse than none, because it looks reachable.
-  */
   phone: z
     .string()
     .trim()
+    .min(1, 'Please enter a phone number we can reach you on.')
     .max(40)
-    .optional()
-    .refine((v) => !v || v.replace(/\D/g, '').length >= 7, {
-      message: 'Please enter a valid phone number, or leave it blank.',
+    .refine((v) => v.replace(/\D/g, '').length >= 7, {
+      message: 'Please enter a valid phone number.',
     }),
+  altEmail: z
+    .string()
+    .trim()
+    .max(200)
+    .optional()
+    .refine((v) => !v || z.string().email().safeParse(v).success, {
+      message: 'That does not look like a valid email address.',
+    }),
+  altPhone: z.string().trim().max(40).optional(),
   heardAbout: z.string().trim().max(200).optional(),
   // Optional: Antonio asked for the rental-evaluation route to work without
   // one, and requiring an address up front costs more leads than it gains.
@@ -101,6 +106,8 @@ const FIELD_NAMES = [
   'name',
   'email',
   'phone',
+  'altEmail',
+  'altPhone',
   'heardAbout',
   'propertyAddress',
   'propertyType',
@@ -172,11 +179,12 @@ async function store(
 
   await sql`
     INSERT INTO inquiries (
-      name, email, phone, heard_about,
+      name, email, phone, alt_email, alt_phone, heard_about,
       property_address, property_type, occupancy, timeline,
       message, source_ip
     ) VALUES (
-      ${data.name}, ${data.email}, ${data.phone || null},
+      ${data.name}, ${data.email}, ${data.phone},
+      ${data.altEmail || null}, ${data.altPhone || null},
       ${data.heardAbout || null},
       ${data.propertyAddress || null}, ${data.propertyType ?? null},
       ${data.occupancy ?? null}, ${data.timeline ?? null},
@@ -191,7 +199,9 @@ function plainText(data: InquiryInput): string {
   return [
     `Name: ${data.name}`,
     `Email: ${data.email}`,
-    `Phone: ${data.phone || '(not given)'}`,
+    `Phone: ${data.phone}`,
+    `Alt email: ${data.altEmail || '(none)'}`,
+    `Alt phone: ${data.altPhone || '(none)'}`,
     `Heard about us: ${data.heardAbout || '(not specified)'}`,
     '',
     `Property: ${data.propertyAddress || '(not provided)'}`,

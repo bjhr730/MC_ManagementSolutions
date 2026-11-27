@@ -107,27 +107,16 @@ const selects = [
       </div>
     </div>
 
-    {/*
-      Phone is optional as of November 2026. It was required alongside name
-      and email, which asks a stranger for a phone number before they know
-      anything about us - the heaviest friction in the funnel, on the one
-      page the whole site exists to reach. Email is still required, so there
-      is always a way to reply.
-
-      "Additional phone" and "Additional email" went at the same time. The
-      form was asking for a second phone number before the first
-      conversation had happened. Their columns stay in the database; they
-      are simply no longer written, like `involvement` before them.
-    */}
     <div class="grid gap-6 sm:grid-cols-2">
       <div>
         <label for="phone" class="field-label">
-          Phone <span class="font-normal text-ink-muted">(optional)</span>
+          Phone <span aria-hidden="true" class="text-accent">*</span>
         </label>
         <input
           id="phone"
           name="phone"
           type="tel"
+          required
           autocomplete="tel"
           inputmode="tel"
           value={v('phone')}
@@ -140,11 +129,46 @@ const selects = [
             <span id="phone-error" class="field-error">{errors.phone}</span>
           ) : (
             <span id="phone-hint" class="mt-1.5 block text-sm text-ink-muted">
-              Quicker for us to reach you, but we will reply by email if you
-              would rather not.
+              Include a country code if you are outside the United States.
             </span>
           )
         }
+      </div>
+
+      <div>
+        <label for="altPhone" class="field-label">
+          Additional phone <span class="font-normal text-ink-muted">(optional)</span>
+        </label>
+        <input
+          id="altPhone"
+          name="altPhone"
+          type="tel"
+          autocomplete="tel"
+          inputmode="tel"
+          value={v('altPhone')}
+          class="field-input"
+        />
+      </div>
+    </div>
+
+    <div class="grid gap-6 sm:grid-cols-2">
+      <div>
+        <label for="altEmail" class="field-label">
+          Additional email <span class="font-normal text-ink-muted">(optional)</span>
+        </label>
+        <input
+          id="altEmail"
+          name="altEmail"
+          type="email"
+          inputmode="email"
+          value={v('altEmail')}
+          aria-invalid={errors.altEmail ? 'true' : undefined}
+          aria-describedby={errors.altEmail ? 'altEmail-error' : undefined}
+          class="field-input"
+        />
+        {errors.altEmail && (
+          <span id="altEmail-error" class="field-error">{errors.altEmail}</span>
+        )}
       </div>
 
       <div>
