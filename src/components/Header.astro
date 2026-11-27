@@ -224,6 +224,31 @@ const isCurrent = (href: string) => path === href;
     const setExpanded = (value: boolean) =>
       openBtn.setAttribute('aria-expanded', String(value));
 
+    /*
+      Releasing the scroll lock used to hang off the dialog's `close` event
+      alone. Measured on production, that event did not arrive on the
+      close-button path: the dialog closed, but aria-expanded stayed true,
+      focus never came back, and - once the lock was added - <html> kept
+      overflow:hidden, so the whole page was frozen with the menu shut.
+      The stale aria-expanded was there before the lock and had gone
+      unnoticed because Escape does fire `close` and looked fine.
+
+      So the teardown no longer depends on an event arriving. Every path
+      that closes the menu calls it directly, and the `close` listener stays
+      as an idempotent backstop for the paths the browser owns (Escape, form
+      method=dialog, close() called from anywhere else).
+    */
+    const release = () => {
+      setExpanded(false);
+      delete document.documentElement.dataset.navOpen;
+    };
+
+    const closeMenu = () => {
+      dialog.close();
+      release();
+      openBtn.focus();
+    };
+
     openBtn.addEventListener('click', () => {
       dialog.showModal();
       setExpanded(true);
@@ -231,24 +256,28 @@ const isCurrent = (href: string) => path === href;
       document.documentElement.dataset.navOpen = 'true';
     });
 
-    closeBtn.addEventListener('click', () => dialog.close());
+    closeBtn.addEventListener('click', closeMenu);
 
-    // Fires for Escape as well as close(), so focus always returns correctly.
     dialog.addEventListener('close', () => {
-      setExpanded(false);
-      delete document.documentElement.dataset.navOpen;
+      release();
       openBtn.focus();
     });
 
     // Tapping the backdrop closes the menu.
     dialog.addEventListener('click', (event) => {
-      if (event.target === dialog) dialog.close();
+      if (event.target === dialog) closeMenu();
     });
 
-    // A same-page link leaves the dialog open over the new scroll position.
+    /*
+      A link would otherwise leave the dialog open over the new scroll
+      position. No focus call here: the page is navigating away.
+    */
     dialog.addEventListener('click', (event) => {
       const link = (event.target as HTMLElement).closest('a');
-      if (link) dialog.close();
+      if (link) {
+        dialog.close();
+        release();
+      }
     });
   }
 </script>
