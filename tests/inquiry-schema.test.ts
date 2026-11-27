@@ -21,7 +21,6 @@ import {
 const valid = {
   name: 'Jordan Reyes',
   email: 'jordan@example.com',
-  phone: '(703) 555-0184',
   consent: 'yes',
 };
 
@@ -29,7 +28,13 @@ const parse = (over: Record<string, unknown> = {}) =>
   inquirySchema.safeParse({ ...valid, ...over });
 
 describe('the minimum viable enquiry', () => {
-  test('accepts name, email, phone and consent alone', () => {
+  test('accepts name, email and consent alone, with no phone number', () => {
+    /*
+      Phone was required until November 2026. Requiring one from a stranger's
+      first contact was the heaviest friction in the funnel, so this is the
+      case that matters most: an owner who will give an email and nothing
+      else must still get through.
+    */
     const r = parse();
     assert.ok(r.success, JSON.stringify(r.success ? {} : r.error.issues));
   });
@@ -39,8 +44,7 @@ describe('the minimum viable enquiry', () => {
     assert.ok(r.success);
     if (!r.success) return;
     for (const key of [
-      'altEmail',
-      'altPhone',
+      'phone',
       'heardAbout',
       'propertyAddress',
       'propertyType',
@@ -82,9 +86,13 @@ describe('required fields', () => {
     assert.ok(parse({ email: 'jordan.reyes+rental@example.co.uk' }).success);
   });
 
-  test('a phone number needs at least seven digits, in any formatting', () => {
-    assert.ok(!parse({ phone: '' }).success);
-    assert.ok(!parse({ phone: '555-01' }).success);
+  test('a phone number is optional but must be real when given', () => {
+    assert.ok(parse({ phone: '' }).success, 'blank is allowed');
+    assert.ok(parse({ phone: undefined }).success, 'absent is allowed');
+    assert.ok(
+      !parse({ phone: '555-01' }).success,
+      'a half-typed number looks reachable and is not'
+    );
     for (const good of [
       '7035550184',
       '(703) 555-0184',
@@ -113,12 +121,6 @@ describe('required fields', () => {
 });
 
 describe('optional fields still validate when supplied', () => {
-  test('an alternate email must be an email if present', () => {
-    assert.ok(parse({ altEmail: '' }).success);
-    assert.ok(parse({ altEmail: 'second@example.com' }).success);
-    assert.ok(!parse({ altEmail: 'not-an-email' }).success);
-  });
-
   test('choice fields accept only their published options', () => {
     for (const [field, options] of [
       ['propertyType', PROPERTY_TYPES],
