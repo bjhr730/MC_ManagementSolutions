@@ -39,7 +39,7 @@ const serviceLinks = FOOTER_NAV.services.filter(
             <dd>
               <a
                 href={CONTACT.phoneHref}
-                class="font-medium text-white underline decoration-white/40 underline-offset-4 hover:decoration-white"
+                class="inline-flex min-h-6 items-center font-medium text-white underline decoration-white/40 underline-offset-4 hover:decoration-white"
                 >{CONTACT.phone}</a
               >
             </dd>
@@ -49,7 +49,7 @@ const serviceLinks = FOOTER_NAV.services.filter(
             <dd>
               <a
                 href={`mailto:${CONTACT.email}`}
-                class="text-silver-200 underline decoration-white/30 underline-offset-4 hover:text-white"
+                class="inline-flex min-h-6 items-center text-silver-200 underline decoration-white/30 underline-offset-4 hover:text-white"
                 >{CONTACT.email}</a
               >
             </dd>
@@ -98,7 +98,7 @@ const serviceLinks = FOOTER_NAV.services.filter(
                   </a>
                 ) : (
                   <details class="inline-block">
-                    <summary class="inline-flex cursor-pointer items-center gap-1.5 text-sm text-silver-200 underline decoration-dotted decoration-white/40 underline-offset-4 hover:text-white">
+                    <summary class="inline-flex min-h-6 cursor-pointer items-center gap-1.5 text-sm text-silver-200 underline decoration-dotted decoration-white/40 underline-offset-4 hover:text-white">
                       {item.label}
                       <span class="text-[0.625rem] uppercase tracking-wider text-silver-400">
                         soon

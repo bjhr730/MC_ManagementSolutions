@@ -130,7 +130,7 @@ const { eyebrow, title, lead, cta, photo } = Astro.props;
         <a
           href={cta.href}
           class:list={[
-            'text-lead font-semibold underline decoration-2 underline-offset-4',
+            'inline-flex min-h-6 items-center text-lead font-semibold underline decoration-2 underline-offset-4',
             photo
               ? 'text-white decoration-gold-300 hover:text-gold-300'
               : 'text-ink decoration-accent hover:text-accent',

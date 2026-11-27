@@ -1307,6 +1307,19 @@
     height: 2.75rem;
   }
 
+  /*
+    The mobile menu is a native <dialog> opened with showModal(), which makes
+    the rest of the document inert but does NOT stop the page behind it
+    scrolling. Measured on production: with the menu covering the full
+    viewport, a drag still moved the page 46px, so closing it left the reader
+    somewhere they had not chosen to go. The dialog sets this attribute while
+    it is open; a class rather than an inline style because the CSP has no
+    'unsafe-inline'.
+  */
+  html[data-nav-open='true'] {
+    overflow: hidden;
+  }
+
   .skip-link {
     position: absolute;
     left: 0.5rem;

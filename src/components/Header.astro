@@ -19,7 +19,7 @@ const isCurrent = (href: string) => path === href;
         PORTAL_LINKS.map((portal) => (
           <a
             href={portal.href}
-            class="inline-flex items-center text-xs font-medium tracking-wide text-silver-200 underline decoration-white/30 underline-offset-4 hover:text-white hover:decoration-white"
+            class="inline-flex h-full items-center text-xs font-medium tracking-wide text-silver-200 underline decoration-white/30 underline-offset-4 hover:text-white hover:decoration-white"
           >
             {portal.label}
             {!PORTALS_LIVE && (
@@ -179,7 +179,17 @@ const isCurrent = (href: string) => path === href;
         }
       </ul>
 
-      <a href={CONTACT.phoneHref} class="btn btn-primary mt-6 w-full">
+      {/*
+        The menu used to end with the Call button alone, so the only action
+        it offered was a phone call. The header's own CTA is xl-only, which
+        means on a phone there was no route from the menu to the form at all.
+        Gold first: it is the same primary action the header carries.
+      */}
+      <a href="/contact" class="btn btn-gold mt-6 w-full">
+        Request a consultation
+      </a>
+
+      <a href={CONTACT.phoneHref} class="btn btn-primary mt-3 w-full">
         Call {CONTACT.phone}
       </a>
     </nav>
@@ -217,6 +227,8 @@ const isCurrent = (href: string) => path === href;
     openBtn.addEventListener('click', () => {
       dialog.showModal();
       setExpanded(true);
+      // showModal() does not lock page scroll; see global.css.
+      document.documentElement.dataset.navOpen = 'true';
     });
 
     closeBtn.addEventListener('click', () => dialog.close());
@@ -224,6 +236,7 @@ const isCurrent = (href: string) => path === href;
     // Fires for Escape as well as close(), so focus always returns correctly.
     dialog.addEventListener('close', () => {
       setExpanded(false);
+      delete document.documentElement.dataset.navOpen;
       openBtn.focus();
     });
 
