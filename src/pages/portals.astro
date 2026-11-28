@@ -2,7 +2,16 @@
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import Cta from '~/components/Cta.astro';
 import Section from '~/components/Section.astro';
-import { CONTACT, PORTALS, PORTALS_LIVE } from '~/config/site';
+import {
+  CONTACT,
+  OWNER_PORTAL_LIVE,
+  PORTALS,
+  PORTALS_LIVE,
+  TENANT_PORTAL_LIVE,
+} from '~/config/site';
+
+/** The fallback block is only worth showing while something is still pending. */
+const PORTALS_LIVE_EVERYWHERE = OWNER_PORTAL_LIVE && TENANT_PORTAL_LIVE;
 ---
 
 <BaseLayout
@@ -15,68 +24,93 @@ import { CONTACT, PORTALS, PORTALS_LIVE } from '~/config/site';
       <p class="eyebrow">Portals</p>
       <h1 class="mt-3 text-display">Owner &amp; resident portals</h1>
 
-      {
-        PORTALS_LIVE ? (
-          <>
-            <p class="mt-5 text-lead text-ink-muted">
-              Owners can view statements, documents and disbursement history.
-              Residents can submit maintenance requests and make payments.
-            </p>
-            <div class="mt-10 grid gap-5 sm:grid-cols-2">
-              <a
-                href={PORTALS.owner}
-                class="card-lift card"
-              >
-                <h2 class="text-h3">Owner portal</h2>
-                <p class="mt-2 text-sm text-ink-muted">
-                  Statements, documents and disbursements.
-                </p>
-              </a>
-              <a
-                href={PORTALS.tenant}
-                class="card-lift card"
-              >
-                <h2 class="text-h3">Resident portal</h2>
-                <p class="mt-2 text-sm text-ink-muted">
-                  Pay rent and submit maintenance requests.
-                </p>
-              </a>
-            </div>
-          </>
-        ) : (
-          <>
-            <p class="mt-5 text-lead text-ink-muted">
-              Our owner and resident portals are being set up now. Until they
-              are live, statements, documents and maintenance requests all go
-              through us directly, and nothing about your property waits on a
-              login.
-            </p>
+      {/*
+        One card per portal, each carrying its own state. This page used to
+        branch on a single flag and show either two working links or neither,
+        which stopped being true the moment the Resident Center went live on
+        its own.
+      */}
+      <p class="mt-5 text-lead text-ink-muted">
+        Where to go for statements, documents, maintenance requests and
+        payments.
+      </p>
 
-            <div class="mt-10 card">
-              <h2 class="text-h3">In the meantime</h2>
-              <ul class="mt-4 space-y-3 text-ink-muted">
-                <li>
-                  Owners receive monthly statements and year-end summaries by
-                  email.
-                </li>
-                <li>
-                  Maintenance requests reach us by phone or email, day or
-                  night for emergencies.
-                </li>
-                <li>
-                  Rent payments and owner disbursements are handled by ACH or
-                  check.
-                </li>
-              </ul>
-              <p class="mt-6 text-sm text-ink-muted">
-                Questions about any of it? Call <a
-                  href={CONTACT.phoneHref}
-                  class="font-semibold text-ink underline decoration-accent decoration-2 underline-offset-4"
-                  >{CONTACT.phone}</a
-                >.
+      <div class="mt-10 grid gap-5 sm:grid-cols-2">
+        {
+          PORTALS.tenant ? (
+            <a
+              href={PORTALS.tenant}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="card-lift card"
+            >
+              <h2 class="text-h3">Resident portal</h2>
+              <p class="mt-2 text-sm text-ink-muted">
+                Pay rent and submit maintenance requests.
+              </p>
+            </a>
+          ) : (
+            <div class="card">
+              <h2 class="text-h3">Resident portal</h2>
+              <p class="mt-2 text-sm text-ink-muted">
+                Being set up now. Maintenance requests reach us by phone or
+                email in the meantime.
               </p>
             </div>
-          </>
+          )
+        }
+
+        {
+          PORTALS.owner ? (
+            <a
+              href={PORTALS.owner}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="card-lift card"
+            >
+              <h2 class="text-h3">Owner portal</h2>
+              <p class="mt-2 text-sm text-ink-muted">
+                Statements, documents and disbursements.
+              </p>
+            </a>
+          ) : (
+            <div class="card">
+              <h2 class="text-h3">Owner portal</h2>
+              <p class="mt-2 text-sm text-ink-muted">
+                Being set up now. Monthly statements and year-end summaries
+                come to you by email until it is.
+              </p>
+            </div>
+          )
+        }
+      </div>
+
+      {
+        !PORTALS_LIVE_EVERYWHERE && (
+          <div class="mt-10 card">
+            <h2 class="text-h3">While that is being set up</h2>
+            <ul class="mt-4 space-y-3 text-ink-muted">
+              <li>
+                Owners receive monthly statements and year-end summaries by
+                email.
+              </li>
+              <li>
+                Maintenance requests reach us by phone or email, day or night
+                for emergencies.
+              </li>
+              <li>
+                Rent payments and owner disbursements are handled by ACH or
+                check.
+              </li>
+            </ul>
+            <p class="mt-6 text-sm text-ink-muted">
+              Questions about any of it? Call <a
+                href={CONTACT.phoneHref}
+                class="font-semibold text-ink underline decoration-accent decoration-2 underline-offset-4"
+                >{CONTACT.phone}</a
+              >.
+            </p>
+          </div>
         )
       }
     </div>

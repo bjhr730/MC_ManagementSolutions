@@ -168,18 +168,33 @@ export const SERVICE_COUNTIES_SHORT: readonly string[] = SERVICE_COUNTIES.map(
 );
 
 /**
- * Buildium owner and tenant portals are not live yet. The master checklist is
- * explicit: "Add portal links and Buildium mention only when live." While this
- * is false the portal links in the utility bar point at /portals, which
- * explains that they are coming and how to reach us meanwhile. Flip it to true
- * and fill in the URLs below and the links go straight to the real portals.
+ * Buildium portals.
+ *
+ * These were behind one boolean, on the assumption both would arrive
+ * together. They did not. Antonio's Buildium subdomain serves the Resident
+ * Center and nothing else - every owner path on it returns 404 - so the two
+ * are tracked separately and the site tells the truth about each.
+ *
+ * A portal is live when its URL is set. null means "being set up", and the
+ * page says so rather than shipping a button that goes nowhere. The master
+ * checklist is explicit: "Add portal links and Buildium mention only when
+ * live", and that now resolves per portal rather than for both at once.
+ *
+ * The resident URL is the https form on purpose. http 301s to it, so linking
+ * http would send every resident through a redirect, over plaintext first.
  */
-export const PORTALS_LIVE = false;
+type PortalUrl = string | null;
 
-export const PORTALS = {
-  owner: 'REPLACE — owner portal URL',
-  tenant: 'REPLACE — resident portal URL',
-} as const;
+export const PORTALS: { owner: PortalUrl; tenant: PortalUrl } = {
+  owner: null,
+  tenant: 'https://antmlndz.managebuilding.com/resident',
+};
+
+export const OWNER_PORTAL_LIVE = PORTALS.owner !== null;
+export const TENANT_PORTAL_LIVE = PORTALS.tenant !== null;
+
+/** Any portal at all: what decides whether /portals is worth linking. */
+export const PORTALS_LIVE = OWNER_PORTAL_LIVE || TENANT_PORTAL_LIVE;
 
 /**
  * After-hours maintenance emergencies, in the order a tenant should try
@@ -203,11 +218,13 @@ export const EMERGENCY_MAINTENANCE = [
 export const PORTAL_LINKS = [
   {
     label: 'Owner Portal',
-    href: PORTALS_LIVE ? PORTALS.owner : '/portals',
+    href: PORTALS.owner ?? '/portals',
+    live: OWNER_PORTAL_LIVE,
   },
   {
     label: 'Tenant Portal',
     href: '/tenant-portal',
+    live: TENANT_PORTAL_LIVE,
   },
 ] as const;
 

@@ -1,7 +1,7 @@
 ---
 import Logo from './Logo.astro';
 import NavIcon from './NavIcon.astro';
-import { CONTACT, NAV, PORTAL_LINKS, PORTALS_LIVE } from '~/config/site';
+import { CONTACT, NAV, PORTAL_LINKS } from '~/config/site';
 
 const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
 const isCurrent = (href: string) => path === href;
@@ -22,7 +22,7 @@ const isCurrent = (href: string) => path === href;
             class="inline-flex h-full items-center text-xs font-medium tracking-wide text-silver-200 underline decoration-white/30 underline-offset-4 hover:text-white hover:decoration-white"
           >
             {portal.label}
-            {!PORTALS_LIVE && (
+            {!portal.live && (
               <span class="ml-1.5 text-[0.625rem] uppercase tracking-wider text-silver-400">
                 soon
               </span>

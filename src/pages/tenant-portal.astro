@@ -23,9 +23,10 @@ import { breadcrumbs } from '~/lib/schema';
  * explanation of what counts as an emergency, and why they are buttons
  * rather than a sentence with a link in it.
  *
- * The Buildium login is still gated on PORTALS_LIVE: PORTALS.tenant is a
- * placeholder string, so until that flag flips there is no URL to send
- * anyone to and the page says so instead of shipping a dead button.
+ * The Buildium login is gated on PORTALS.tenant being set rather than on a
+ * site-wide flag, because the owner portal does not exist yet and the two
+ * no longer arrive together. A null URL means the page says so instead of
+ * shipping a dead button.
  */
 ---
 
@@ -140,9 +141,14 @@ import { breadcrumbs } from '~/lib/schema';
       </p>
 
       {
-        PORTALS_LIVE ? (
+        PORTALS.tenant ? (
           <p class="mt-8">
-            <a href={PORTALS.tenant} class="btn btn-primary">
+            <a
+              href={PORTALS.tenant}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn btn-primary"
+            >
               Access Tenant Portal
             </a>
           </p>
